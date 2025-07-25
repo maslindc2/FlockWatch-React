@@ -13,6 +13,15 @@ interface Props {
 // Defining the data type state feature which should use the d3 feature and a key that's of type string
 type StateFeature = Feature<Geometry, { [key: string]: any }>;
 
+const labelOffsets= {
+  "09": [40, 25],   // CT
+  "10": [80, 20],   // DE
+  "24": [60, 20],   // MD
+  "25": [50, -5],   // MA
+  "33": [-10, -60], // NH
+  "44": [40, 25],   // RI
+  "50": [-20, -40], // VT
+}
 
 const ChoroplethMap: FC<Props> = ({data}) => {
   // Create a ref that will allow us to insert d3 states into to create our US Map
@@ -27,8 +36,9 @@ const ChoroplethMap: FC<Props> = ({data}) => {
     // Create an SVG that will display our Choropleth Map
     const svg = d3.select(svgRef.current)
       .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
       .style("width", "100%")
-      .style("height", "auto");
+      .style("height", "500px");
     
     // Clear previous content so it redraws cleanly if the data changes
     svg.selectAll("*").remove();
@@ -108,21 +118,42 @@ const ChoroplethMap: FC<Props> = ({data}) => {
       // We can't have a blank map so let's put some labels (Also who even remembers all 50 states)
       svg.append('g')
         .selectAll('text')
+        .data(states.filter((d: d3.GeoPermissibleObjects) => {
+          const centroid = path.centroid(d);
+          return !isNaN(centroid[0]) && !isNaN(centroid[1])
+        }))
         .data(states as StateFeature[])
         .join('text')
         .attr('transform', d => {
-          const [x, y] = path.centroid(d);
-          return `translate(${x}, ${y})`;
+          const centroid = path.centroid(d);
+          const offset = labelOffsets[d.id];
+
+          if(isNaN(centroid[0]) || isNaN(centroid[1])){
+            return null;
+          }
+          
+          return offset ? `translate(${centroid[0] + offset[0]}, ${centroid[1] + offset[1]})` : `translate(${centroid[0]}, ${centroid[1]})`;
         })
         .text(d => fipsToAbbreviation[d.id as string] || '')
         .attr('text-anchor', 'middle')
         .attr('alignment-baseline', 'central')
-        .attr('font-size', '10px')
+        .attr('font-size', '20px')
         .attr('fill', '#000')
         .attr('pointer-events', 'none');
+
+      svg.append("g")
+        .selectAll("line")
+        .data(states.filter(d => labelOffsets[d.id]))
+        .join("line")
+        .attr("x1", d => path.centroid(d)[0])
+        .attr("y1", d => path.centroid(d)[1])
+        .attr("x2", d => path.centroid(d)[0] + labelOffsets[d.id][0])
+        .attr("y2", d => path.centroid(d)[1] + labelOffsets[d.id][1])
+        .attr("stroke", "#333");
+
     });
-  }, [data]);
-  return <svg ref={svgRef}></svg>
+  });
+  return <svg className="choropleth" ref={svgRef}></svg>
 }
 
 export default ChoroplethMap;
