@@ -1,9 +1,11 @@
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
+
 import { useEffect, useRef, type FC } from 'react';
 import type { Feature, Geometry } from 'geojson';
 import type { IAllFlockCases } from './interfaces/IAllFlockCases';
 import { stateAbbreviationToFips, fipsToAbbreviation } from './utils/state-abbreviation-fips-processing';
+
 
 // Specifying we are expecting a prop containing a structure IAllFlockCases
 interface Props {
@@ -14,13 +16,13 @@ interface Props {
 type StateFeature = Feature<Geometry, { [key: string]: any }>;
 
 const labelOffsets= {
-  "09": [40, 25],   // CT
+  "09": [25, 25],   // CT
   "10": [80, 20],   // DE
   "24": [60, 20],   // MD
-  "25": [50, -5],   // MA
-  "33": [-10, -60], // NH
+  "25": [60, -5],   // MA
+  "33": [-15, -60], // NH
   "44": [40, 25],   // RI
-  "50": [-20, -40], // VT
+  "50": [-30, -40], // VT
 }
 
 const ChoroplethMap: FC<Props> = ({data}) => {
@@ -30,7 +32,6 @@ const ChoroplethMap: FC<Props> = ({data}) => {
   // Runs on every render to display the Choropleth Map
   useEffect(() => {
     // Specify the width and height of our view window
-    // TODO: Figure out how to improve this so we don't have to zoom in so far
     const width = 960;
     const height = 600;
     // Create an SVG that will display our Choropleth Map
@@ -45,7 +46,7 @@ const ChoroplethMap: FC<Props> = ({data}) => {
     
     // Load the TopoJSON map and convert it to GeoJSON with topojson.feature(...)
     // TODO: Download this file and store it so we don't have to make this request everytime
-    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(usData => {
+    d3.json("/states-10m.json").then(usData => {
       const us = usData as any;
       //@ts-ignore
       // TODO: Define the datatype here so we don't need ts-ignore
@@ -65,8 +66,9 @@ const ChoroplethMap: FC<Props> = ({data}) => {
 
       // Set up color scale
       const maxAffected = d3.max(data, d => d.birdsAffected) ?? 1;
-      // Here we can specify the color to use for the data 0=white max is the darkest color we are interpolating
-      const color = d3.scaleSequential(d3.interpolateGreens).domain([0, maxAffected]);
+      // Here we can specify the color to use for the data 0=white, max is the darkest color we are interpolating
+      // Adjusting how much to modify the scale as some states were hit harder than others and it's impossible to see that in the map
+      const color = d3.scaleLinear<string>().domain([0, maxAffected / 8, maxAffected]).range(["#ffffffff", "#94d190ff", "#006400"])
       
       // Draw the state shapes and color them
       svg.append('g')
@@ -140,10 +142,10 @@ const ChoroplethMap: FC<Props> = ({data}) => {
         .attr('font-size', '20px')
         .attr('fill', '#000')
         .attr('pointer-events', 'none');
-
+      
       svg.append("g")
         .selectAll("line")
-        .data(states.filter(d => labelOffsets[d.id]))
+        .data(states.filter((d: { id: string | number; }) => labelOffsets[d.id]))
         .join("line")
         .attr("x1", d => path.centroid(d)[0])
         .attr("y1", d => path.centroid(d)[1])
@@ -153,7 +155,11 @@ const ChoroplethMap: FC<Props> = ({data}) => {
 
     });
   });
-  return <svg className="choropleth" ref={svgRef}></svg>
+  return (
+    <div className='map-container'>
+      <svg ref={svgRef}></svg>
+    </div>
+  )
 }
 
 export default ChoroplethMap;

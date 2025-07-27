@@ -6,7 +6,7 @@ function App() {
   const flockData = allFlockCases.data;
   return (
     <>
-      <ChoroplethMap data={flockData}/>
+      <ChoroplethMap  data={flockData}/>
     </>
   )
 }
