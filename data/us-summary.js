@@ -1,4 +1,4 @@
-export const USSummary = {
+export const usSummary = {
     "data": {
         "totalBackyardFlocksNationwide": 921,
         "totalBirdsAffectedNationwide": 174833348,

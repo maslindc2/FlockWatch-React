@@ -156,9 +156,7 @@ const ChoroplethMap: FC<Props> = ({data}) => {
     });
   });
   return (
-    <div className='map-container'>
-      <svg ref={svgRef}></svg>
-    </div>
+    <svg ref={svgRef}></svg>
   )
 }
 
