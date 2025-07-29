@@ -27,6 +27,7 @@ section.home-info{
   gap: 20px;
   justify-content: center;
   margin-bottom: 25px;
+  max-width: 750px;
 }
 
 section.home-info > div {
@@ -36,5 +37,14 @@ section.home-info > div {
 }
 
 section.home-info > div > p{
-  font-size: 20px;
+  font-size: 18px;
+}
+
+section.home-info > div > h3 {
+  text-align: left;
+}
+
+section.home-info > div > img {
+  width: 50px;
+  z-index: 5px;
 }
