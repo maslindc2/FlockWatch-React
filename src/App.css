@@ -30,21 +30,46 @@ section.home-info{
   max-width: 750px;
 }
 
-section.home-info > div {
-  border-radius: 10px;
-  padding: 5.5px;
-  background-color: aquamarine;
+.tile-container {
+  position: relative;
+  color: white;
+  width: 250px;            /* container grows with content */
+  height: 100px;
+  overflow: hidden;
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 0;
 }
 
-section.home-info > div > p{
+.tile-inner {
+  z-index: 1;
+  position: relative;
+}
+
+.tile-inner > p {
+  margin: 0 0 5px;
   font-size: 18px;
 }
 
-section.home-info > div > h3 {
-  text-align: left;
+.tile-inner > h3 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: bold;
+  z-index: 1;
 }
 
-section.home-info > div > img {
-  width: 50px;
-  z-index: 5px;
+.tile-icon {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  width: 60px;
+  height: 60px;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.tile-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
