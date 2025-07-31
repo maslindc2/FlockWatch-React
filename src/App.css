@@ -30,6 +30,10 @@ section.home-info{
   max-width: 750px;
 }
 
+.state-title{
+  text-align: center;
+}
+
 .tile-container {
   position: relative;
   color: white;
