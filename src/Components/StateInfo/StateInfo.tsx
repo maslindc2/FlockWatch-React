@@ -1,6 +1,6 @@
 import SelectedStateMap from "../SelectedState/SelectedState";
 
-import InfoTiles from "../InfoTiles/InfoTiles"
+import InfoTiles from "../InfoTiles/InfoTiles";
 import { stateAbbreviationToFips } from "../ChoroplethMap/utils/state-abbreviation-fips-processing";
 
 interface IStateInfo {
@@ -33,11 +33,7 @@ function createInfoTiles(stateInfo: IStateInfo) {
             "/backyard-flocks2.png",
             "rgba(2, 163, 56, 1)",
         ],
-        birdsAffected: [
-            "Birds Affected",
-            "/birds-affected.png",
-            "#ef8700ff",
-        ],
+        birdsAffected: ["Birds Affected", "/birds-affected.png", "#ef8700ff"],
         commercialFlocks: [
             "Commercial Flocks Affected",
             "/commercial-flocks.png",
@@ -48,7 +44,7 @@ function createInfoTiles(stateInfo: IStateInfo) {
             "/flocks-affected.webp",
             "rgba(255, 97, 131, 1)",
         ],
-    }
+    };
 
     const infoTilesArr = Object.entries(stateInfo)
         .map(([key, value], index) => {
@@ -64,25 +60,26 @@ function createInfoTiles(stateInfo: IStateInfo) {
                     icon={title[1]}
                     bgColor={title[2]}
                 />
-            )
-        }).filter(Boolean)
-    return infoTilesArr
+            );
+        })
+        .filter(Boolean);
+    return infoTilesArr;
 }
 
-
 // <section className="home-info">{usInfoTiles}</section>
-export default function StateInfo({stateInfo}) {
+export default function StateInfo({ stateInfo }) {
     const stateInfoTiles = createInfoTiles(stateInfo);
-    const fipsCodeForState = stateAbbreviationToFips[stateInfo.stateAbbreviation]
-    return(
+    const fipsCodeForState =
+        stateAbbreviationToFips[stateInfo.stateAbbreviation];
+    return (
         <section>
-            <h1 className="state-title">Hello {stateInfo.state} ({stateInfo.stateAbbreviation})</h1>
+            <h1 className="state-title">
+                Hello {stateInfo.state} ({stateInfo.stateAbbreviation})
+            </h1>
             <section>
-                <SelectedStateMap fipsCode={fipsCodeForState}/>
+                <SelectedStateMap fipsCode={fipsCodeForState} />
             </section>
-            <section className="home-info">
-                {stateInfoTiles}
-            </section>
+            <section className="home-info">{stateInfoTiles}</section>
         </section>
-    )
+    );
 }

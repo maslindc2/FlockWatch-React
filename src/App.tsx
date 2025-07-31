@@ -71,17 +71,19 @@ function createHomeInfoTiles(tileData: IUSTileData) {
     return infoTilesArr;
 }
 
-
 function App() {
     const flockData = allFlockCases.data;
     const lastUpdated = allFlockCases.metadata.lastScrapedDate;
     const usSummaryData = usSummary.data;
     const usInfoTiles = createHomeInfoTiles(usSummaryData);
     const [selectedState, setState] = useState();
-    
+
     function stateStats(stateSelected: string) {
         console.log(`Received from map: + ${stateSelected}`);
-        const result = flockData.find((state: { stateAbbreviation: string; }) => state.stateAbbreviation == stateSelected);
+        const result = flockData.find(
+            (state: { stateAbbreviation: string }) =>
+                state.stateAbbreviation == stateSelected
+        );
         setState(result);
     }
 
@@ -109,7 +111,7 @@ function App() {
             ) : (
                 <>
                     <button onClick={closeStateInfo}>Reset</button>
-                    <StateInfo stateInfo={selectedState}/>
+                    <StateInfo stateInfo={selectedState} />
                 </>
             )}
         </main>
