@@ -68,18 +68,34 @@ function createInfoTiles(stateInfo: IStateInfo) {
 
 // <section className="home-info">{usInfoTiles}</section>
 export default function StateInfo({ stateInfo }) {
+    console.log(stateInfo);
     const stateInfoTiles = createInfoTiles(stateInfo);
     const fipsCodeForState =
         stateAbbreviationToFips[stateInfo.stateAbbreviation];
     return (
-        <section>
-            <h1 className="state-title">
-                Hello {stateInfo.state} ({stateInfo.stateAbbreviation})
-            </h1>
-            <section>
-                <SelectedStateMap fipsCode={fipsCodeForState} />
+        <>
+            <section className="description">
+                <h2 className="state-title">
+                    Hello {stateInfo.state} ({stateInfo.stateAbbreviation})
+                </h2>
+                <p>
+                    Stay informed about avian influenza cases in{" "}
+                    {stateInfo.state}. See how many birds and flocks have been
+                    affected, including both commercial and backyard operations.
+                    Check the latest report date and total number of outbreaks
+                    to stay up to date.
+                </p>
+                <p>Last updated on {stateInfo.lastReportedDate}</p>
             </section>
-            <section className="home-info">{stateInfoTiles}</section>
-        </section>
+            <section>
+                <section className="state-outline">
+                    <SelectedStateMap
+                        fipsCode={fipsCodeForState}
+                        stateColor={stateInfo.color}
+                    />
+                </section>
+                <section className="home-info">{stateInfoTiles}</section>
+            </section>
+        </>
     );
 }

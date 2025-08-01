@@ -118,7 +118,10 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                     const abbreviation = fipsToAbbreviation[fips!];
                     // If there was an abbreviation found then we trigger our state to display the state info component
                     if (abbreviation) {
-                        stateTrigger(abbreviation);
+                        const element = d3.select(event.currentTarget);
+                        const originalFill = element.attr("data-original-fill");
+                        console.log(originalFill);
+                        stateTrigger(abbreviation, originalFill);
                     }
                 })
                 .attr("stroke", "hsla(0, 0%, 21%, 1.00)") // This is the border line between states

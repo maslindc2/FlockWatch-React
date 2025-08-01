@@ -16,10 +16,6 @@ interface IUSTileData {
     totalStatesAffected: Number;
 }
 
-function formatNumberToLocale(value: Number) {
-    return value.toLocaleString();
-}
-
 function createHomeInfoTiles(tileData: IUSTileData) {
     const titleMap: Record<keyof IUSTileData, string[]> = {
         totalBackyardFlocksNationwide: [
@@ -60,7 +56,7 @@ function createHomeInfoTiles(tileData: IUSTileData) {
                 <InfoTiles
                     key={index}
                     title={title[0]}
-                    amount={formatNumberToLocale(value)}
+                    amount={value.toLocaleString()}
                     icon={title[1]}
                     bgColor={title[2]}
                 />
@@ -78,12 +74,13 @@ function App() {
     const usInfoTiles = createHomeInfoTiles(usSummaryData);
     const [selectedState, setState] = useState();
 
-    function stateStats(stateSelected: string) {
+    function stateStats(stateSelected: string, interpolatedColor: string) {
         console.log(`Received from map: + ${stateSelected}`);
         const result = flockData.find(
             (state: { stateAbbreviation: string }) =>
                 state.stateAbbreviation == stateSelected
         );
+        result.color = interpolatedColor;
         setState(result);
     }
 
@@ -94,14 +91,24 @@ function App() {
     return (
         <main>
             <header>
-                <h1>Flock Watch</h1>
-                <p>Last updated on {lastUpdated}</p>
+                <div className="logo-banner">
+                    <h1>Flock Watch</h1>
+                    <img src="/game-icons_chicken.svg"></img>
+                </div>
             </header>
 
             {!selectedState ? (
                 <>
+                    <section className="description">
+                        <p>
+                            Track avian influenza across the U.S. View current
+                            stats on affected flocks, birds, and states whether
+                            backyard or commercial all in one simple dashboard.
+                        </p>
+                        <p>Last updated on {lastUpdated}</p>
+                    </section>
                     <section className="home-info">{usInfoTiles}</section>
-                    <section>
+                    <section className="choropleth-map">
                         <ChoroplethMap
                             data={flockData}
                             stateTrigger={stateStats}
