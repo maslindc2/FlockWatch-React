@@ -1,18 +1,17 @@
 import SelectedStateMap from "../SelectedState/SelectedState";
-
 import InfoTiles from "../InfoTiles/InfoTiles";
-import { stateAbbreviationToFips } from "../ChoroplethMap/utils/state-abbreviation-fips-processing";
 
 interface IStateInfo {
     backyardFlocks: string;
     birdsAffected: string;
     commercialFlocks: number;
-    lastReportDate: Date;
+    lastReportedDate: string;
     latitude: number;
     longitude: number;
     state: string;
     stateAbbreviation: string;
     totalFlocks: number;
+    color: string;
 }
 
 interface IStateTiles {
@@ -20,6 +19,10 @@ interface IStateTiles {
     birdsAffected: string;
     commercialFlocks: number;
     totalFlocks: number;
+}
+
+interface Props {
+    stateInfo: IStateInfo;
 }
 
 function formatNumberToLocale(value: Number) {
@@ -30,17 +33,20 @@ function createInfoTiles(stateInfo: IStateInfo) {
     const titleMap: Record<keyof IStateTiles, string[]> = {
         backyardFlocks: [
             "Backyard Flocks Affected",
+            "backyard-flocks",
             "/backyard-flocks2.png",
             "rgba(2, 163, 56, 1)",
         ],
-        birdsAffected: ["Birds Affected", "/birds-affected.png", "#ef8700ff"],
+        birdsAffected: ["Birds Affected", "birds-affected", "/birds-affected.png", "#ef8700ff"],
         commercialFlocks: [
             "Commercial Flocks Affected",
+            "commercial-flocks",
             "/commercial-flocks.png",
             "rgba(131, 0, 239, 1)",
         ],
         totalFlocks: [
             "Total Flocks Affected",
+            "total-flocks",
             "/flocks-affected.webp",
             "rgba(255, 97, 131, 1)",
         ],
@@ -55,10 +61,11 @@ function createInfoTiles(stateInfo: IStateInfo) {
             return (
                 <InfoTiles
                     key={index}
+                    id={title[1]}
                     title={title[0]}
                     amount={formatNumberToLocale(value)}
-                    icon={title[1]}
-                    bgColor={title[2]}
+                    icon={title[2]}
+                    bgColor={title[3]}
                 />
             );
         })
@@ -67,11 +74,8 @@ function createInfoTiles(stateInfo: IStateInfo) {
 }
 
 // <section className="home-info">{usInfoTiles}</section>
-export default function StateInfo({ stateInfo }) {
-    console.log(stateInfo);
+export default function StateInfo({stateInfo}: Props) {
     const stateInfoTiles = createInfoTiles(stateInfo);
-    const fipsCodeForState =
-        stateAbbreviationToFips[stateInfo.stateAbbreviation];
     return (
         <>
             <section className="description">
@@ -90,7 +94,8 @@ export default function StateInfo({ stateInfo }) {
             <section>
                 <section className="state-outline">
                     <SelectedStateMap
-                        fipsCode={fipsCodeForState}
+                        stateAbbreviation={stateInfo.stateAbbreviation}
+                        stateName={stateInfo.state}
                         stateColor={stateInfo.color}
                     />
                 </section>

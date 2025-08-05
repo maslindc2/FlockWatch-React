@@ -8,6 +8,7 @@ import InfoTiles from "./Components/InfoTiles/InfoTiles.js";
 import { useState } from "react";
 import StateInfo from "./Components/StateInfo/StateInfo.js";
 
+
 interface IUSTileData {
     totalBackyardFlocksNationwide: Number;
     totalBirdsAffectedNationwide: Number;
@@ -20,26 +21,31 @@ function createHomeInfoTiles(tileData: IUSTileData) {
     const titleMap: Record<keyof IUSTileData, string[]> = {
         totalBackyardFlocksNationwide: [
             "Backyard Flocks Affected",
+            "backyard-flocks",
             "/backyard-flocks2.png",
             "rgba(2, 163, 56, 1)",
         ],
         totalBirdsAffectedNationwide: [
             "Birds Affected",
+            "birds-affected",
             "/birds-affected.png",
             "#ef8700ff",
         ],
         totalCommercialFlocksNationwide: [
             "Commercial Flocks Affected",
+            "commercial-flocks",
             "/commercial-flocks.png",
             "rgba(131, 0, 239, 1)",
         ],
         totalFlocksAffectedNationwide: [
             "Total Flocks Affected",
+            "total-flocks",
             "/flocks-affected.webp",
             "rgba(255, 97, 131, 1)",
         ],
         totalStatesAffected: [
             "States Affected",
+            "states-affected",
             "/us-states.png",
             "hsla(192, 98%, 37%, 1.00)",
         ],
@@ -55,10 +61,11 @@ function createHomeInfoTiles(tileData: IUSTileData) {
             return (
                 <InfoTiles
                     key={index}
+                    id={title[1]}
                     title={title[0]}
                     amount={value.toLocaleString()}
-                    icon={title[1]}
-                    bgColor={title[2]}
+                    icon={title[2]}
+                    bgColor={title[3]}
                 />
             );
         })
@@ -71,11 +78,11 @@ function App() {
     const flockData = allFlockCases.data;
     const lastUpdated = allFlockCases.metadata.lastScrapedDate;
     const usSummaryData = usSummary.data;
+
     const usInfoTiles = createHomeInfoTiles(usSummaryData);
     const [selectedState, setState] = useState();
 
     function stateStats(stateSelected: string, interpolatedColor: string) {
-        console.log(`Received from map: + ${stateSelected}`);
         const result = flockData.find(
             (state: { stateAbbreviation: string }) =>
                 state.stateAbbreviation == stateSelected
@@ -93,7 +100,7 @@ function App() {
             <header>
                 <div className="logo-banner">
                     <h1>Flock Watch</h1>
-                    <img src="/game-icons_chicken.svg"></img>
+                    <img src="/game-icons_chicken.svg" alt="Flock Watch Logo"></img>
                 </div>
             </header>
 
@@ -117,7 +124,7 @@ function App() {
                 </>
             ) : (
                 <>
-                    <button onClick={closeStateInfo}>Reset</button>
+                    <button onClick={closeStateInfo}>Go Back</button>
                     <StateInfo stateInfo={selectedState} />
                 </>
             )}

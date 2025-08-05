@@ -1,13 +1,18 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
+import { stateAbbreviationToFips } from "../ChoroplethMap/utils/state-abbreviation-fips-processing";
 
 interface Props {
-    fipsCode: string; // Example: '53' for Washington
+    stateAbbreviation: string;
+    stateName: string;
+    stateColor: string;
 }
 
-const SelectedStateMap: React.FC<Props> = ({ fipsCode, stateColor }) => {
+const SelectedStateMap: React.FC<Props> = ({ stateAbbreviation, stateName, stateColor }) => {
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const fipsCode =
+        stateAbbreviationToFips[stateAbbreviation];
 
     useEffect(() => {
         const width = 400;
@@ -50,7 +55,14 @@ const SelectedStateMap: React.FC<Props> = ({ fipsCode, stateColor }) => {
         });
     }, [fipsCode]);
 
-    return <svg ref={svgRef}></svg>;
+    return (
+        <svg ref={svgRef}>
+            <title>Selected State Map</title>
+            <desc>
+                Map outline of {stateName}
+            </desc>
+        </svg>
+    );
 };
 
 export default SelectedStateMap;

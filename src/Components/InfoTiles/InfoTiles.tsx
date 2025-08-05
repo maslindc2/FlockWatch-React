@@ -1,15 +1,20 @@
 interface InfoTileProps {
     title: string;
+    id: string;
     amount: string;
     bgColor: string;
     icon: string;
 }
 export default function InfoTiles({
     title,
+    id,
     amount,
     bgColor,
     icon,
 }: InfoTileProps) {
+    const labelId = `${id}-label`;
+    const valueId = `${id}-value`;
+
     return (
         <div
             style={{ backgroundColor: bgColor }}
@@ -17,8 +22,8 @@ export default function InfoTiles({
             title={title}
         >
             <div className="tile-inner">
-                <p>{title}</p>
-                <h3>
+                <p id={labelId}>{title}</p>
+                <h3 aria-labelledby={`${labelId} ${valueId}`}>
                     <span>{amount}</span>
                 </h3>
             </div>
