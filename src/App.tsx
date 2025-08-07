@@ -1,92 +1,66 @@
-import "./App.css";
-import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap.js";
 //@ts-ignore
 import { allFlockCases } from "../data/all-flocks.js";
 //@ts-ignore
 import { usSummary } from "../data/us-summary.js";
-import InfoTiles from "./Components/InfoTiles/InfoTiles.js";
-import { useState } from "react";
-import StateInfo from "./Components/StateInfo/StateInfo.js";
 
-interface IUSTileData {
-    totalBackyardFlocksNationwide: Number;
-    totalBirdsAffectedNationwide: Number;
-    totalCommercialFlocksNationwide: Number;
-    totalFlocksAffectedNationwide: Number;
-    totalStatesAffected: Number;
+import "./App.css";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import StateInfo from "./Components/StateInfo/StateInfo.js";
+import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap.js";
+import createHomeInfoTiles from "./Components/InfoTiles/CreateHomeInfoTiles";
+import { useFlockCases } from "./Hooks/useFlockCases.js";
+import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
+
+async function getUsSummaryData() {
+    const res = await fetch("http://localhost:3000/data/us-summary");
+    return await res.json();
 }
 
-function createHomeInfoTiles(tileData: IUSTileData) {
-    const titleMap: Record<keyof IUSTileData, string[]> = {
-        totalBackyardFlocksNationwide: [
-            "Backyard Flocks Affected",
-            "backyard-flocks",
-            "/backyard-flocks2.png",
-            "rgba(2, 163, 56, 1)",
-        ],
-        totalBirdsAffectedNationwide: [
-            "Birds Affected",
-            "birds-affected",
-            "/birds-affected.png",
-            "#ef8700ff",
-        ],
-        totalCommercialFlocksNationwide: [
-            "Commercial Flocks Affected",
-            "commercial-flocks",
-            "/commercial-flocks.png",
-            "rgba(131, 0, 239, 1)",
-        ],
-        totalFlocksAffectedNationwide: [
-            "Total Flocks Affected",
-            "total-flocks",
-            "/flocks-affected.webp",
-            "rgba(255, 97, 131, 1)",
-        ],
-        totalStatesAffected: [
-            "States Affected",
-            "states-affected",
-            "/us-states.png",
-            "hsla(192, 98%, 37%, 1.00)",
-        ],
-    };
-
-    const infoTilesArr = Object.entries(tileData)
-        .map(([key, value], index) => {
-            const title = titleMap[key as keyof IUSTileData];
-            if (!title) {
-                console.error(`Unexpected key in tileData: ${key}`);
-                return null;
-            }
-            return (
-                <InfoTiles
-                    key={index}
-                    id={title[1]}
-                    title={title[0]}
-                    amount={value.toLocaleString()}
-                    icon={title[2]}
-                    bgColor={title[3]}
-                />
-            );
-        })
-        .filter(Boolean);
-
-    return infoTilesArr;
+async function getFlockCases() {
+    const res = await fetch("http://localhost:3000/data/flock-cases");
+    return await res.json();
 }
 
 function App() {
-    const flockData = allFlockCases.data;
-    const lastUpdated = allFlockCases.metadata.lastScrapedDate;
-    const usSummaryData = usSummary.data;
+    //const flockData = allFlockCases.data;
+    //const lastUpdated = allFlockCases.metadata.lastScrapedDate;
+    //const usSummaryData = usSummary.data;
 
-    const usInfoTiles = createHomeInfoTiles(usSummaryData);
     const [selectedState, setState] = useState();
 
-    function stateStats(stateSelected: string, interpolatedColor: string) {
+    const {
+        isPending: isUsSummaryPending,
+        error: usSummaryError,
+        data: usSummaryDataFromAPI,
+    } = useUsSummaryData();
+
+    const {
+        isPending: isFlockCasesPending,
+        error: flockCasesError,
+        data: flockDataFromAPI,
+    } = useFlockCases();
+
+    if (isUsSummaryPending || isFlockCasesPending) return "...Loading";
+    if (usSummaryError || flockCasesError) return "An error has occurred!";
+
+    const flockData = flockDataFromAPI.data;
+    const usSummaryData = usSummaryDataFromAPI.data;
+    const lastUpdated = usSummaryDataFromAPI.metadata.lastScrapedDate;
+
+    const usInfoTiles = createHomeInfoTiles(usSummaryData);
+
+    function findSelectedStateStats(
+        stateSelected: string,
+        interpolatedColor: string
+    ) {
         const result = flockData.find(
             (state: { stateAbbreviation: string }) =>
                 state.stateAbbreviation == stateSelected
         );
+        //@ts-ignore
         result.color = interpolatedColor;
+        //@ts-ignore
         setState(result);
     }
 
@@ -120,7 +94,7 @@ function App() {
                     <section className="choropleth-map">
                         <ChoroplethMap
                             data={flockData}
-                            stateTrigger={stateStats}
+                            stateTrigger={findSelectedStateStats}
                         />
                     </section>
                 </>
