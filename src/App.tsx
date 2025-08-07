@@ -8,7 +8,6 @@ import InfoTiles from "./Components/InfoTiles/InfoTiles.js";
 import { useState } from "react";
 import StateInfo from "./Components/StateInfo/StateInfo.js";
 
-
 interface IUSTileData {
     totalBackyardFlocksNationwide: Number;
     totalBirdsAffectedNationwide: Number;
@@ -100,7 +99,10 @@ function App() {
             <header>
                 <div className="logo-banner">
                     <h1>Flock Watch</h1>
-                    <img src="/game-icons_chicken.svg" alt="Flock Watch Logo"></img>
+                    <img
+                        src="/game-icons_chicken.svg"
+                        alt="Flock Watch Logo"
+                    ></img>
                 </div>
             </header>
 

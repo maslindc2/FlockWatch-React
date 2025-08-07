@@ -37,7 +37,12 @@ function createInfoTiles(stateInfo: IStateInfo) {
             "/backyard-flocks2.png",
             "rgba(2, 163, 56, 1)",
         ],
-        birdsAffected: ["Birds Affected", "birds-affected", "/birds-affected.png", "#ef8700ff"],
+        birdsAffected: [
+            "Birds Affected",
+            "birds-affected",
+            "/birds-affected.png",
+            "#ef8700ff",
+        ],
         commercialFlocks: [
             "Commercial Flocks Affected",
             "commercial-flocks",
@@ -74,7 +79,7 @@ function createInfoTiles(stateInfo: IStateInfo) {
 }
 
 // <section className="home-info">{usInfoTiles}</section>
-export default function StateInfo({stateInfo}: Props) {
+export default function StateInfo({ stateInfo }: Props) {
     const stateInfoTiles = createInfoTiles(stateInfo);
     return (
         <>

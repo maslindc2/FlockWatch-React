@@ -9,10 +9,13 @@ interface Props {
     stateColor: string;
 }
 
-const SelectedStateMap: React.FC<Props> = ({ stateAbbreviation, stateName, stateColor }) => {
+const SelectedStateMap: React.FC<Props> = ({
+    stateAbbreviation,
+    stateName,
+    stateColor,
+}) => {
     const svgRef = useRef<SVGSVGElement | null>(null);
-    const fipsCode =
-        stateAbbreviationToFips[stateAbbreviation];
+    const fipsCode = stateAbbreviationToFips[stateAbbreviation];
 
     useEffect(() => {
         const width = 400;
@@ -58,9 +61,7 @@ const SelectedStateMap: React.FC<Props> = ({ stateAbbreviation, stateName, state
     return (
         <svg ref={svgRef}>
             <title>Selected State Map</title>
-            <desc>
-                Map outline of {stateName}
-            </desc>
+            <desc>Map outline of {stateName}</desc>
         </svg>
     );
 };

@@ -24,11 +24,11 @@ export default function InfoTiles({
             <div className="tile-inner">
                 <p id={labelId}>{title}</p>
                 <h3 aria-labelledby={`${labelId} ${valueId}`}>
-                    <span>{amount}</span>
+                    <span id={valueId}>{amount}</span>
                 </h3>
             </div>
             <div className="tile-icon">
-                <img src={icon} alt={`${title} icon`} />
+                <img src={icon} alt={`${title} Icon`} />
             </div>
         </div>
     );
