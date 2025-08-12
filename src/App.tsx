@@ -5,44 +5,39 @@ import { usSummary } from "../data/us-summary.js";
 
 import "./App.css";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import StateInfo from "./Components/StateInfo/StateInfo.js";
 import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap.js";
 import createHomeInfoTiles from "./Components/InfoTiles/CreateHomeInfoTiles";
 import { useFlockCases } from "./Hooks/useFlockCases.js";
 import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
 
-async function getUsSummaryData() {
-    const res = await fetch("http://localhost:3000/data/us-summary");
-    return await res.json();
-}
-
-async function getFlockCases() {
-    const res = await fetch("http://localhost:3000/data/flock-cases");
-    return await res.json();
-}
+const flockWatchServerURL = import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:3000/data";
 
 function App() {
     //const flockData = allFlockCases.data;
     //const lastUpdated = allFlockCases.metadata.lastScrapedDate;
     //const usSummaryData = usSummary.data;
-
+    
     const [selectedState, setState] = useState();
 
     const {
         isPending: isUsSummaryPending,
         error: usSummaryError,
         data: usSummaryDataFromAPI,
-    } = useUsSummaryData();
+    } = useUsSummaryData(flockWatchServerURL);
 
     const {
         isPending: isFlockCasesPending,
         error: flockCasesError,
         data: flockDataFromAPI,
-    } = useFlockCases();
+    } = useFlockCases(flockWatchServerURL);
 
     if (isUsSummaryPending || isFlockCasesPending) return "...Loading";
-    if (usSummaryError || flockCasesError) return "An error has occurred!";
+    if (usSummaryError || flockCasesError){
+        console.log(usSummaryError);
+        console.log(flockCasesError);
+        return "An error has occurred!";
+    } 
 
     const flockData = flockDataFromAPI.data;
     const usSummaryData = usSummaryDataFromAPI.data;

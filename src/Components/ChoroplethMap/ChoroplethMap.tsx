@@ -48,11 +48,8 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
         svg.selectAll("*").remove();
 
         // Load the TopoJSON map and convert it to GeoJSON with topojson.feature(...)
-        // TODO: Download this file and store it so we don't have to make this request everytime
         d3.json("/states-10m.json").then((usData) => {
             const us = usData as any;
-            //@ts-ignore
-            // TODO: Define the datatype here so we don't need ts-ignore
             const states = topojson.feature(us, us.objects.states).features;
 
             // Map the birdsAffected to the associated FIPS id's for each state
@@ -106,8 +103,6 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .attr("fill", (d: StateFeature) => {
                     // Here we are filling the color of the current state based off the interpolated color from above
                     // This will be white for nothing to the darkest color
-                    //TODO: Figure what type it's wanting here so we don't use ts-ignore
-                    //@ts-ignore
                     const value = birdsAffectedMap.get(d.id);
                     // If the value is undefined then set it to white
                     return value !== undefined ? color(value) : "#eee";

@@ -33,7 +33,8 @@ const SelectedStateMap: React.FC<Props> = ({
         d3.json("/states-10m.json").then((usData) => {
             const us = usData as any;
 
-            const states = topojson.feature(us, us.objects.states).features;
+            const states = (topojson.feature(us, us.objects.states) as any).features;
+
 
             // Filter the selected state
             const selected = states.find(

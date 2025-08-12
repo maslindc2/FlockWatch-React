@@ -12,15 +12,16 @@ interface IUsSummaryResponse {
         lastScrapedDate: string;
     };
 }
-
+let usSummaryURL: string;
 async function fetchUsSummary(): Promise<IUsSummaryResponse> {
-    // TODO: Switch this to a URL
-    const res = await fetch("http://localhost:3000/data/us-summary");
+    const res = await fetch(usSummaryURL);
     if (!res.ok) throw new Error("Failed to fetch US summary");
     return res.json();
 }
 
-export function useUsSummaryData() {
+export function useUsSummaryData(flockWatchServerURL: any) {
+    usSummaryURL = flockWatchServerURL + "/us-summary"
+    console.log(usSummaryURL);
     return useQuery({
         queryKey: ["usSummaryData"],
         queryFn: fetchUsSummary,

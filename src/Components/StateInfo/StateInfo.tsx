@@ -78,7 +78,6 @@ function createInfoTiles(stateInfo: IStateInfo) {
     return infoTilesArr;
 }
 
-// <section className="home-info">{usInfoTiles}</section>
 export default function StateInfo({ stateInfo }: Props) {
     const stateInfoTiles = createInfoTiles(stateInfo);
     return (
