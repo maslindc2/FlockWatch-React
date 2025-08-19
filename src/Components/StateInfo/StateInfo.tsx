@@ -1,5 +1,6 @@
 import SelectedStateMap from "../SelectedState/SelectedState";
 import InfoTiles from "../InfoTiles/InfoTiles";
+import formatDateForUser from "../../Utils/dateFormatter";
 
 interface IStateInfo {
     backyardFlocks: string;
@@ -80,20 +81,17 @@ function createInfoTiles(stateInfo: IStateInfo) {
 
 export default function StateInfo({ stateInfo }: Props) {
     const stateInfoTiles = createInfoTiles(stateInfo);
+    const lastUpdatedDateFormatted = formatDateForUser(stateInfo.lastReportedDate);
     return (
         <>
             <section className="description">
-                <h2 className="state-title">
-                    Hello {stateInfo.state} ({stateInfo.stateAbbreviation})
+                <h1 className="state-title">
+                    {stateInfo.state} ({stateInfo.stateAbbreviation})
+                </h1>
+                <h2>
+                    Outbreak Information
                 </h2>
-                <p>
-                    Stay informed about avian influenza cases in{" "}
-                    {stateInfo.state}. See how many birds and flocks have been
-                    affected, including both commercial and backyard operations.
-                    Check the latest report date and total number of outbreaks
-                    to stay up to date.
-                </p>
-                <p>Last updated on {stateInfo.lastReportedDate}</p>
+                <p>Last case reported on {lastUpdatedDateFormatted}</p>
             </section>
             <section>
                 <section className="state-outline">
