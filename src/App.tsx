@@ -11,13 +11,14 @@ import createHomeInfoTiles from "./Components/InfoTiles/CreateHomeInfoTiles";
 import { useFlockCases } from "./Hooks/useFlockCases.js";
 import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
 
-const flockWatchServerURL = import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:3000/data";
+const flockWatchServerURL =
+    import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:3000/data";
 
 function App() {
     //const flockData = allFlockCases.data;
     //const lastUpdated = allFlockCases.metadata.lastScrapedDate;
     //const usSummaryData = usSummary.data;
-    
+
     const [selectedState, setState] = useState();
 
     const {
@@ -33,11 +34,11 @@ function App() {
     } = useFlockCases(flockWatchServerURL);
 
     if (isUsSummaryPending || isFlockCasesPending) return "...Loading";
-    if (usSummaryError || flockCasesError){
+    if (usSummaryError || flockCasesError) {
         console.log(usSummaryError);
         console.log(flockCasesError);
         return "An error has occurred!";
-    } 
+    }
 
     const flockData = flockDataFromAPI.data;
     const usSummaryData = usSummaryDataFromAPI.data;
