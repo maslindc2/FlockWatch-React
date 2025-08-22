@@ -29,6 +29,8 @@ header > h1 {
 .state-window {
   border: 3px solid #0000005c;
   border-radius: 5px;
+  margin-top: 8vh;
+  
 }
 
 .close-button {
@@ -88,6 +90,7 @@ section.home-info{
   gap: 20px;
   justify-content: center;
   margin-bottom: 25px;
+  
   max-width: 750px;
   padding-bottom: 50px;
 }
@@ -99,6 +102,61 @@ section.choropleth-map {
 .state-title{
   text-align: center;
   font-weight: 550;
+}
+
+.state-info-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.state-outline {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.state-right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.home-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+@media (max-width: 768px) {
+  .description {
+    order: 1;
+    text-align: center;
+    width: 100%;
+  }
+  .state-info-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .state-outline {
+    order: 2;
+    width: 100%;
+  }
+  .home-info {
+    order: 3;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
 }
 
 .tile-container {

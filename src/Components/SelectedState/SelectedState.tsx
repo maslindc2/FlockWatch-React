@@ -24,8 +24,7 @@ const SelectedStateMap: React.FC<Props> = ({
         const svg = d3
             .select(svgRef.current)
             .attr("viewBox", `0 0 ${width} ${height}`)
-            .style("width", "100%")
-            .style("height", "450px");
+            .style("width", "100%");
 
         svg.selectAll("*").remove();
 

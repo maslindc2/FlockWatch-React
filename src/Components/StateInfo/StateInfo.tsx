@@ -26,7 +26,7 @@ interface Props {
     stateInfo: IStateInfo;
 }
 
-function formatNumberToLocale(value: Number) {
+function formatNumberToLocale(value: number) {
     return value.toLocaleString();
 }
 
@@ -93,7 +93,8 @@ export default function StateInfo({ stateInfo }: Props) {
                 </h2>
                 <p>Last case reported on {lastUpdatedDateFormatted}</p>
             </section>
-            <section>
+            
+            <section className="state-info-container">
                 <section className="state-outline">
                     <SelectedStateMap
                         stateAbbreviation={stateInfo.stateAbbreviation}

@@ -2,19 +2,25 @@
 import { useQuery } from "@tanstack/react-query";
 import { IAllFlockCases } from "../Components/ChoroplethMap/interfaces/IAllFlockCases";
 
-let flockCasesURL: string;
+const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
-async function fetchFlockCases(): Promise<{ data: IAllFlockCases[] }> {
-  const res = await fetch(flockCasesURL);
+async function fetchFlockCases(url: string): Promise<{ data: IAllFlockCases[] }> {
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch flock cases");
   return res.json();
 }
 
-export function useFlockCases(flockWatchURL: string) {
-  flockCasesURL = flockWatchURL + "/flock-cases"
+async function fetchFlockCasesLocal() {
+  const data = await import("../../data/flock-data.json");
+  return data.default;
+}
 
+export function useFlockCases(flockWatchServerURL: string) {
+  const url = `${flockWatchServerURL}/flock-cases`
+  //@ts-ignore
   return useQuery({
     queryKey: ["flockCases"],
-    queryFn: fetchFlockCases,
+    queryFn: () =>
+      useLocal ? fetchFlockCasesLocal() : fetchFlockCases(url),
   });
 }

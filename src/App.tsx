@@ -11,42 +11,40 @@ import createHomeInfoTiles from "./Components/InfoTiles/CreateHomeInfoTiles";
 import { useFlockCases } from "./Hooks/useFlockCases.js";
 import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
 import formatDateForUser from "./Utils/dateFormatter";
+import { useQueries } from "@tanstack/react-query";
 
-const flockWatchServerURL =
+const flockWatchServerURL = 
     import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:3000/data";
 
 function App() {
-    const flockData = allFlockCases.data;
-    const lastUpdated = allFlockCases.metadata.lastScrapedDate;
-    const usSummaryData = usSummary.data;
 
     const [selectedState, setState] = useState();
 
-    //const {
-    //    isPending: isUsSummaryPending,
-    //    error: usSummaryError,
-    //    data: usSummaryDataFromAPI,
-    //} = useUsSummaryData(flockWatchServerURL);
+    const {
+        isPending: isUsSummaryPending,
+        error: usSummaryError,
+        data: usSummaryDataFromAPI,
+    } = useUsSummaryData(flockWatchServerURL);
 
-    //const {
-    //    isPending: isFlockCasesPending,
-    //    error: flockCasesError,
-    //    data: flockDataFromAPI,
-    //} = useFlockCases(flockWatchServerURL);
+    const {
+        isPending: isFlockCasesPending,
+        error: flockCasesError,
+        data: flockDataFromAPI,
+    } = useFlockCases(flockWatchServerURL);
 
-    //if (isUsSummaryPending || isFlockCasesPending) return "...Loading";
-    //if (usSummaryError || flockCasesError) {
-    //    console.log(usSummaryError);
-    //    console.log(flockCasesError);
-    //    return "An error has occurred!";
-    //}
-
-    //const flockData = flockDataFromAPI.data;
-    //const usSummaryData = usSummaryDataFromAPI.data;
-    //const lastUpdated = usSummaryDataFromAPI.metadata.lastScrapedDate;
+    if (isUsSummaryPending || isFlockCasesPending) return "...Loading";
+    if (usSummaryError || flockCasesError) {
+        console.log(usSummaryError);
+        console.log(flockCasesError);
+        return "An error has occurred!";
+    }
+    const usSummaryData = usSummaryDataFromAPI.data;
+    const lastUpdated = flockDataFromAPI.metadata.lastScrapedDate;
+    const flockData = flockDataFromAPI.data;
 
     const usInfoTiles = createHomeInfoTiles(usSummaryData);
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
+    
     function findSelectedStateStats(
         stateSelected: string,
         interpolatedColor: string

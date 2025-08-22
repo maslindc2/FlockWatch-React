@@ -13,4 +13,11 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "src/**/*.{js,hsx,ts,tsx}",
+    "!src/**/*.d.ts",
+    "!src/**/index.{js,ts,tsx}"
+  ],
+  coverageDirectory: "coverage"
 };

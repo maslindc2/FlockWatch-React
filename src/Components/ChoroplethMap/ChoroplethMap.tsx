@@ -115,7 +115,6 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                     if (abbreviation) {
                         const element = d3.select(event.currentTarget);
                         const originalFill = element.attr("data-original-fill");
-                        console.log(originalFill);
                         stateTrigger(abbreviation, originalFill);
                     }
                 })

@@ -1,11 +1,11 @@
 import InfoTiles from "./InfoTiles";
 
 interface IUSTileData {
-    totalBackyardFlocksNationwide: Number;
-    totalBirdsAffectedNationwide: Number;
-    totalCommercialFlocksNationwide: Number;
-    totalFlocksAffectedNationwide: Number;
-    totalStatesAffected: Number;
+    totalBackyardFlocksNationwide: number;
+    totalBirdsAffectedNationwide: number;
+    totalCommercialFlocksNationwide: number;
+    totalFlocksAffectedNationwide: number;
+    totalStatesAffected: number;
 }
 
 export default function createHomeInfoTiles(tileData: IUSTileData) {

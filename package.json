@@ -9,7 +9,7 @@
         "test": "jest",
         "test:unit": "jest --testPathPattern=tests/unit",
         "test:coverage": "jest --coverage",
-        "lint": "eslint .",
+        "lint": "eslint . --fix",
         "preview": "vite preview",
         "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|tsx|json)\""
     },
