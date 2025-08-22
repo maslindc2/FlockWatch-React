@@ -1,9 +1,7 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
-import InfoTiles from "../../src/Components/InfoTiles/InfoTiles";
-import createHomeInfoTiles from "../../src/Components/InfoTiles/CreateHomeInfoTiles";
+import createHomeInfoTiles from "../../../src/Components/InfoTiles/CreateHomeInfoTiles";
 
-describe("createHomeInfoTiles integration with real InfoTiles", () => {
+describe("createHomeInfoTiles unit test with real InfoTiles", () => {
     it("renders all InfoTiles with correct text and formatting", () => {
         const tileData = {
             totalBackyardFlocksNationwide: 12345,

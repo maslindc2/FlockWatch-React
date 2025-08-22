@@ -1,4 +1,4 @@
-import InfoTiles from "../../src/Components/InfoTiles/InfoTiles";
+import InfoTiles from "../../../src/Components/InfoTiles/InfoTiles";
 import { render } from "@testing-library/react";
 
 describe("InfoTiles Component", () => {

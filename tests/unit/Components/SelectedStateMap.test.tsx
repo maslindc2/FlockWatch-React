@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import * as d3 from "d3";
-import SelectedStateMap from "../../src/Components/SelectedState/SelectedState";
+import SelectedStateMap from "../../../src/Components/SelectedState/SelectedState";
 
 jest.mock(
-    "../../src/Components/ChoroplethMap/utils/state-abbreviation-fips-processing",
+    "../../../src/Components/ChoroplethMap/utils/state-abbreviation-fips-processing",
     () => ({
         stateAbbreviationToFips: {
             WA: "53",
