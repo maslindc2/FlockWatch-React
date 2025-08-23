@@ -22,16 +22,15 @@ async function fetchUsSummary(url: string): Promise<IUsSummaryResponse> {
 }
 
 async function fetchUsSummaryLocal() {
-  const data = await import("../../data/us-summary.json");
-  return data;
+    const data = await import("../../data/us-summary.json");
+    return data;
 }
 
 export function useUsSummaryData(flockWatchServerURL: any) {
-    const url = `${flockWatchServerURL}/us-summary`
+    const url = `${flockWatchServerURL}/us-summary`;
     //@ts-ignore
     return useQuery({
         queryKey: ["usSummaryData"],
-        queryFn: () =>
-        useLocal ? fetchUsSummaryLocal() : fetchUsSummary(url),
+        queryFn: () => (useLocal ? fetchUsSummaryLocal() : fetchUsSummary(url)),
     });
 }
