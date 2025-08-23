@@ -81,19 +81,19 @@ function createInfoTiles(stateInfo: IStateInfo) {
 
 export default function StateInfo({ stateInfo }: Props) {
     const stateInfoTiles = createInfoTiles(stateInfo);
-    const lastUpdatedDateFormatted = formatDateForUser(stateInfo.lastReportedDate);
+    const lastUpdatedDateFormatted = formatDateForUser(
+        stateInfo.lastReportedDate
+    );
     return (
         <>
             <section className="description">
                 <h1 className="state-title">
                     {stateInfo.state} ({stateInfo.stateAbbreviation})
                 </h1>
-                <h2>
-                    Outbreak Information
-                </h2>
+                <h2>Outbreak Information</h2>
                 <p>Last case reported on {lastUpdatedDateFormatted}</p>
             </section>
-            
+
             <section className="state-info-container">
                 <section className="state-outline">
                     <SelectedStateMap

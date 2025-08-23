@@ -1,13 +1,13 @@
 {
     "name": "package.json",
     "private": true,
-    "version": "0.0.2",
+    "version": "0.0.3",
     "type": "module",
     "scripts": {
         "dev": "vite",
         "build": "tsc -b && vite build",
         "test": "jest",
-        "test:unit": "jest --testPathPattern=tests/unit",
+        "test:unit": "jest --testPathPatterns=tests/unit",
         "test:coverage": "jest --coverage",
         "lint": "eslint . --fix",
         "preview": "vite preview",

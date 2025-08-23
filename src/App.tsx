@@ -5,19 +5,18 @@ import { usSummary } from "../data/us-summary.js";
 
 import "./App.css";
 import { useState } from "react";
-import StateInfo from "./Components/StateInfo/StateInfo.js";
-import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap.js";
+import StateInfo from "./Components/StateInfo/StateInfo";
+import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap";
 import createHomeInfoTiles from "./Components/InfoTiles/CreateHomeInfoTiles";
 import { useFlockCases } from "./Hooks/useFlockCases.js";
 import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
 import formatDateForUser from "./Utils/dateFormatter";
 import { useQueries } from "@tanstack/react-query";
 
-const flockWatchServerURL = 
+const flockWatchServerURL =
     import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:3000/data";
 
 function App() {
-
     const [selectedState, setState] = useState();
 
     const {
@@ -44,7 +43,7 @@ function App() {
 
     const usInfoTiles = createHomeInfoTiles(usSummaryData);
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
-    
+
     function findSelectedStateStats(
         stateSelected: string,
         interpolatedColor: string
@@ -95,7 +94,10 @@ function App() {
                 </>
             ) : (
                 <div className="state-window">
-                    <button onClick={closeStateInfo} className="close-button"></button>
+                    <button
+                        onClick={closeStateInfo}
+                        className="close-button"
+                    ></button>
                     <StateInfo stateInfo={selectedState} />
                 </div>
             )}
