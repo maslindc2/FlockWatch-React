@@ -20,15 +20,20 @@ describe("createHomeInfoTiles unit test with real InfoTiles", () => {
         const tiles = screen.getAllByTitle(/.+/);
         expect(tiles).toHaveLength(Object.keys(tileData).length);
 
-        expect(screen.getByText("Backyard Flocks Affected")).toBeInTheDocument();
+        expect(
+            screen.getByText("Backyard Flocks Affected")
+        ).toBeInTheDocument();
         expect(screen.getByText("12,345")).toBeInTheDocument();
-        expect(screen.getByAltText("Backyard Flocks Affected Icon"))
-            .toHaveAttribute("src", "/backyard-flocks2.png");
+        expect(
+            screen.getByAltText("Backyard Flocks Affected Icon")
+        ).toHaveAttribute("src", "/backyard-flocks2.png");
 
         expect(screen.getByText("Birds Affected")).toBeInTheDocument();
         expect(screen.getByText("67,890")).toBeInTheDocument();
-        expect(screen.getByAltText("Birds Affected Icon"))
-            .toHaveAttribute("src", "/birds-affected.png");
+        expect(screen.getByAltText("Birds Affected Icon")).toHaveAttribute(
+            "src",
+            "/birds-affected.png"
+        );
     });
 
     it("logs error and skips unexpected keys", () => {

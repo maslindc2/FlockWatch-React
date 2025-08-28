@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import StateInfo from "../../../src/Components/StateInfo/StateInfo";
 import formatDateForUser from "../../../src/Utils/dateFormatter";
-import {vi} from "vitest";
+import { vi } from "vitest";
 import "@testing-library/jest-dom";
 
 // Mock the Selected State as we already have tests for that

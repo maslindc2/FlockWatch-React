@@ -15,9 +15,7 @@ interface IFlockRecord {
 
 const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
-async function fetchFlockCases(
-    url: string
-): Promise<{ data: IFlockRecord[] }> {
+async function fetchFlockCases(url: string): Promise<{ data: IFlockRecord[] }> {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch flock cases");
     return res.json();
