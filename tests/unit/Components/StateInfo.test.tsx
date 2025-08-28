@@ -1,9 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import StateInfo from "../../../src/Components/StateInfo/StateInfo";
 import formatDateForUser from "../../../src/Utils/dateFormatter";
+import {vi} from "vitest";
+import "@testing-library/jest-dom";
 
 // Mock the Selected State as we already have tests for that
-jest.mock("../../../src/Components/SelectedState/SelectedState", () => ({
+vi.mock("../../../src/Components/SelectedState/SelectedState", () => ({
     __esModule: true,
     default: ({ stateAbbreviation, stateName, stateColor }: any) => (
         <div data-testid="selected-state-map">
@@ -13,7 +15,7 @@ jest.mock("../../../src/Components/SelectedState/SelectedState", () => ({
 }));
 
 // Mock the InfoTiles components as we already have tests for that
-jest.mock("../../../src/Components/InfoTiles/InfoTiles", () => ({
+vi.mock("../../../src/Components/InfoTiles/InfoTiles", () => ({
     __esModule: true,
     default: ({ id, title, amount, icon, bgColor }: any) => (
         <div data-testid={`info-tile-${id}`}>
@@ -23,7 +25,7 @@ jest.mock("../../../src/Components/InfoTiles/InfoTiles", () => ({
 }));
 
 // Mock the dateFormatter as we have tests for it already
-jest.mock("../../../src/Utils/dateFormatter");
+vi.mock("../../../src/Utils/dateFormatter");
 
 describe("StateInfo", () => {
     

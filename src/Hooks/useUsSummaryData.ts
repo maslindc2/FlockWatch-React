@@ -27,7 +27,7 @@ async function fetchUsSummaryLocal() {
 }
 
 export function useUsSummaryData(flockWatchServerURL: any) {
-    const url = `${flockWatchServerURL}/us-summary`;
+    const url = `${flockWatchServerURL}/data/us-summary`;
     //@ts-ignore
     return useQuery({
         queryKey: ["usSummaryData"],
