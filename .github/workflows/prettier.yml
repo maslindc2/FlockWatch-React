@@ -21,4 +21,4 @@ jobs:
         uses: creyD/prettier_action@v4.3
         with:
           # This part is also where you can pass other options, for example:
-          prettier_options: '--write --write --tab-width 4 --semi --trailing-comma es5 --bracket-spacing **/*.{js,ts,json}'
+          prettier_options: '--write --write --tab-width 4 --semi --trailing-comma es5 --bracket-spacing **/*.{tsx,ts,css,js,json}'

@@ -28,7 +28,6 @@ vi.mock("../../../src/Components/InfoTiles/InfoTiles", () => ({
 vi.mock("../../../src/Utils/dateFormatter");
 
 describe("StateInfo", () => {
-    
     // Create our mock state info based on the Washington State flock info
     const mockStateInfo = {
         backyardFlocks: "52",
@@ -51,7 +50,10 @@ describe("StateInfo", () => {
     it("should contain the state title and abbreviation when the component is rendered", () => {
         render(<StateInfo stateInfo={mockStateInfo} />);
         expect(
-            screen.getByRole("heading", { level: 1, name: /Washington \(WA\)/i })
+            screen.getByRole("heading", {
+                level: 1,
+                name: /Washington \(WA\)/i,
+            })
         ).toBeInTheDocument();
     });
 
@@ -60,7 +62,9 @@ describe("StateInfo", () => {
         expect(
             screen.getByText("Last case reported on 02/10/2025")
         ).toBeInTheDocument();
-        expect(formatDateForUser).toHaveBeenCalledWith("2025-02-10T00:00:00.000Z");
+        expect(formatDateForUser).toHaveBeenCalledWith(
+            "2025-02-10T00:00:00.000Z"
+        );
     });
 
     it("should render the mocked state info and SelectedStateMap should have the text content when the StateInfo is rendered", () => {
