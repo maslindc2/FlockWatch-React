@@ -1,5 +1,6 @@
 import InfoTiles from "../../../src/Components/InfoTiles/InfoTiles";
 import { render } from "@testing-library/react";
+import "@testing-library/jest-dom";
 
 describe("InfoTiles Component", () => {
     let infoTileRoot: HTMLElement;

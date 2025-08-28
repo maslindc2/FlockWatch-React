@@ -1,8 +1,11 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { vi } from "vitest";
 import * as d3 from "d3";
+import * as topojson from "topojson-client";
 import SelectedStateMap from "../../../src/Components/SelectedState/SelectedState";
 
-jest.mock(
+vi.mock(
     "../../../src/Components/ChoroplethMap/utils/state-abbreviation-fips-processing",
     () => ({
         stateAbbreviationToFips: {
@@ -13,34 +16,34 @@ jest.mock(
     })
 );
 
-jest.mock("topojson-client", () => ({
-    feature: jest.fn((_us: any, _obj: any) => ({
+vi.mock("topojson-client", () => ({
+    feature: vi.fn((_us: any, _obj: any) => ({
         features: [{ id: "53", geometry: {} }], // matches WA mapping
     })),
 }));
 
-jest.mock("d3", () => {
+vi.mock("d3", () => {
     return {
-        json: jest.fn(),
-        select: jest.fn((el) => ({
-            attr: jest.fn(function (name, value) {
+        json: vi.fn(),
+        select: vi.fn((el) => ({
+            attr: vi.fn(function (name, value) {
                 if (value !== undefined) {
                     el.setAttribute(name, value);
                     return this;
                 }
                 return el.getAttribute(name);
             }),
-            style: jest.fn().mockReturnThis(),
-            selectAll: jest.fn(() => ({ remove: jest.fn() })),
-            append: jest.fn((tag) => {
+            style: vi.fn().mockReturnThis(),
+            selectAll: vi.fn(() => ({ remove: vi.fn() })),
+            append: vi.fn((tag) => {
                 const element = document.createElementNS(
                     "http://www.w3.org/2000/svg",
                     tag
                 );
                 el.appendChild(element);
                 return {
-                    datum: jest.fn().mockReturnThis(),
-                    attr: jest.fn(function (name, value) {
+                    datum: vi.fn().mockReturnThis(),
+                    attr: vi.fn(function (name, value) {
                         if (value !== undefined) {
                             element.setAttribute(name, value);
                             return this;
@@ -50,11 +53,11 @@ jest.mock("d3", () => {
                 };
             }),
         })),
-        geoMercator: jest.fn(() => ({
-            fitSize: jest.fn().mockReturnThis(),
+        geoMercator: vi.fn(() => ({
+            fitSize: vi.fn().mockReturnThis(),
         })),
-        geoPath: jest.fn(() => ({
-            projection: jest.fn().mockReturnThis(),
+        geoPath: vi.fn(() => ({
+            projection: vi.fn().mockReturnThis(),
         })),
     };
 });
@@ -83,11 +86,11 @@ const mockTopoJSONNoMatch = {
 
 describe("SelectedStateMap", () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it("renders static title and description", () => {
-        (d3.json as jest.Mock).mockResolvedValue(mockTopoJSON);
+        (d3.json as vi.Mock).mockResolvedValue(mockTopoJSON);
 
         render(
             <SelectedStateMap
@@ -105,7 +108,7 @@ describe("SelectedStateMap", () => {
     });
 
     it("fetches /states-10m.json on mount", async () => {
-        (d3.json as jest.Mock).mockResolvedValue(mockTopoJSON);
+        (d3.json as vi.Mock).mockResolvedValue(mockTopoJSON);
 
         render(
             <SelectedStateMap
@@ -121,7 +124,7 @@ describe("SelectedStateMap", () => {
     });
 
     it("draws a path for the matching state", async () => {
-        (d3.json as jest.Mock).mockResolvedValue(mockTopoJSON);
+        (d3.json as vi.Mock).mockResolvedValue(mockTopoJSON);
 
         render(
             <SelectedStateMap
@@ -140,13 +143,11 @@ describe("SelectedStateMap", () => {
     });
 
     it("renders no path when state is not found", async () => {
-        // change topojson mock for this test only
-        const topojson = require("topojson-client");
-        topojson.feature.mockImplementation(() => ({
+        (topojson.feature as vi.Mock).mockImplementation(() => ({
             features: [{ id: "01", geometry: {} }],
         }));
 
-        (d3.json as jest.Mock).mockResolvedValue(mockTopoJSONNoMatch);
+        (d3.json as vi.Mock).mockResolvedValue(mockTopoJSONNoMatch);
 
         render(
             <SelectedStateMap
@@ -162,7 +163,7 @@ describe("SelectedStateMap", () => {
     });
 
     it("does not crash on null or malformed data", async () => {
-        (d3.json as jest.Mock).mockResolvedValue(null);
+        (d3.json as vi.Mock).mockResolvedValue(null);
 
         render(
             <SelectedStateMap
@@ -179,8 +180,7 @@ describe("SelectedStateMap", () => {
     });
 
     it("uses correct FIPS mapping for given abbreviation", async () => {
-        (d3.json as jest.Mock).mockImplementation(() => {
-            // Dummy check
+        (d3.json as vi.Mock).mockImplementation(() => {
             expect(true).toBe(true);
             return Promise.resolve(mockTopoJSON);
         });

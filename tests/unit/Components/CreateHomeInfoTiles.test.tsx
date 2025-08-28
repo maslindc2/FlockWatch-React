@@ -1,4 +1,6 @@
 import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { vi } from "vitest";
 import createHomeInfoTiles from "../../../src/Components/InfoTiles/CreateHomeInfoTiles";
 
 describe("createHomeInfoTiles unit test with real InfoTiles", () => {
@@ -15,24 +17,17 @@ describe("createHomeInfoTiles unit test with real InfoTiles", () => {
 
         render(<div>{tilesArray}</div>);
 
-        // We expect one tile per key:
-        const tiles = screen.getAllByTitle(/.+/); // all divs with a title attribute
+        const tiles = screen.getAllByTitle(/.+/);
         expect(tiles).toHaveLength(Object.keys(tileData).length);
 
-        // Check specific tile contents
-
-        // 1. By title text
         expect(
             screen.getByText("Backyard Flocks Affected")
         ).toBeInTheDocument();
         expect(screen.getByText("12,345")).toBeInTheDocument();
-
-        // 2. By image alt text with the icon
         expect(
             screen.getByAltText("Backyard Flocks Affected Icon")
         ).toHaveAttribute("src", "/backyard-flocks2.png");
 
-        // 3. Another tile check
         expect(screen.getByText("Birds Affected")).toBeInTheDocument();
         expect(screen.getByText("67,890")).toBeInTheDocument();
         expect(screen.getByAltText("Birds Affected Icon")).toHaveAttribute(
@@ -42,7 +37,7 @@ describe("createHomeInfoTiles unit test with real InfoTiles", () => {
     });
 
     it("logs error and skips unexpected keys", () => {
-        const consoleSpy = jest
+        const consoleSpy = vi
             .spyOn(console, "error")
             .mockImplementation(() => {});
 
@@ -58,7 +53,6 @@ describe("createHomeInfoTiles unit test with real InfoTiles", () => {
             "Unexpected key in tileData: unexpectedKey"
         );
 
-        // Only one tile rendered:
         const tiles = screen.getAllByTitle(/.+/);
         expect(tiles).toHaveLength(1);
 
