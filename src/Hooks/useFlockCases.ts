@@ -20,7 +20,9 @@ interface IFlockRecord {
  * @param flockWatchServerURL This is the base URL for Flock Watch's Node.JS server i.e. https://flockwatch.io/data/flock-cases
  * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
  */
-async function fetchFlockCases(url: string): Promise<{ data: IFlockRecord[] }> {
+async function fetchFlockCases(url: string): Promise<{
+    metadata: any; data: IFlockRecord[] 
+}> {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch flock cases");
     return res.json();

@@ -1,8 +1,3 @@
-//@ts-ignore
-import { allFlockCases } from "../data/all-flocks.js";
-//@ts-ignore
-import { usSummary } from "../data/us-summary.js";
-
 import "./App.css";
 import { useState } from "react";
 import StateInfo from "./Components/StateInfo/StateInfo";
@@ -50,12 +45,14 @@ function App() {
     ) {
         const result = flockData.find(
             (state: { stateAbbreviation: string }) =>
-                state.stateAbbreviation == stateSelected
+                state.stateAbbreviation === stateSelected
         );
-        //@ts-ignore
-        result.color = interpolatedColor;
-        //@ts-ignore
-        setState(result);
+        if (result) {
+            //@ts-ignore
+            result.color = interpolatedColor;
+            //@ts-ignore
+            setState(result);
+        }
     }
 
     function closeStateInfo() {

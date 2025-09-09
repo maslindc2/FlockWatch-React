@@ -5,7 +5,7 @@ import { describe, test, expect, vi, beforeEach } from "vitest";
 import { act, renderHook } from "@testing-library/react";
 import { useUsSummaryData } from "../../../src/Hooks/useUsSummaryData";
 
-describe("testing network", () => {
+describe("useUsSummaryData Hook integration test", () => {
     beforeEach(() => {
         import.meta.env.VITE_USE_LOCAL = false;
     });
@@ -13,8 +13,8 @@ describe("testing network", () => {
         const queryClient = new QueryClient({
             defaultOptions: {
                 queries: {
-                    retry: false,        // don’t retry on error
-                    cacheTime: 0,        // no stale cache between tests
+                    retry: false,
+                    cacheTime: 0,
                 },
             },
         });
@@ -66,8 +66,8 @@ describe("testing network", () => {
         const queryClient = new QueryClient({
             defaultOptions: {
                 queries: {
-                    retry: false,        // don’t retry on error
-                    cacheTime: 0,        // no stale cache between tests
+                    retry: false,
+                    cacheTime: 0,
                 },
             },
         });
@@ -81,9 +81,9 @@ describe("testing network", () => {
         nock("http://flockwatch.io")
             .get("/data/us-summary")
             .delay(500)
-            .reply( 500, {
+            .reply(500, {
                 code: 500,
-                message: "Server ERROR 500"
+                message: "Server ERROR 500",
             });
 
         const { result } = renderHook(
@@ -93,7 +93,9 @@ describe("testing network", () => {
 
         await vi.waitFor(() => {
             expect(result.current.isError).toBe(true);
-            expect(result.current.error?.message).toBe("Failed to fetch US summary");
+            expect(result.current.error?.message).toBe(
+                "Failed to fetch US summary"
+            );
         });
     });
 });

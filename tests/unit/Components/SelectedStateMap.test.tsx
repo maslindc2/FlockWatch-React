@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
 import SelectedStateMap from "../../../src/Components/SelectedState/SelectedState";
