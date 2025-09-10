@@ -207,3 +207,47 @@ section.choropleth-map {
     height: 100%;
     object-fit: contain;
 }
+
+.error-page {
+    display: flex;
+    align-items: center;      
+    justify-content: center;  
+    height: 100vh;            
+    gap: 40px;                
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.error-text {
+    max-width: 500px;
+}
+
+.error-text h1 {
+    font-size: 2.5rem;
+    margin: 0 0 20px 0;
+    color: #333;
+}
+
+.error-text h2 {
+    font-size: 1.25rem;
+    margin: 0 0 15px 0;
+    color: #555;
+}
+
+.error-text h3 {
+    font-size: 1rem;
+    margin: 0;
+    color: #777;
+}
+
+.error-icon img {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+}
+@media (max-width: 768px) {
+    .error-page {
+        flex-direction: column;
+        text-align: center;
+    }
+}
