@@ -73,7 +73,13 @@ describe("App", () => {
         });
 
         render(<App />);
-        expect(screen.getByText("An error has occurred!")).toBeInTheDocument();
+        expect(screen.getByText("So Sorry!")).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                "We ran into some problems getting the page you were looking for"
+            )
+        ).toBeInTheDocument();
+        expect(screen.getByText("Please try again later!")).toBeInTheDocument();
     });
 
     it("renders main dashboard", () => {

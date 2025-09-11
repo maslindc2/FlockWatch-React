@@ -30,7 +30,7 @@ function App() {
     if (usSummaryError || flockCasesError) {
         console.log(usSummaryError);
         console.log(flockCasesError);
-        return <ErrorComponent/>;
+        return <ErrorComponent />;
     }
     const usSummaryData = usSummaryDataFromAPI.data;
     const lastUpdated = flockDataFromAPI.metadata.lastScrapedDate;
