@@ -21,7 +21,8 @@ interface IFlockRecord {
  * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
  */
 async function fetchFlockCases(url: string): Promise<{
-    metadata: any; data: IFlockRecord[] 
+    metadata: any;
+    data: IFlockRecord[];
 }> {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch flock cases");
@@ -33,7 +34,7 @@ async function fetchFlockCases(url: string): Promise<{
  * This function is responsible for returning the data from our JSON files locally during development,
  * this functionality is determined by setting the env var VITE_USE_LOCAL to true
  * VITE_USE_LOCAL = false will run the fetchFlockCases function instead.
- * This function will be ignored by Vitest as it's dev only 
+ * This function will be ignored by Vitest as it's dev only
  * @returns A sample response that directly resembles a response from the Flock Watch Server
  */
 async function fetchFlockCasesLocal() {
@@ -47,7 +48,7 @@ async function fetchFlockCasesLocal() {
  * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
  */
 export function useFlockCases(flockWatchServerURL: string) {
-    const url = `${flockWatchServerURL}/data/flock-cases`;   
+    const url = `${flockWatchServerURL}/data/flock-cases`;
     //@ts-ignore
     return useQuery({
         queryKey: ["flockCases"],
