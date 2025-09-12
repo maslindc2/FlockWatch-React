@@ -6,7 +6,7 @@ import createHomeInfoTiles from "./Components/InfoTiles/CreateHomeInfoTiles";
 import { useFlockCases } from "./Hooks/useFlockCases.js";
 import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
 import formatDateForUser from "./Utils/dateFormatter";
-import { useQueries } from "@tanstack/react-query";
+import ErrorComponent from "./Components/TanStackPages/ErrorComponent";
 
 const flockWatchServerURL =
     import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:3000/data";
@@ -30,7 +30,7 @@ function App() {
     if (usSummaryError || flockCasesError) {
         console.log(usSummaryError);
         console.log(flockCasesError);
-        return "An error has occurred!";
+        return <ErrorComponent />;
     }
     const usSummaryData = usSummaryDataFromAPI.data;
     const lastUpdated = flockDataFromAPI.metadata.lastScrapedDate;
