@@ -210,10 +210,10 @@ section.choropleth-map {
 
 .error-page {
     display: flex;
-    align-items: center;      
-    justify-content: center;  
-    height: 100vh;            
-    gap: 40px;                
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 40px;
     padding: 20px;
     box-sizing: border-box;
 }
