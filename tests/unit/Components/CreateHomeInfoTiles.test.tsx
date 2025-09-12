@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import createHomeInfoTiles from "../../../src/Components/InfoTiles/CreateHomeInfoTiles";
 
 describe("createHomeInfoTiles unit test with real InfoTiles", () => {

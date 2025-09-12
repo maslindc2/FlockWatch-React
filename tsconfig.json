@@ -2,13 +2,13 @@
     "compilerOptions": {
         "target": "ESNext",
         "module": "ESNext",
-        "jsx": "react-jsx", // <---- Add this line
+        "jsx": "react-jsx",
         "moduleResolution": "node",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "types": ["jest", "node"],
+        "types": ["node"],
         "resolveJsonModule": true
     },
     "include": ["src", "tests", "jest.setup.ts"]
