@@ -100,7 +100,7 @@ section.info-tiles {
     padding-bottom: 50px;
 }
 
-.info-tile-title{
+.info-tile-title {
     text-align: center;
     font-weight: 500;
     font-size: 2rem;
@@ -109,7 +109,6 @@ section.info-tiles {
 section.choropleth-map {
     padding-bottom: 50px;
 }
-
 
 .state-title {
     text-align: center;

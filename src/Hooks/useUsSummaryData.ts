@@ -10,14 +10,17 @@ interface IUsSummaryResponse {
             totalCommercialFlocksAffected: number;
             totalFlocksAffected: number;
             totalStatesAffected: number;
-        },
-        periodSummaries: Record<string, {
-            totalBirdsAffected: number;
-            totalFlocksAffected: number;
-            totalBackyardFlocksAffected: number;
-            totalCommercialFlocksAffected: number;
-        }>;
-    }
+        };
+        periodSummaries: Record<
+            string,
+            {
+                totalBirdsAffected: number;
+                totalFlocksAffected: number;
+                totalBackyardFlocksAffected: number;
+                totalCommercialFlocksAffected: number;
+            }
+        >;
+    };
     metadata: {
         lastScrapedDate: string;
     };

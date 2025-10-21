@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { describe, expect, it, vi } from "vitest";
-import createHomeInfoTiles, { IUSTileData } from "../../../src/Components/InfoTiles/CreateInfoTiles";
+import createHomeInfoTiles, {
+    IUSTileData,
+} from "../../../src/Components/InfoTiles/CreateInfoTiles";
 
 describe("createHomeInfoTiles unit test with real InfoTiles", () => {
     it("renders all InfoTiles with correct text and formatting", () => {
