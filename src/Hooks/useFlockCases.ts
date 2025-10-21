@@ -39,7 +39,7 @@ async function fetchFlockCases(url: string): Promise<{
  */
 async function fetchFlockCasesLocal() {
     const data = await import("../../data/flock-data.json");
-    return data.default;
+    return data;
 }
 /* v8 ignore stop -- @preserve*/
 /**

@@ -1,34 +1,34 @@
 import InfoTiles from "./InfoTiles";
 
-interface IUSTileData {
-    totalBackyardFlocksNationwide: number;
-    totalBirdsAffectedNationwide: number;
-    totalCommercialFlocksNationwide: number;
-    totalFlocksAffectedNationwide: number;
-    totalStatesAffected: number;
+export interface IUSTileData {
+    totalBackyardFlocksAffected: number;
+    totalBirdsAffected: number;
+    totalCommercialFlocksAffected: number;
+    totalFlocksAffected: number;
+    totalStatesAffected?: number;
 }
 
-export default function createHomeInfoTiles(tileData: IUSTileData) {
+export default function createInfoTiles(tileData: IUSTileData) {
     const titleMap: Record<keyof IUSTileData, string[]> = {
-        totalBackyardFlocksNationwide: [
+        totalBackyardFlocksAffected: [
             "Backyard Flocks Affected",
             "backyard-flocks",
             "/backyard-flocks2.png",
             "rgba(2, 163, 56, 1)",
         ],
-        totalBirdsAffectedNationwide: [
+        totalBirdsAffected: [
             "Birds Affected",
             "birds-affected",
             "/birds-affected.png",
             "#ef8700ff",
         ],
-        totalCommercialFlocksNationwide: [
+        totalCommercialFlocksAffected: [
             "Commercial Flocks Affected",
             "commercial-flocks",
             "/commercial-flocks.png",
             "rgba(131, 0, 239, 1)",
         ],
-        totalFlocksAffectedNationwide: [
+        totalFlocksAffected: [
             "Total Flocks Affected",
             "total-flocks",
             "/flocks-affected.webp",
@@ -45,8 +45,7 @@ export default function createHomeInfoTiles(tileData: IUSTileData) {
     const infoTilesArr = Object.entries(tileData)
         .map(([key, value], index) => {
             const title = titleMap[key as keyof IUSTileData];
-            if (!title) {
-                console.error(`Unexpected key in tileData: ${key}`);
+            if (!title || value === undefined) {
                 return null;
             }
             return (
