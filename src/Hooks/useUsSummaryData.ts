@@ -4,12 +4,20 @@ const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
 interface IUsSummaryResponse {
     data: {
-        totalBackyardFlocksNationwide: number;
-        totalBirdsAffectedNationwide: number;
-        totalCommercialFlocksNationwide: number;
-        totalFlocksAffectedNationwide: number;
-        totalStatesAffected: number;
-    };
+        allTimeTotals: {
+            totalBackyardFlocksAffected: number;
+            totalBirdsAffected: number;
+            totalCommercialFlocksAffected: number;
+            totalFlocksAffected: number;
+            totalStatesAffected: number;
+        },
+        periodSummaries: Record<string, {
+            totalBirdsAffected: number;
+            totalFlocksAffected: number;
+            totalBackyardFlocksAffected: number;
+            totalCommercialFlocksAffected: number;
+        }>;
+    }
     metadata: {
         lastScrapedDate: string;
     };
@@ -43,7 +51,7 @@ async function fetchUsSummaryLocal() {
  * @param flockWatchServerURL This is the base URL for Flock Watch's Node.JS server i.e. https://flockwatch.io
  * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
  */
-export function useUsSummaryData(flockWatchServerURL: any) {
+export function useUsSummaryData(flockWatchServerURL: string) {
     const url = `${flockWatchServerURL}/data/us-summary`;
     //@ts-ignore
     return useQuery({

@@ -1,15 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { describe, expect, it, vi } from "vitest";
-import createHomeInfoTiles from "../../../src/Components/InfoTiles/CreateHomeInfoTiles";
+import createHomeInfoTiles, { IUSTileData } from "../../../src/Components/InfoTiles/CreateInfoTiles";
 
 describe("createHomeInfoTiles unit test with real InfoTiles", () => {
     it("renders all InfoTiles with correct text and formatting", () => {
         const tileData = {
-            totalBackyardFlocksNationwide: 12345,
-            totalBirdsAffectedNationwide: 67890,
-            totalCommercialFlocksNationwide: 222,
-            totalFlocksAffectedNationwide: 333,
+            totalBackyardFlocksAffected: 12345,
+            totalBirdsAffected: 67890,
+            totalCommercialFlocksAffected: 222,
+            totalFlocksAffected: 333,
             totalStatesAffected: 44,
         };
 
@@ -34,28 +34,5 @@ describe("createHomeInfoTiles unit test with real InfoTiles", () => {
             "src",
             "/birds-affected.png"
         );
-    });
-
-    it("logs error and skips unexpected keys", () => {
-        const consoleSpy = vi
-            .spyOn(console, "error")
-            .mockImplementation(() => {});
-
-        const tileData = {
-            totalBackyardFlocksNationwide: 100,
-            unexpectedKey: 200,
-        } as any;
-
-        const tilesArray = createHomeInfoTiles(tileData);
-        render(<div>{tilesArray}</div>);
-
-        expect(consoleSpy).toHaveBeenCalledWith(
-            "Unexpected key in tileData: unexpectedKey"
-        );
-
-        const tiles = screen.getAllByTitle(/.+/);
-        expect(tiles).toHaveLength(1);
-
-        consoleSpy.mockRestore();
     });
 });

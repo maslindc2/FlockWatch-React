@@ -37,16 +37,22 @@ vi.mock("../../../src/Utils/dateFormatter", () => ({
     default: (date: string) => `Formatted(${date})`,
 }));
 
-const mockUsSummary = { data: { flocks: 100, birds: 2000, states: 5 } };
+const mockUsSummary = {
+  data: {
+    allTimeTotals: { flocks: 100, birds: 2000, states: 5 },
+    periodSummaries: { last30Days: { flocks: 10, birds: 200, states: 2 } },
+  },
+};
+
 const mockFlockCases = {
-    metadata: { lastScrapedDate: "2024-12-19T00:00:00.000Z" }, // simpler string
-    data: [
-        {
-            stateAbbreviation: "CA",
-            stateName: "California",
-            birdsAffected: 100,
-        },
-    ],
+  data: [
+    {
+      stateAbbreviation: "CA",
+      stateName: "California",
+      birdsAffected: 100,
+    },
+  ],
+  metadata: { lastScrapedDate: "2024-12-19T00:00:00.000Z" },
 };
 
 describe("App", () => {

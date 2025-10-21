@@ -2,7 +2,7 @@ import "./App.css";
 import { useState } from "react";
 import StateInfo from "./Components/StateInfo/StateInfo";
 import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap";
-import createHomeInfoTiles from "./Components/InfoTiles/CreateHomeInfoTiles";
+import createInfoTiles from "./Components/InfoTiles/CreateInfoTiles";
 import { useFlockCases } from "./Hooks/useFlockCases.js";
 import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
 import formatDateForUser from "./Utils/dateFormatter";
@@ -32,11 +32,15 @@ function App() {
         console.log(flockCasesError);
         return <ErrorComponent />;
     }
-    const usSummaryData = usSummaryDataFromAPI.data;
+    const usSummaryAllTimeTotals = usSummaryDataFromAPI.data.allTimeTotals;
+    const usPeriodSummaries = usSummaryDataFromAPI.data.periodSummaries;
     const lastUpdated = flockDataFromAPI.metadata.lastScrapedDate;
     const flockData = flockDataFromAPI.data;
 
-    const usInfoTiles = createHomeInfoTiles(usSummaryData);
+    const usInfoTiles = createInfoTiles(usSummaryAllTimeTotals);
+
+    const last30Days = createInfoTiles(usPeriodSummaries.last30Days);
+
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
 
     function findSelectedStateStats(
@@ -81,7 +85,17 @@ function App() {
                         </p>
                         <p>Last updated on {lastUpdatedDateFormatted}</p>
                     </section>
-                    <section className="home-info">{usInfoTiles}</section>
+
+                    <section>
+                        <h1 className="info-tile-title">Last 30 Days</h1>
+                        <section className="info-tiles">{last30Days}</section>
+                    </section>
+
+                    <section>
+                        <h1 className="info-tile-title">All Time Totals</h1>
+                        <section className="info-tiles">{usInfoTiles}</section>
+                    </section>
+
                     <section className="choropleth-map">
                         <ChoroplethMap
                             data={flockData}
