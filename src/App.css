@@ -89,15 +89,33 @@ header > h1 {
     font-size: 1.8rem;
 }
 
+.toggle-btn {
+    border: none;
+    background: transparent;
+    color: hsl(0, 0%, 63%);
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2 ease, font-weight 0.2s ease;
+}
+
+.toggle-btn.active {
+    color: #000;
+    font-weight: 500;
+}
+
+.toggle-btn:hover {
+    color: #333;
+}
+
 section.info-tiles {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
     margin-bottom: 25px;
-
     max-width: 750px;
     padding-bottom: 50px;
+    padding-top: 30px;
 }
 
 .info-tile-title {
@@ -257,3 +275,4 @@ section.choropleth-map {
         text-align: center;
     }
 }
+

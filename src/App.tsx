@@ -12,35 +12,48 @@ const flockWatchServerURL =
     import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:3000/data";
 
 function App() {
-    const [selectedState, setState] = useState();
+    // Used for displaying specific states statistics
+    const [selectedState, setSelectedState] = useState();
+    // Used for toggling between the two stat modes "Last 30 Days" and "All Time Totals"
+    // Default is Last 30 Days
+    const [selectedStat, setSelectedStat] = useState("30days");
 
+    // Fetch data using our useUsSummaryData with the server URL
     const {
         isPending: isUsSummaryPending,
         error: usSummaryError,
         data: usSummaryDataFromAPI,
     } = useUsSummaryData(flockWatchServerURL);
-
+    
+    // Fetch data using our useFlockCases with the server URL
     const {
         isPending: isFlockCasesPending,
         error: flockCasesError,
         data: flockDataFromAPI,
     } = useFlockCases(flockWatchServerURL);
 
+    // If we are currently loading data render the loading data component
     if (isUsSummaryPending || isFlockCasesPending) return "...Loading";
+    // If we encountered an error log the error that occurred
     if (usSummaryError || flockCasesError) {
         console.log(usSummaryError);
         console.log(flockCasesError);
         return <ErrorComponent />;
     }
+
+    // Store the all time totals
     const usSummaryAllTimeTotals = usSummaryDataFromAPI.data.allTimeTotals;
+    // Store the period summaries for the US
     const usPeriodSummaries = usSummaryDataFromAPI.data.periodSummaries;
+    // Store the last update date
     const lastUpdated = flockDataFromAPI.metadata.lastScrapedDate;
+    // Store the flock data
     const flockData = flockDataFromAPI.data;
-
+    // Create info tiles using the us summary all time totals
     const usInfoTiles = createInfoTiles(usSummaryAllTimeTotals);
-
+    // Create info tiles using the last 30 days data
     const last30Days = createInfoTiles(usPeriodSummaries.last30Days);
-
+    // Format the last updated date
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
 
     function findSelectedStateStats(
@@ -60,7 +73,7 @@ function App() {
     }
 
     function closeStateInfo() {
-        setState(undefined);
+        setSelectedState(undefined);
     }
 
     return (
@@ -73,27 +86,30 @@ function App() {
                         alt="Flock Watch Logo"
                     ></img>
                 </div>
+                <p>Last updated on {lastUpdatedDateFormatted}</p>
             </header>
 
             {!selectedState ? (
-                <>
-                    <section className="description">
-                        <p>
-                            Track avian influenza across the U.S. View current
-                            stats on affected flocks, birds, and states whether
-                            backyard or commercial all in one simple dashboard.
-                        </p>
-                        <p>Last updated on {lastUpdatedDateFormatted}</p>
-                    </section>
-
+                <>  
                     <section>
-                        <h1 className="info-tile-title">Last 30 Days</h1>
-                        <section className="info-tiles">{last30Days}</section>
-                    </section>
+                        <button
+                            className={selectedStat === "30days" ? "toggle-btn active" : "toggle-btn"}
+                            onClick={() => setSelectedStat("30days")}
+                        >
+                            Last 30 Days
+                        </button>
 
-                    <section>
-                        <h1 className="info-tile-title">All Time Totals</h1>
-                        <section className="info-tiles">{usInfoTiles}</section>
+                        <button
+                            className={selectedStat === "alltime" ? "toggle-btn active" : "toggle-btn"}
+                            onClick={() => setSelectedStat("alltime")}
+                        >
+                            All Time Totals
+                        </button>
+                        {selectedStat === "30days" ? (
+                            <section className="info-tiles">{last30Days}</section>
+                        ): (
+                            <section className="info-tiles">{usInfoTiles}</section>
+                        )}
                     </section>
 
                     <section className="choropleth-map">
