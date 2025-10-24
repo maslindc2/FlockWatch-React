@@ -102,7 +102,7 @@ export default function StateInfo({ stateInfo }: Props) {
                         stateColor={stateInfo.color}
                     />
                 </section>
-                <section className="home-info">{stateInfoTiles}</section>
+                <section>{stateInfoTiles}</section>
             </section>
         </>
     );

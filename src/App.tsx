@@ -43,6 +43,7 @@ function App() {
 
     // Store the all time totals
     const usSummaryAllTimeTotals = usSummaryDataFromAPI.data.allTimeTotals;
+    console.log(usSummaryAllTimeTotals)
     // Store the period summaries for the US
     const usPeriodSummaries = usSummaryDataFromAPI.data.periodSummaries;
     // Store the last update date
@@ -68,7 +69,7 @@ function App() {
             //@ts-ignore
             result.color = interpolatedColor;
             //@ts-ignore
-            setState(result);
+            setSelectedState(result);
         }
     }
 
@@ -91,25 +92,25 @@ function App() {
 
             {!selectedState ? (
                 <>  
-                    <section>
-                        <button
+                    <section className="stats-section">
+                        <div className="toggle-container">
+                            <button
                             className={selectedStat === "30days" ? "toggle-btn active" : "toggle-btn"}
                             onClick={() => setSelectedStat("30days")}
-                        >
-                            Last 30 Days
-                        </button>
+                            aria-label="Avian Influenza statistics for the last thirty days in the united states"
+                            >
+                                Last 30 Days
+                            </button>
 
-                        <button
-                            className={selectedStat === "alltime" ? "toggle-btn active" : "toggle-btn"}
-                            onClick={() => setSelectedStat("alltime")}
-                        >
-                            All Time Totals
-                        </button>
-                        {selectedStat === "30days" ? (
-                            <section className="info-tiles">{last30Days}</section>
-                        ): (
-                            <section className="info-tiles">{usInfoTiles}</section>
-                        )}
+                            <button
+                                className={selectedStat === "alltime" ? "toggle-btn active" : "toggle-btn"}
+                                onClick={() => setSelectedStat("alltime")}
+                                aria-label="Avian Influenza statistics for all time in the united states"
+                            >
+                                All Time Totals
+                            </button>
+                        </div>
+                        <section className="info-tiles">{selectedStat === "30days" ? last30Days : usInfoTiles}</section>
                     </section>
 
                     <section className="choropleth-map">
