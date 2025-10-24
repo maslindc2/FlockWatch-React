@@ -103,8 +103,8 @@ function App() {
                             </button>
 
                             <button
-                                className={selectedStat === "alltime" ? "toggle-btn active" : "toggle-btn"}
-                                onClick={() => setSelectedStat("alltime")}
+                                className={selectedStat === "allTime" ? "toggle-btn active" : "toggle-btn"}
+                                onClick={() => setSelectedStat("allTime")}
                                 aria-label="Avian Influenza statistics for all time in the united states"
                             >
                                 All Time Totals
