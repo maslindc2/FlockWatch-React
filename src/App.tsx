@@ -112,7 +112,10 @@ function App() {
                         </div>
                         <section className="info-tiles">{selectedStat === "30days" ? last30Days : usInfoTiles}</section>
                     </section>
-
+                    <section>
+                        <h3>Select a state on the map or from the dropdown to see its latest stats.</h3>
+                        
+                    </section>
                     <section className="choropleth-map">
                         <ChoroplethMap
                             data={flockData}
