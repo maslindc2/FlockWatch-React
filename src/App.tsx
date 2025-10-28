@@ -7,13 +7,19 @@ import { useFlockCases } from "./Hooks/useFlockCases.js";
 import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
 import formatDateForUser from "./Utils/dateFormatter";
 import ErrorComponent from "./Components/TanStackPages/ErrorComponent";
+import * as d3 from "d3";
+import StateDropdown from "./Components/StateDropdown/StateDropdown";
 
 const flockWatchServerURL =
     import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:3000/data";
 
 function App() {
     // Used for displaying specific states statistics
-    const [selectedState, setSelectedState] = useState();
+    const [selectedState, setSelectedState] = useState<{
+        abbreviation: string;
+        color: string;
+    } | null>(null);
+
     // Used for toggling between the two stat modes "Last 30 Days" and "All Time Totals"
     // Default is Last 30 Days
     const [selectedStat, setSelectedStat] = useState("30days");
@@ -43,7 +49,7 @@ function App() {
 
     // Store the all time totals
     const usSummaryAllTimeTotals = usSummaryDataFromAPI.data.allTimeTotals;
-    console.log(usSummaryAllTimeTotals)
+
     // Store the period summaries for the US
     const usPeriodSummaries = usSummaryDataFromAPI.data.periodSummaries;
     // Store the last update date
@@ -57,15 +63,27 @@ function App() {
     // Format the last updated date
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
 
+    function findSelectedStateColor(birdsAffectedInState: number) {
+        // For determining the color needed for the State Info component we need to first determine the color of the state
+        // that is found on the Choropleth Map
+        const maxNumBirdsAffected = d3.max(flockData, (state) => state.birdsAffected) ?? 1;
+        const color = d3
+                    .scaleLinear<string>()
+                    .domain([0, maxNumBirdsAffected / 8, maxNumBirdsAffected])
+                    .range(["#ffffffff", "#94d190ff", "#006400"]);
+        return color(birdsAffectedInState)
+    }
+    
     function findSelectedStateStats(
-        stateSelected: string,
-        interpolatedColor: string
+        stateSelected: string
     ) {
+        console.log(stateSelected)
         const result = flockData.find(
             (state: { stateAbbreviation: string }) =>
                 state.stateAbbreviation === stateSelected
         );
         if (result) {
+            const interpolatedColor = findSelectedStateColor(result.birdsAffected);
             //@ts-ignore
             result.color = interpolatedColor;
             //@ts-ignore
@@ -112,9 +130,8 @@ function App() {
                         </div>
                         <section className="info-tiles">{selectedStat === "30days" ? last30Days : usInfoTiles}</section>
                     </section>
-                    <section>
-                        <h3>Select a state on the map or from the dropdown to see its latest stats.</h3>
-                        
+                    <section className="state-dropdown">
+                        <StateDropdown onSelect={findSelectedStateStats}/>
                     </section>
                     <section className="choropleth-map">
                         <ChoroplethMap

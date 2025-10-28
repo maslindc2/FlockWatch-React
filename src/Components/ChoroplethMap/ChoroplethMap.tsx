@@ -6,18 +6,19 @@ import type { Feature, Geometry } from "geojson";
 import type { IAllFlockCases } from "./interfaces/IAllFlockCases";
 import {
     stateAbbreviationToFips,
-    fipsToAbbreviation,
+    fipsToStateAbbreviation,
 } from "./utils/state-abbreviation-fips-processing";
 
 // Specifying we are expecting a prop containing a structure IAllFlockCases
 interface Props {
     data: IAllFlockCases[];
+    stateTrigger: (abbreviation: string) => void;
 }
 
 // Defining the data type state feature which should use the d3 feature and a key that's of type string
 type StateFeature = Feature<Geometry, { [key: string]: any }>;
 
-const labelOffsets = {
+const labelOffsets: Record<string, [number, number]> = {
     "09": [25, 25], // CT
     "10": [80, 20], // DE
     "24": [60, 20], // MD
@@ -42,7 +43,6 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("preserveAspectRatio", "xMidYMid meet")
             .style("width", "100%")
-            .style("height", "500px");
 
         // Clear previous content so it redraws cleanly if the data changes
         svg.selectAll("*").remove();
@@ -58,16 +58,19 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 const fips = stateAbbreviationToFips[d.stateAbbreviation];
                 if (fips) birdsAffectedMap.set(fips, d.birdsAffected);
             });
+
             // Set up projection and path using geoAlbersUsa
             const projection = d3
                 .geoAlbersUsa()
                 .scale(1300)
                 .translate([width / 2, height / 2]);
+            
             // Converts GeoJSON shapes into SVG d strings
             const path = d3.geoPath().projection(projection);
 
             // Set up color scale
             const maxAffected = d3.max(data, (d) => d.birdsAffected) ?? 1;
+
             // Here we can specify the color to use for the data 0=white, max is the darkest color we are interpolating
             // Adjusting how much to modify the scale as some states were hit harder than others and it's impossible to see that in the map
             const color = d3
@@ -110,12 +113,10 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .on("click", (event, d: StateFeature) => {
                     // When a state is clicked we find what state was clicked and then use this to display that state's particular stats
                     const fips = d.id;
-                    const abbreviation = fipsToAbbreviation[fips!];
+                    const abbreviation = fipsToStateAbbreviation[fips!];
                     // If there was an abbreviation found then we trigger our state to display the state info component
                     if (abbreviation) {
-                        const element = d3.select(event.currentTarget);
-                        const originalFill = element.attr("data-original-fill");
-                        stateTrigger(abbreviation, originalFill);
+                        stateTrigger(abbreviation);
                     }
                 })
                 .attr("stroke", "hsla(0, 0%, 21%, 1.00)") // This is the border line between states
@@ -144,7 +145,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                         ? `translate(${centroid[0] + offset[0]}, ${centroid[1] + offset[1]})`
                         : `translate(${centroid[0]}, ${centroid[1]})`;
                 })
-                .text((d) => fipsToAbbreviation[d.id as string] || "")
+                .text((d) => fipsToStateAbbreviation[d.id as string] || "")
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "20px")

@@ -79,6 +79,15 @@ header > h1 {
     font-size: 2rem;
 }
 
+.state-dropdown {
+    padding-bottom: 40px;
+}
+.state-dropdown > select {
+    width: auto;
+    font-size: 1.1rem;
+    border-radius: 5px;
+}
+
 @media (max-width: 1099px) {
     .stats-sections {
         display: flex;
@@ -106,6 +115,15 @@ header > h1 {
         max-width: 1060px;
         padding-bottom: 50px;
         padding-top: 30px;
+    }
+    .state-dropdown{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin: 1rem 0;
+        padding-bottom: 0px;
     }
 }
 
@@ -172,8 +190,6 @@ header > h1 {
     text-align: center;
     font-size: 1.8rem;
 }
-
-
 
 section.choropleth-map {
     padding-bottom: 50px;

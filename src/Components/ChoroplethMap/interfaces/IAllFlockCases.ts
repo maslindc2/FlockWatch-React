@@ -10,6 +10,6 @@ interface IAllFlockCases {
     totalFlocks: number; // Total number of flocks infected
     latitude: number; // Latitude of state might be used when generating the map
     longitude: number; // Longitude of state might be used when generating the map
-    lastReportedDate: Date; // Date of when the last case was reported
+    lastReportedDate: string; // Date of when the last case was reported
 }
 export type { IAllFlockCases };

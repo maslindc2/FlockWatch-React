@@ -51,8 +51,8 @@ const stateAbbreviationToFips: Record<string, string> = {
     WY: "56",
 };
 
-const fipsToAbbreviation = Object.fromEntries(
+const fipsToStateAbbreviation = Object.fromEntries(
     Object.entries(stateAbbreviationToFips).map(([abbr, fips]) => [fips, abbr])
 );
 
-export { stateAbbreviationToFips, fipsToAbbreviation };
+export { stateAbbreviationToFips, fipsToStateAbbreviation };
