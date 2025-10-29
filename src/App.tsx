@@ -70,7 +70,7 @@ function App() {
         const color = d3
                     .scaleLinear<string>()
                     .domain([0, maxNumBirdsAffected / 8, maxNumBirdsAffected])
-                    .range(["#ffffffff", "#94d190ff", "#006400"]);
+                    .range(["#d0ffc6ff", "#94d190ff", "#006400"]);
         return color(birdsAffectedInState)
     }
     

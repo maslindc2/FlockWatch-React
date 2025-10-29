@@ -35,8 +35,8 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
     // Runs on every render to display the Choropleth Map
     useEffect(() => {
         // Specify the width and height of our view window
-        const width = 960;
-        const height = 600;
+        const width = 980;
+        const height = 780;
         // Create an SVG that will display our Choropleth Map
         const svg = d3
             .select(svgRef.current)
@@ -76,7 +76,65 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             const color = d3
                 .scaleLinear<string>()
                 .domain([0, maxAffected / 8, maxAffected])
-                .range(["#ffffffff", "#94d190ff", "#006400"]);
+                .range(["#defad7ff", "#94d190ff", "#006400"]);
+
+            const legendWidth = 250;
+            const legendHeight = 10;
+            const legendMargin = { top: 40, right: 40, bottom: 0, left: 40 };
+
+            // Create defs for gradient
+            const defs = svg.append("defs");
+            const linearGradient = defs.append("linearGradient")
+                .attr("id", "legend-gradient");
+
+            linearGradient.selectAll("stop")
+                .data([
+                    { offset: "0%", color: "#ffffffff" },
+                    { offset: "50%", color: "#94d190ff" },
+                    { offset: "100%", color: "#006400" }
+                ])
+                .join("stop")
+                .attr("offset", d => d.offset)
+                .attr("stop-color", d => d.color);
+
+            // Create a group for the legend and position it in bottom-right
+            const legendSvg = svg.append("g")
+                .attr("transform", `translate(${legendMargin.left}, ${height - legendMargin.top})`);
+
+            // Draw the legend color bar
+            legendSvg.append("rect")
+                .attr("width", legendWidth)
+                .attr("height", legendHeight)
+                .style("fill", "url(#legend-gradient)")
+                .attr("stroke", "#333")
+                .attr("stroke-width", 0.5);
+
+            // Define scale and axis for the legend
+            const legendScale = d3.scaleLinear()
+                .domain([0, maxAffected])
+                .range([0, legendWidth]);
+
+            const legendAxis = d3.axisBottom(legendScale)
+                .ticks(5)
+                .tickFormat(d3.format(".2s"));
+
+            // Add axis below the color bar
+            legendSvg.append("g")
+                .attr("transform", `translate(0, ${legendHeight})`)
+                .call(legendAxis)
+                .selectAll("text")
+                .style("font-size", "15px")
+                .style("fill", "#000")
+                .select(".domain").remove();
+
+            // Add label centered above the legend
+            legendSvg.append("text")
+                .attr("x", legendWidth / 2)
+                .attr("y", -8)
+                .attr("text-anchor", "middle")
+                .attr("font-size", "15px")
+                .attr("fill", "#000")
+                .text("Birds Affected");
 
             // Draw the state shapes and color them
             svg.append("g")
