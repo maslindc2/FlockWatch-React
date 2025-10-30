@@ -19,14 +19,25 @@ interface Props {
 type StateFeature = Feature<Geometry, { [key: string]: any }>;
 
 const labelOffsets: Record<string, [number, number]> = {
-    "09": [25, 25], // CT
-    "10": [80, 20], // DE
-    "24": [60, 20], // MD
-    "25": [60, -5], // MA
-    "33": [-15, -60], // NH
-    "44": [40, 25], // RI
-    "50": [-30, -40], // VT
+    "21": [0, 4],       // KY ***
+    "15": [-20, 5],     // HI ***
+    "34": [35, 15],     // NJ
+    "22": [-9, 3],      // LA ***
+    "26": [13, 23],     // MI ***
+    "06": [-9, 0],      // CA
+    "09": [25, 25],     // CT
+    "10": [80, 20],     // DE
+    "12": [14, 3],      // FL ***
+    "24": [60, 35],     // MD
+    "25": [60, -5],     // MA
+    "33": [-15, -60],   // NH
+    "44": [40, 25],     // RI
+    "50": [-30, -40],   // VT
 };
+
+// This is prevents d3 from generating lines for these states as they do not need a pointer line.
+// An example of this is Florida which does not line up in the middle of state.
+const excludedStates = new Set(["21", "15", "22", "26", "12"]);
 
 const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
     // Create a ref that will allow us to insert d3 states into to create our US Map
@@ -209,12 +220,15 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .attr("font-size", "20px")
                 .attr("fill", "#000")
                 .attr("pointer-events", "none");
-
+            
+            // This section allows us to offset the state labels and add pointers
+            // Primarily useful for Vermont, New Hampshire, etc.
             svg.append("g")
                 .selectAll("line")
                 .data(
                     states.filter(
-                        (d: { id: string | number }) => labelOffsets[d.id]
+                        (d: { id: string }) => 
+                            labelOffsets[d.id]  && !excludedStates.has(d.id)
                     )
                 )
                 .join("line")
