@@ -5,21 +5,20 @@ const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 interface IUsSummaryResponse {
     data: {
         allTimeTotals: {
-            totalBackyardFlocksAffected: number;
-            totalBirdsAffected: number;
-            totalCommercialFlocksAffected: number;
-            totalFlocksAffected: number;
             totalStatesAffected: number;
+            totalBirdsAffected: number;
+            totalFlocksAffected: number;
+            totalBackyardFlocksAffected: number;
+            totalCommercialFlocksAffected: number;
         };
-        periodSummaries: Record<
-            string,
-            {
+        periodSummaries:{
+            last30Days: {
                 totalBirdsAffected: number;
                 totalFlocksAffected: number;
                 totalBackyardFlocksAffected: number;
                 totalCommercialFlocksAffected: number;
-            }
-        >;
+            }   
+        }
     };
     metadata: {
         lastScrapedDate: string;
@@ -56,7 +55,6 @@ async function fetchUsSummaryLocal() {
  */
 export function useUsSummaryData(flockWatchServerURL: string) {
     const url = `${flockWatchServerURL}/data/us-summary`;
-    //@ts-ignore
     return useQuery({
         queryKey: ["usSummaryData"],
         queryFn: () => (useLocal ? fetchUsSummaryLocal() : fetchUsSummary(url)),

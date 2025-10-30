@@ -10,15 +10,27 @@ import ErrorComponent from "./Components/TanStackPages/ErrorComponent";
 import * as d3 from "d3";
 import StateDropdown from "./Components/StateDropdown/StateDropdown";
 
+interface StateInformation {
+    backyardFlocks: number;
+    birdsAffected: number;
+    color: string;
+    commercialFlocks: number;
+    lastReportedDate: string;
+    latitude: number;
+    longitude: number;
+    state: string;
+    stateAbbreviation: string;
+    totalFlocks: number;
+}
+
 const flockWatchServerURL =
     import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:3000/data";
 
 function App() {
     // Used for displaying specific states statistics
-    const [selectedState, setSelectedState] = useState<{
-        abbreviation: string;
-        color: string;
-    } | null>(null);
+    const [selectedState, setSelectedState] = useState<StateInformation | null>(
+        null
+    );
 
     // Used for toggling between the two stat modes "Last 30 Days" and "All Time Totals"
     // Default is Last 30 Days
@@ -30,7 +42,7 @@ function App() {
         error: usSummaryError,
         data: usSummaryDataFromAPI,
     } = useUsSummaryData(flockWatchServerURL);
-    
+
     // Fetch data using our useFlockCases with the server URL
     const {
         isPending: isFlockCasesPending,
@@ -63,36 +75,30 @@ function App() {
     // Format the last updated date
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
 
-    function findSelectedStateColor(birdsAffectedInState: number) {
+    function findSelectedStateColor(birdsAffectedInState: number): string {
         // For determining the color needed for the State Info component we need to first determine the color of the state
         // that is found on the Choropleth Map
-        const maxNumBirdsAffected = d3.max(flockData, (state) => state.birdsAffected) ?? 1;
+        const maxNumBirdsAffected =
+            d3.max(flockData, (state) => state.birdsAffected) ?? 1;
         const color = d3
-                    .scaleLinear<string>()
-                    .domain([0, maxNumBirdsAffected / 8, maxNumBirdsAffected])
-                    .range(["#d0ffc6ff", "#94d190ff", "#006400"]);
-        return color(birdsAffectedInState)
+            .scaleLinear<string>()
+            .domain([0, maxNumBirdsAffected / 8, maxNumBirdsAffected])
+            .range(["#d0ffc6ff", "#94d190ff", "#006400"]);
+        return color(birdsAffectedInState);
     }
-    
-    function findSelectedStateStats(
-        stateSelected: string
-    ) {
-        console.log(stateSelected)
+
+    function findSetSelectedState(stateSelected: string): void {
         const result = flockData.find(
             (state: { stateAbbreviation: string }) =>
                 state.stateAbbreviation === stateSelected
         );
-        if (result) {
-            const interpolatedColor = findSelectedStateColor(result.birdsAffected);
-            //@ts-ignore
-            result.color = interpolatedColor;
-            //@ts-ignore
-            setSelectedState(result);
-        }
+        if (!result) return;
+        const interpolatedColor = findSelectedStateColor(result.birdsAffected);
+        setSelectedState({ ...result, color: interpolatedColor });
     }
 
-    function closeStateInfo() {
-        setSelectedState(undefined);
+    function closeStateInfo(): void {
+        setSelectedState(null);
     }
 
     return (
@@ -109,34 +115,46 @@ function App() {
             </header>
 
             {!selectedState ? (
-                <>  
+                <>
                     <section className="stats-section">
                         <div className="toggle-container">
                             <button
-                            className={selectedStat === "30days" ? "toggle-btn active" : "toggle-btn"}
-                            onClick={() => setSelectedStat("30days")}
-                            aria-label="Avian Influenza statistics for the last thirty days in the united states"
+                                className={
+                                    selectedStat === "30days"
+                                        ? "toggle-btn active"
+                                        : "toggle-btn"
+                                }
+                                onClick={() => setSelectedStat("30days")}
+                                aria-label="Avian Influenza statistics for the last thirty days in the united states"
                             >
                                 Last 30 Days
                             </button>
 
                             <button
-                                className={selectedStat === "allTime" ? "toggle-btn active" : "toggle-btn"}
+                                className={
+                                    selectedStat === "allTime"
+                                        ? "toggle-btn active"
+                                        : "toggle-btn"
+                                }
                                 onClick={() => setSelectedStat("allTime")}
                                 aria-label="Avian Influenza statistics for all time in the united states"
                             >
                                 All Time Totals
                             </button>
                         </div>
-                        <section className="info-tiles">{selectedStat === "30days" ? last30Days : usInfoTiles}</section>
+                        <section className="info-tiles">
+                            {selectedStat === "30days"
+                                ? last30Days
+                                : usInfoTiles}
+                        </section>
                     </section>
                     <section className="state-dropdown">
-                        <StateDropdown onSelect={findSelectedStateStats}/>
+                        <StateDropdown onSelect={findSetSelectedState} />
                     </section>
                     <section className="choropleth-map">
                         <ChoroplethMap
                             data={flockData}
-                            stateTrigger={findSelectedStateStats}
+                            stateTrigger={findSetSelectedState}
                         />
                     </section>
                 </>

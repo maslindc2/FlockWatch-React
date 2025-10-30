@@ -1,8 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import nock, { restore } from "nock";
+import nock from "nock";
 import { describe, test, expect, vi, beforeEach } from "vitest";
 
-import { act, renderHook } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
 import { useUsSummaryData } from "../../../src/Hooks/useUsSummaryData";
 
 describe("useUsSummaryData Hook integration test", () => {
@@ -29,15 +29,25 @@ describe("useUsSummaryData Hook integration test", () => {
             .get("/data/us-summary")
             .reply(200, {
                 data: {
-                    totalBackyardFlocksNationwide: 922,
-                    totalBirdsAffectedNationwide: 174834748,
-                    totalCommercialFlocksNationwide: 788,
-                    totalFlocksAffectedNationwide: 1710,
-                    totalStatesAffected: 51,
+                    allTimeTotals: {
+                        totalStatesAffected: 51,
+                        totalBirdsAffected: 181750149,
+                        totalFlocksAffected: 1777,
+                        totalBackyardFlocksAffected: 949,
+                        totalCommercialFlocksAffected: 828
+                    },
+                    periodSummaries: {
+                        last30Days: {
+                            totalBirdsAffected: 6340000,
+                            totalFlocksAffected: 49,
+                            totalBackyardFlocksAffected: 20,
+                            totalCommercialFlocksAffected: 29
+                        }
+                    }
                 },
                 metadata: {
-                    lastScrapedDate: "2025-08-19T01:03:32.231Z",
-                },
+                    lastScrapedDate: "2025-10-20T23:32:50.348Z"
+                }
             });
 
         const { result } = renderHook(
@@ -47,19 +57,17 @@ describe("useUsSummaryData Hook integration test", () => {
 
         await vi.waitFor(() => {
             expect(result.current.isSuccess).toBe(true);
-            expect(
-                result.current.data?.data.totalBackyardFlocksNationwide
-            ).toBe(922);
-            expect(result.current.data?.data.totalBirdsAffectedNationwide).toBe(
-                174834748
-            );
-            expect(
-                result.current.data?.data.totalCommercialFlocksNationwide
-            ).toBe(788);
-            expect(
-                result.current.data?.data.totalFlocksAffectedNationwide
-            ).toBe(1710);
-            expect(result.current.data?.data.totalStatesAffected).toBe(51);
+            // Asserting the allTimeTotals 
+            expect(result.current.data?.data.allTimeTotals.totalStatesAffected).toBe(51)
+            expect(result.current.data?.data.allTimeTotals.totalBirdsAffected).toBe(181750149)
+            expect(result.current.data?.data.allTimeTotals.totalFlocksAffected).toBe(1777)
+            expect(result.current.data?.data.allTimeTotals.totalBackyardFlocksAffected).toBe(949)
+            expect(result.current.data?.data.allTimeTotals.totalCommercialFlocksAffected).toBe(828)
+            // Asserting the periodSummaries
+            expect(result.current.data?.data.periodSummaries.last30Days.totalBirdsAffected).toBe(6340000)
+            expect(result.current.data?.data.periodSummaries.last30Days.totalFlocksAffected).toBe(49)
+            expect(result.current.data?.data.periodSummaries.last30Days.totalBackyardFlocksAffected).toBe(20)
+            expect(result.current.data?.data.periodSummaries.last30Days.totalCommercialFlocksAffected).toBe(29)
         });
     });
     test("should throw a Failed to fetch US Summary data when fetch fails", async () => {
@@ -92,7 +100,7 @@ describe("useUsSummaryData Hook integration test", () => {
         );
 
         await vi.waitFor(() => {
-            expect(result.current.isError).toBe(true);
+            expect(result.current.isError).toEqual(true);
             expect(result.current.error?.message).toBe(
                 "Failed to fetch US summary"
             );

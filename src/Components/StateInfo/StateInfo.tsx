@@ -1,17 +1,9 @@
 import SelectedStateMap from "../SelectedState/SelectedState";
 import InfoTiles from "../InfoTiles/InfoTiles";
 import formatDateForUser from "../../Utils/dateFormatter";
+import { IFlockRecord } from "../../Hooks/useFlockCases";
 
-interface IStateInfo {
-    backyardFlocks: string;
-    birdsAffected: string;
-    commercialFlocks: number;
-    lastReportedDate: string;
-    latitude: number;
-    longitude: number;
-    state: string;
-    stateAbbreviation: string;
-    totalFlocks: number;
+interface IStateInfo extends IFlockRecord {
     color: string;
 }
 
