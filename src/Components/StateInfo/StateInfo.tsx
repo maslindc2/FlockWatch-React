@@ -78,6 +78,13 @@ export default function StateInfo({ stateInfo }: Props) {
     );
     return (
         <>
+            <div
+                aria-live="polite"
+                aria-atomic="true"
+                className="visually-hidden"
+            >
+                {`Showing avian influenza data for ${stateInfo.state}`}
+            </div>
             <section className="description">
                 <h1 className="state-title">
                     {stateInfo.state} ({stateInfo.stateAbbreviation})
@@ -96,6 +103,7 @@ export default function StateInfo({ stateInfo }: Props) {
                 </section>
                 <section className="state-info-tiles">{stateInfoTiles}</section>
             </section>
+            
         </>
     );
 }
