@@ -3,7 +3,8 @@ import * as topojson from "topojson-client";
 
 import { useEffect, useRef, type FC } from "react";
 import type { Feature, Geometry } from "geojson";
-import type { IAllFlockCases } from "./interfaces/IAllFlockCases";
+import { FlockRecord } from "../../Hooks/useFlockCases";
+
 import {
     stateAbbreviationToFips,
     fipsToStateAbbreviation,
@@ -11,7 +12,7 @@ import {
 
 // Specifying we are expecting a prop containing a structure IAllFlockCases
 interface Props {
-    data: IAllFlockCases[];
+    data: FlockRecord[];
     stateTrigger: (abbreviation: string) => void;
 }
 
@@ -66,8 +67,8 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             // Map the birdsAffected to the associated FIPS id's for each state
             const birdsAffectedMap = new Map<string, number>();
             data.forEach((d) => {
-                const fips = stateAbbreviationToFips[d.stateAbbreviation];
-                if (fips) birdsAffectedMap.set(fips, d.birdsAffected);
+                const fips = stateAbbreviationToFips[d.state_abbreviation];
+                if (fips) birdsAffectedMap.set(fips, d.birds_affected);
             });
 
             // Set up projection and path using geoAlbersUsa
@@ -80,7 +81,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             const path = d3.geoPath().projection(projection);
 
             // Set up color scale
-            const maxAffected = d3.max(data, (d) => d.birdsAffected) ?? 1;
+            const maxAffected = d3.max(data, (d) => d.birds_affected) ?? 1;
 
             // Here we can specify the color to use for the data 0=white, max is the darkest color we are interpolating
             // Adjusting how much to modify the scale as some states were hit harder than others and it's impossible to see that in the map

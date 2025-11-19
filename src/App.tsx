@@ -3,24 +3,15 @@ import { useState } from "react";
 import StateInfo from "./Components/StateInfo/StateInfo";
 import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap";
 import createInfoTiles from "./Components/InfoTiles/CreateInfoTiles";
-import { useFlockCases } from "./Hooks/useFlockCases.js";
+import { FlockRecord, useFlockCases } from "./Hooks/useFlockCases.js";
 import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
 import formatDateForUser from "./Utils/dateFormatter";
 import ErrorComponent from "./Components/TanStackPages/ErrorComponent";
 import * as d3 from "d3";
 import StateDropdown from "./Components/StateDropdown/StateDropdown";
 
-interface StateInformation {
-    backyardFlocks: number;
-    birdsAffected: number;
+interface StateInformation extends FlockRecord {
     color: string;
-    commercialFlocks: number;
-    lastReportedDate: string;
-    latitude: number;
-    longitude: number;
-    state: string;
-    stateAbbreviation: string;
-    totalFlocks: number;
 }
 
 const flockWatchServerURL =
@@ -60,18 +51,18 @@ function App() {
     }
 
     // Store the all time totals
-    const usSummaryAllTimeTotals = usSummaryDataFromAPI.data.allTimeTotals;
+    const usSummaryAllTimeTotals = usSummaryDataFromAPI.data.all_time_totals;
 
     // Store the period summaries for the US
-    const usPeriodSummaries = usSummaryDataFromAPI.data.periodSummaries;
+    const usPeriodSummaries = usSummaryDataFromAPI.data.period_summaries;
     // Store the last update date
-    const lastUpdated = flockDataFromAPI.metadata.lastScrapedDate;
+    const lastUpdated = flockDataFromAPI.metadata.last_scraped_date;
     // Store the flock data
     const flockData = flockDataFromAPI.data;
     // Create info tiles using the us summary all time totals
     const usInfoTiles = createInfoTiles(usSummaryAllTimeTotals);
     // Create info tiles using the last 30 days data
-    const last30Days = createInfoTiles(usPeriodSummaries.last30Days);
+    const last30Days = createInfoTiles(usPeriodSummaries.last_30_days);
     // Format the last updated date
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
 
@@ -79,7 +70,7 @@ function App() {
         // For determining the color needed for the State Info component we need to first determine the color of the state
         // that is found on the Choropleth Map
         const maxNumBirdsAffected =
-            d3.max(flockData, (state) => state.birdsAffected) ?? 1;
+            d3.max(flockData, (state) => state.birds_affected) ?? 1;
         const color = d3
             .scaleLinear<string>()
             .domain([0, maxNumBirdsAffected / 8, maxNumBirdsAffected])
@@ -89,11 +80,11 @@ function App() {
 
     function findSetSelectedState(stateSelected: string): void {
         const result = flockData.find(
-            (state: { stateAbbreviation: string }) =>
-                state.stateAbbreviation === stateSelected
+            (state: { state_abbreviation: string }) =>
+                state.state_abbreviation === stateSelected
         );
         if (!result) return;
-        const interpolatedColor = findSelectedStateColor(result.birdsAffected);
+        const interpolatedColor = findSelectedStateColor(result.birds_affected);
         setSelectedState({ ...result, color: interpolatedColor });
     }
 

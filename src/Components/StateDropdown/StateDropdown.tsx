@@ -1,207 +1,207 @@
 const states = [
     {
         name: "Alaska",
-        stateAbbreviation: "AK",
+        state_abbreviation: "AK",
     },
     {
         name: "Alabama",
-        stateAbbreviation: "AL",
+        state_abbreviation: "AL",
     },
     {
         name: "Arkansas",
-        stateAbbreviation: "AR",
+        state_abbreviation: "AR",
     },
     {
         name: "Arizona",
-        stateAbbreviation: "AZ",
+        state_abbreviation: "AZ",
     },
     {
         name: "California",
-        stateAbbreviation: "CA",
+        state_abbreviation: "CA",
     },
     {
         name: "Colorado",
-        stateAbbreviation: "CO",
+        state_abbreviation: "CO",
     },
     {
         name: "Connecticut",
-        stateAbbreviation: "CT",
+        state_abbreviation: "CT",
     },
     {
         name: "Delaware",
-        stateAbbreviation: "DE",
+        state_abbreviation: "DE",
     },
     {
         name: "Florida",
-        stateAbbreviation: "FL",
+        state_abbreviation: "FL",
     },
     {
         name: "Georgia",
-        stateAbbreviation: "GA",
+        state_abbreviation: "GA",
     },
     {
         name: "Hawaii",
-        stateAbbreviation: "HI",
+        state_abbreviation: "HI",
     },
     {
         name: "Iowa",
-        stateAbbreviation: "IA",
+        state_abbreviation: "IA",
     },
     {
         name: "Idaho",
-        stateAbbreviation: "ID",
+        state_abbreviation: "ID",
     },
     {
         name: "Illinois",
-        stateAbbreviation: "IL",
+        state_abbreviation: "IL",
     },
     {
         name: "Indiana",
-        stateAbbreviation: "IN",
+        state_abbreviation: "IN",
     },
     {
         name: "Kansas",
-        stateAbbreviation: "KS",
+        state_abbreviation: "KS",
     },
     {
         name: "Kentucky",
-        stateAbbreviation: "KY",
+        state_abbreviation: "KY",
     },
     {
         name: "Louisiana",
-        stateAbbreviation: "LA",
+        state_abbreviation: "LA",
     },
     {
         name: "Massachusetts",
-        stateAbbreviation: "MA",
+        state_abbreviation: "MA",
     },
     {
         name: "Maryland",
-        stateAbbreviation: "MD",
+        state_abbreviation: "MD",
     },
     {
         name: "Maine",
-        stateAbbreviation: "ME",
+        state_abbreviation: "ME",
     },
     {
         name: "Michigan",
-        stateAbbreviation: "MI",
+        state_abbreviation: "MI",
     },
     {
         name: "Minnesota",
-        stateAbbreviation: "MN",
+        state_abbreviation: "MN",
     },
     {
         name: "Missouri",
-        stateAbbreviation: "MO",
+        state_abbreviation: "MO",
     },
     {
         name: "Mississippi",
-        stateAbbreviation: "MS",
+        state_abbreviation: "MS",
     },
     {
         name: "Montana",
-        stateAbbreviation: "MT",
+        state_abbreviation: "MT",
     },
     {
         name: "North Carolina",
-        stateAbbreviation: "NC",
+        state_abbreviation: "NC",
     },
     {
         name: "North Dakota",
-        stateAbbreviation: "ND",
+        state_abbreviation: "ND",
     },
     {
         name: "Nebraska",
-        stateAbbreviation: "NE",
+        state_abbreviation: "NE",
     },
     {
         name: "New Hampshire",
-        stateAbbreviation: "NH",
+        state_abbreviation: "NH",
     },
     {
         name: "New Jersey",
-        stateAbbreviation: "NJ",
+        state_abbreviation: "NJ",
     },
     {
         name: "New Mexico",
-        stateAbbreviation: "NM",
+        state_abbreviation: "NM",
     },
     {
         name: "Nevada",
-        stateAbbreviation: "NV",
+        state_abbreviation: "NV",
     },
     {
         name: "New York",
-        stateAbbreviation: "NY",
+        state_abbreviation: "NY",
     },
     {
         name: "Ohio",
-        stateAbbreviation: "OH",
+        state_abbreviation: "OH",
     },
     {
         name: "Oklahoma",
-        stateAbbreviation: "OK",
+        state_abbreviation: "OK",
     },
     {
         name: "Oregon",
-        stateAbbreviation: "OR",
+        state_abbreviation: "OR",
     },
     {
         name: "Pennsylvania",
-        stateAbbreviation: "PA",
+        state_abbreviation: "PA",
     },
     {
         name: "Puerto Rico",
-        stateAbbreviation: "PR",
+        state_abbreviation: "PR",
     },
     {
         name: "Rhode Island",
-        stateAbbreviation: "RI",
+        state_abbreviation: "RI",
     },
     {
         name: "South Carolina",
-        stateAbbreviation: "SC",
+        state_abbreviation: "SC",
     },
     {
         name: "South Dakota",
-        stateAbbreviation: "SD",
+        state_abbreviation: "SD",
     },
     {
         name: "Tennessee",
-        stateAbbreviation: "TN",
+        state_abbreviation: "TN",
     },
     {
         name: "Texas",
-        stateAbbreviation: "TX",
+        state_abbreviation: "TX",
     },
     {
         name: "Utah",
-        stateAbbreviation: "UT",
+        state_abbreviation: "UT",
     },
     {
         name: "Virginia",
-        stateAbbreviation: "VA",
+        state_abbreviation: "VA",
     },
     {
         name: "Vermont",
-        stateAbbreviation: "VT",
+        state_abbreviation: "VT",
     },
     {
         name: "Washington",
-        stateAbbreviation: "WA",
+        state_abbreviation: "WA",
     },
     {
         name: "Wisconsin",
-        stateAbbreviation: "WI",
+        state_abbreviation: "WI",
     },
     {
         name: "West Virginia",
-        stateAbbreviation: "WV",
+        state_abbreviation: "WV",
     },
     {
         name: "Wyoming",
-        stateAbbreviation: "WY",
+        state_abbreviation: "WY",
     },
 ];
 
@@ -217,8 +217,8 @@ export default function StateDropdown({ onSelect }) {
                 <option value="">Select a State</option>
                 {states.map((state) => (
                     <option
-                        key={state.stateAbbreviation}
-                        value={state.stateAbbreviation}
+                        key={state.state_abbreviation}
+                        value={state.state_abbreviation}
                     >
                         {state.name}
                     </option>

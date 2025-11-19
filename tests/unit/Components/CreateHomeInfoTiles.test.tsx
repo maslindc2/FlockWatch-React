@@ -2,17 +2,17 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { describe, expect, it } from "vitest";
 import createHomeInfoTiles, {
-    IUSTileData,
+    USTileData,
 } from "../../../src/Components/InfoTiles/CreateInfoTiles";
 
 describe("createHomeInfoTiles unit test with real InfoTiles", () => {
     it("renders all InfoTiles with correct text and formatting", () => {
-        const tileData: IUSTileData = {
-            totalBackyardFlocksAffected: 12345,
-            totalBirdsAffected: 67890,
-            totalCommercialFlocksAffected: 222,
-            totalFlocksAffected: 333,
-            totalStatesAffected: 44,
+        const tileData: USTileData = {
+            total_backyard_flocks_affected: 12345,
+            total_birds_affected: 67890,
+            total_commercial_flocks_affected: 222,
+            total_flocks_affected: 333,
+            total_states_affected: 44,
         };
 
         const tilesArray = createHomeInfoTiles(tileData);

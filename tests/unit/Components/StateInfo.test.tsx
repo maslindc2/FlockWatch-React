@@ -32,15 +32,15 @@ vi.mock("../../../src/Utils/dateFormatter");
 describe("StateInfo", () => {
     // Create our mock state info based on the Washington State flock info
     const mockStateInfo = {
-        backyardFlocks: 52,
-        birdsAffected: 2167079,
-        commercialFlocks: 3,
-        lastReportedDate: "2025-02-10T00:00:00.000Z",
+        backyard_flocks: 52,
+        birds_affected: 2167079,
+        commercial_flocks: 3,
+        last_reported_detection: "2025-02-10T00:00:00.000Z",
         latitude: 47.556837171,
         longitude: -122.16233971,
         state: "Washington",
-        stateAbbreviation: "WA",
-        totalFlocks: 55,
+        state_abbreviation: "WA",
+        total_flocks: 55,
         color: "blue",
     };
 

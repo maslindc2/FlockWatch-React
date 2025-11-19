@@ -2,26 +2,26 @@ import { useQuery } from "@tanstack/react-query";
 
 const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
-interface IUsSummaryResponse {
+type USSummaryResponse = {
     data: {
-        allTimeTotals: {
-            totalStatesAffected: number;
-            totalBirdsAffected: number;
-            totalFlocksAffected: number;
-            totalBackyardFlocksAffected: number;
-            totalCommercialFlocksAffected: number;
+        all_time_totals: {
+            total_states_affected: number;
+            total_birds_affected: number;
+            total_flocks_affected: number;
+            total_backyard_flocks_affected: number;
+            total_commercial_flocks_affected: number;
         };
-        periodSummaries:{
-            last30Days: {
-                totalBirdsAffected: number;
-                totalFlocksAffected: number;
-                totalBackyardFlocksAffected: number;
-                totalCommercialFlocksAffected: number;
+        period_summaries:{
+            last_30_days: {
+                total_birds_affected: number;
+                total_flocks_affected: number;
+                total_backyard_flocks_affected: number;
+                total_commercial_flocks_affected: number;
             }   
         }
     };
     metadata: {
-        lastScrapedDate: string;
+        last_scraped_date: string;
     };
 }
 /**
@@ -29,7 +29,7 @@ interface IUsSummaryResponse {
  * @param url This is the full url to the Fetch US Summary path on the Flock Watch Node.js server i.e. https://flockwatch.io/data/us-summary
  * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
  */
-async function fetchUsSummary(url: string): Promise<IUsSummaryResponse> {
+async function fetchUsSummary(url: string): Promise<USSummaryResponse> {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch US summary");
     return res.json();
