@@ -50,6 +50,7 @@ export function useFlockCases(flockWatchServerURL: string) {
     const url = `${flockWatchServerURL}/data/flock-cases`;
     return useQuery({
         queryKey: ["flockCases"],
+        staleTime: 15 * 60 * 1000,
         queryFn: () =>
             useLocal ? fetchFlockCasesLocal() : fetchFlockCases(url),
     });

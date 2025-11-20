@@ -57,6 +57,7 @@ export function useUsSummaryData(flockWatchServerURL: string) {
     const url = `${flockWatchServerURL}/data/us-summary`;
     return useQuery({
         queryKey: ["usSummaryData"],
+        staleTime: 15 * 60 * 1000,
         queryFn: () => (useLocal ? fetchUsSummaryLocal() : fetchUsSummary(url)),
     });
 }
