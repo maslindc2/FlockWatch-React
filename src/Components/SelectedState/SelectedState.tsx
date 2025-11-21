@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import * as topojson from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { FeatureCollection } from "geojson";
-import { stateAbbreviationToFips } from "../ChoroplethMap/utils/state-abbreviation-fips-processing";
+import { stateAbbreviationToFips } from "../../Utils/state-abbreviation-fips-processing";
 
 export interface SelectedStateMapProps {
     stateAbbreviation: string;

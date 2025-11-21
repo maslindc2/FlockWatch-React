@@ -8,7 +8,7 @@ import { FlockRecord } from "../../Hooks/useFlockCases";
 import {
     stateAbbreviationToFips,
     fipsToStateAbbreviation,
-} from "./utils/state-abbreviation-fips-processing";
+} from "../../Utils/state-abbreviation-fips-processing";
 
 // Specifying we are expecting a prop containing a structure IAllFlockCases
 interface Props {

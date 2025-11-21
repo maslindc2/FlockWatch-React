@@ -7,14 +7,14 @@ interface StateInfo extends FlockRecord {
     color: string;
 }
 
-interface StateTiles {
+type StateTiles = {
     backyard_flocks: number;
     birds_affected: number;
     commercial_flocks: number;
     total_flocks: number;
 }
 
-interface Props {
+type Props = {
     stateInfo: StateInfo;
 }
 

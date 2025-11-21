@@ -1,7 +1,7 @@
 import {
     stateAbbreviationToFips,
     fipsToStateAbbreviation,
-} from "../../../src/Components/ChoroplethMap/utils/state-abbreviation-fips-processing";
+} from "../../../src/Utils/state-abbreviation-fips-processing";
 import { describe, expect, test } from "vitest";
 // Unit Testing the object for looking up a State Abbreviation's FIPS Code and going from FIPS to State Abbreviation
 describe("state abbreviation to fips and fips to state abbreviation unit test", () => {
