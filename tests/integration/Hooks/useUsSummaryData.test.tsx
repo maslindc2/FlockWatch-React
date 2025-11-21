@@ -34,20 +34,20 @@ describe("useUsSummaryData Hook integration test", () => {
                         totalBirdsAffected: 181750149,
                         totalFlocksAffected: 1777,
                         totalBackyardFlocksAffected: 949,
-                        totalCommercialFlocksAffected: 828
+                        totalCommercialFlocksAffected: 828,
                     },
                     periodSummaries: {
                         last30Days: {
                             totalBirdsAffected: 6340000,
                             totalFlocksAffected: 49,
                             totalBackyardFlocksAffected: 20,
-                            totalCommercialFlocksAffected: 29
-                        }
-                    }
+                            totalCommercialFlocksAffected: 29,
+                        },
+                    },
                 },
                 metadata: {
-                    lastScrapedDate: "2025-10-20T23:32:50.348Z"
-                }
+                    lastScrapedDate: "2025-10-20T23:32:50.348Z",
+                },
             });
 
         const { result } = renderHook(
@@ -57,17 +57,41 @@ describe("useUsSummaryData Hook integration test", () => {
 
         await vi.waitFor(() => {
             expect(result.current.isSuccess).toBe(true);
-            // Asserting the allTimeTotals 
-            expect(result.current.data?.data.allTimeTotals.totalStatesAffected).toBe(51)
-            expect(result.current.data?.data.allTimeTotals.totalBirdsAffected).toBe(181750149)
-            expect(result.current.data?.data.allTimeTotals.totalFlocksAffected).toBe(1777)
-            expect(result.current.data?.data.allTimeTotals.totalBackyardFlocksAffected).toBe(949)
-            expect(result.current.data?.data.allTimeTotals.totalCommercialFlocksAffected).toBe(828)
+            // Asserting the allTimeTotals
+            expect(
+                result.current.data?.data.allTimeTotals.totalStatesAffected
+            ).toBe(51);
+            expect(
+                result.current.data?.data.allTimeTotals.totalBirdsAffected
+            ).toBe(181750149);
+            expect(
+                result.current.data?.data.allTimeTotals.totalFlocksAffected
+            ).toBe(1777);
+            expect(
+                result.current.data?.data.allTimeTotals
+                    .totalBackyardFlocksAffected
+            ).toBe(949);
+            expect(
+                result.current.data?.data.allTimeTotals
+                    .totalCommercialFlocksAffected
+            ).toBe(828);
             // Asserting the periodSummaries
-            expect(result.current.data?.data.periodSummaries.last30Days.totalBirdsAffected).toBe(6340000)
-            expect(result.current.data?.data.periodSummaries.last30Days.totalFlocksAffected).toBe(49)
-            expect(result.current.data?.data.periodSummaries.last30Days.totalBackyardFlocksAffected).toBe(20)
-            expect(result.current.data?.data.periodSummaries.last30Days.totalCommercialFlocksAffected).toBe(29)
+            expect(
+                result.current.data?.data.periodSummaries.last30Days
+                    .totalBirdsAffected
+            ).toBe(6340000);
+            expect(
+                result.current.data?.data.periodSummaries.last30Days
+                    .totalFlocksAffected
+            ).toBe(49);
+            expect(
+                result.current.data?.data.periodSummaries.last30Days
+                    .totalBackyardFlocksAffected
+            ).toBe(20);
+            expect(
+                result.current.data?.data.periodSummaries.last30Days
+                    .totalCommercialFlocksAffected
+            ).toBe(29);
         });
     });
     test("should throw a Failed to fetch US Summary data when fetch fails", async () => {

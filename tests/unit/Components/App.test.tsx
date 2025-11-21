@@ -44,16 +44,16 @@ const mockUsSummary = {
             total_birds_affected: 183664206,
             total_flocks_affected: 1869,
             total_backyard_flocks_affected: 1000,
-            total_commercial_flocks_affected: 869
+            total_commercial_flocks_affected: 869,
         },
         period_summaries: {
             last_30_days: {
                 total_birds_affected: 1880000,
                 total_flocks_affected: 88,
                 total_backyard_flocks_affected: 50,
-                total_commercial_flocks_affected: 38
-            }
-        }
+                total_commercial_flocks_affected: 38,
+            },
+        },
     },
 };
 

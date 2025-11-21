@@ -9,7 +9,11 @@ import { InfoTileProps } from "../../../src/Components/InfoTiles/InfoTiles";
 // Mock the Selected State as we already have tests for that
 vi.mock("../../../src/Components/SelectedState/SelectedState", () => ({
     __esModule: true,
-    default: ({ stateAbbreviation, stateName, stateColor }: SelectedStateMapProps) => (
+    default: ({
+        stateAbbreviation,
+        stateName,
+        stateColor,
+    }: SelectedStateMapProps) => (
         <div data-testid="selected-state-map">
             {stateAbbreviation}-{stateName}-{stateColor}
         </div>

@@ -12,11 +12,11 @@ type StateTiles = {
     birds_affected: number;
     commercial_flocks: number;
     total_flocks: number;
-}
+};
 
 type Props = {
     stateInfo: StateInfo;
-}
+};
 
 function formatNumberToLocale(value: number) {
     return value.toLocaleString();
@@ -103,7 +103,6 @@ export default function StateInfo({ stateInfo }: Props) {
                 </section>
                 <section className="state-info-tiles">{stateInfoTiles}</section>
             </section>
-            
         </>
     );
 }

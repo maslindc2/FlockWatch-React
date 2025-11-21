@@ -20,20 +20,20 @@ interface Props {
 type StateFeature = Feature<Geometry, { [key: string]: any }>;
 
 const labelOffsets: Record<string, [number, number]> = {
-    "21": [0, 4],       // KY ***
-    "15": [-20, 5],     // HI ***
-    "34": [35, 15],     // NJ
-    "22": [-9, 3],      // LA ***
-    "26": [13, 23],     // MI ***
-    "06": [-9, 0],      // CA
-    "09": [25, 25],     // CT
-    "10": [80, 20],     // DE
-    "12": [14, 3],      // FL ***
-    "24": [60, 35],     // MD
-    "25": [60, -5],     // MA
-    "33": [-15, -60],   // NH
-    "44": [40, 25],     // RI
-    "50": [-30, -40],   // VT
+    "21": [0, 4], // KY ***
+    "15": [-20, 5], // HI ***
+    "34": [35, 15], // NJ
+    "22": [-9, 3], // LA ***
+    "26": [13, 23], // MI ***
+    "06": [-9, 0], // CA
+    "09": [25, 25], // CT
+    "10": [80, 20], // DE
+    "12": [14, 3], // FL ***
+    "24": [60, 35], // MD
+    "25": [60, -5], // MA
+    "33": [-15, -60], // NH
+    "44": [40, 25], // RI
+    "50": [-30, -40], // VT
 };
 
 // This is prevents d3 from generating lines for these states as they do not need a pointer line.
@@ -54,7 +54,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             .select(svgRef.current)
             .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("preserveAspectRatio", "xMidYMid meet")
-            .style("width", "100%")
+            .style("width", "100%");
 
         // Clear previous content so it redraws cleanly if the data changes
         svg.selectAll("*").remove();
@@ -76,7 +76,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .geoAlbersUsa()
                 .scale(1300)
                 .translate([width / 2, height / 2]);
-            
+
             // Converts GeoJSON shapes into SVG d strings
             const path = d3.geoPath().projection(projection);
 
@@ -96,25 +96,32 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
 
             // Create defs for gradient
             const defs = svg.append("defs");
-            const linearGradient = defs.append("linearGradient")
+            const linearGradient = defs
+                .append("linearGradient")
                 .attr("id", "legend-gradient");
 
-            linearGradient.selectAll("stop")
+            linearGradient
+                .selectAll("stop")
                 .data([
                     { offset: "0%", color: "#ffffffff" },
                     { offset: "50%", color: "#94d190ff" },
-                    { offset: "100%", color: "#006400" }
+                    { offset: "100%", color: "#006400" },
                 ])
                 .join("stop")
-                .attr("offset", d => d.offset)
-                .attr("stop-color", d => d.color);
+                .attr("offset", (d) => d.offset)
+                .attr("stop-color", (d) => d.color);
 
             // Create a group for the legend and position it in bottom-right
-            const legendSvg = svg.append("g")
-                .attr("transform", `translate(${legendMargin.left}, ${height - legendMargin.top})`);
+            const legendSvg = svg
+                .append("g")
+                .attr(
+                    "transform",
+                    `translate(${legendMargin.left}, ${height - legendMargin.top})`
+                );
 
             // Draw the legend color bar
-            legendSvg.append("rect")
+            legendSvg
+                .append("rect")
                 .attr("width", legendWidth)
                 .attr("height", legendHeight)
                 .style("fill", "url(#legend-gradient)")
@@ -122,25 +129,30 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .attr("stroke-width", 0.5);
 
             // Define scale and axis for the legend
-            const legendScale = d3.scaleLinear()
+            const legendScale = d3
+                .scaleLinear()
                 .domain([0, maxAffected])
                 .range([0, legendWidth]);
 
-            const legendAxis = d3.axisBottom(legendScale)
+            const legendAxis = d3
+                .axisBottom(legendScale)
                 .ticks(5)
                 .tickFormat(d3.format(".2s"));
 
             // Add axis below the color bar
-            legendSvg.append("g")
+            legendSvg
+                .append("g")
                 .attr("transform", `translate(0, ${legendHeight})`)
                 .call(legendAxis)
                 .selectAll("text")
                 .style("font-size", "15px")
                 .style("fill", "#000")
-                .select(".domain").remove();
+                .select(".domain")
+                .remove();
 
             // Add label centered above the legend
-            legendSvg.append("text")
+            legendSvg
+                .append("text")
                 .attr("x", legendWidth / 2)
                 .attr("y", -8)
                 .attr("text-anchor", "middle")
@@ -221,15 +233,15 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .attr("font-size", "20px")
                 .attr("fill", "#000")
                 .attr("pointer-events", "none");
-            
+
             // This section allows us to offset the state labels and add pointers
             // Primarily useful for Vermont, New Hampshire, etc.
             svg.append("g")
                 .selectAll("line")
                 .data(
                     states.filter(
-                        (d: { id: string }) => 
-                            labelOffsets[d.id]  && !excludedStates.has(d.id)
+                        (d: { id: string }) =>
+                            labelOffsets[d.id] && !excludedStates.has(d.id)
                     )
                 )
                 .join("line")
