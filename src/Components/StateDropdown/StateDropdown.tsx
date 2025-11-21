@@ -152,10 +152,6 @@ const states = [
         state_abbreviation: "PA",
     },
     {
-        name: "Puerto Rico",
-        state_abbreviation: "PR",
-    },
-    {
         name: "Rhode Island",
         state_abbreviation: "RI",
     },
