@@ -3,11 +3,17 @@ import StateInfo from "../../../src/Components/StateInfo/StateInfo";
 import formatDateForUser from "../../../src/Utils/dateFormatter";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom";
+import { SelectedStateMapProps } from "../../../src/Components/SelectedState/SelectedState";
+import { InfoTileProps } from "../../../src/Components/InfoTiles/InfoTiles";
 
 // Mock the Selected State as we already have tests for that
 vi.mock("../../../src/Components/SelectedState/SelectedState", () => ({
     __esModule: true,
-    default: ({ stateAbbreviation, stateName, stateColor }: any) => (
+    default: ({
+        stateAbbreviation,
+        stateName,
+        stateColor,
+    }: SelectedStateMapProps) => (
         <div data-testid="selected-state-map">
             {stateAbbreviation}-{stateName}-{stateColor}
         </div>
@@ -17,7 +23,7 @@ vi.mock("../../../src/Components/SelectedState/SelectedState", () => ({
 // Mock the InfoTiles components as we already have tests for that
 vi.mock("../../../src/Components/InfoTiles/InfoTiles", () => ({
     __esModule: true,
-    default: ({ id, title, amount, icon, bgColor }: any) => (
+    default: ({ id, title, amount, icon, bgColor }: InfoTileProps) => (
         <div data-testid={`info-tile-${id}`}>
             {title}-{amount}-{icon}-{bgColor}
         </div>
@@ -30,21 +36,21 @@ vi.mock("../../../src/Utils/dateFormatter");
 describe("StateInfo", () => {
     // Create our mock state info based on the Washington State flock info
     const mockStateInfo = {
-        backyardFlocks: "52",
-        birdsAffected: "2167079",
-        commercialFlocks: 3,
-        lastReportedDate: "2025-02-10T00:00:00.000Z",
+        backyard_flocks: 52,
+        birds_affected: 2167079,
+        commercial_flocks: 3,
+        last_reported_detection: "2025-02-10T00:00:00.000Z",
         latitude: 47.556837171,
         longitude: -122.16233971,
         state: "Washington",
-        stateAbbreviation: "WA",
-        totalFlocks: 55,
+        state_abbreviation: "WA",
+        total_flocks: 55,
         color: "blue",
     };
 
     // Before each test return the below formatted date
     beforeEach(() => {
-        (formatDateForUser as jest.Mock).mockReturnValue("02/10/2025");
+        vi.mocked(formatDateForUser).mockReturnValue("02/10/2025");
     });
 
     it("should contain the state title and abbreviation when the component is rendered", () => {

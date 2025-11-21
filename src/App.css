@@ -26,6 +26,109 @@ header > h1 {
     font-weight: 500;
 }
 
+.stats-sections {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 20px;
+    justify-content: flex-start;
+    max-width: 1060px;
+    margin: 0 auto 40px;
+    padding-top: 30px;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.toggle-btn {
+    border: none;
+    background: transparent;
+    color: hsl(0, 0%, 63%);
+    font-size: 20px;
+    cursor: pointer;
+    transition:
+        color 0.2 ease,
+        font-weight 0.2s ease;
+}
+
+.toggle-btn.active {
+    color: #000;
+    font-weight: 500;
+}
+
+.toggle-btn:hover {
+    color: #333;
+}
+
+.info-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+    margin-bottom: 25px;
+    max-width: 1060px;
+    padding-bottom: 50px;
+    padding-top: 30px;
+}
+
+.info-tile-title {
+    text-align: center;
+    font-weight: 500;
+    font-size: 2rem;
+}
+
+.state-dropdown {
+    padding-bottom: 40px;
+}
+.state-dropdown > select {
+    width: auto;
+    font-size: 1.1rem;
+    border-radius: 5px;
+}
+
+@media (max-width: 1099px) {
+    .stats-sections {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        gap: 20px;
+        justify-content: center;
+        max-width: 1060px;
+        margin: 0 auto 40px;
+        padding-top: 30px;
+    }
+
+    .toggle-container {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-shrink: 0;
+    }
+    .info-tiles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-bottom: 25px;
+        max-width: 1060px;
+        padding-bottom: 50px;
+        padding-top: 30px;
+    }
+    .state-dropdown {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin: 1rem 0;
+        padding-bottom: 0px;
+    }
+}
+
 .state-window {
     border: 3px solid #0000005c;
     border-radius: 5px;
@@ -84,44 +187,13 @@ header > h1 {
     text-align: center;
 }
 .description > h2 {
-    font-weight: normal;
+    font-weight: 500;
     text-align: center;
     font-size: 1.8rem;
 }
 
-section.info-tiles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-bottom: 25px;
-
-    max-width: 750px;
-    padding-bottom: 50px;
-}
-
-.info-tile-title {
-    text-align: center;
-    font-weight: 500;
-    font-size: 2rem;
-}
-
 section.choropleth-map {
     padding-bottom: 50px;
-}
-
-.state-title {
-    text-align: center;
-    font-weight: 550;
-}
-
-.state-info-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 2rem;
-    padding: 1rem;
 }
 
 .state-outline {
@@ -131,21 +203,32 @@ section.choropleth-map {
     align-items: center;
 }
 
-.state-right-section {
-    flex: 1;
+.state-info-container {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
+    padding: 1rem;
 }
 
-.home-info {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    width: 100%;
-    max-width: 500px;
+.state-info-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 520px;
+}
+
+@media (max-width: 593px) {
+    .state-info-tiles {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-bottom: 25px;
+        max-width: 1060px;
+        padding-bottom: 50px;
+        padding-top: 30px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -158,14 +241,8 @@ section.choropleth-map {
         flex-direction: column;
         align-items: center;
     }
-
     .state-outline {
         order: 2;
-        width: 100%;
-    }
-    .home-info {
-        order: 3;
-        grid-template-columns: 1fr;
         width: 100%;
     }
 }
@@ -256,4 +333,17 @@ section.choropleth-map {
         flex-direction: column;
         text-align: center;
     }
+}
+
+.visually-hidden {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+    padding: 0;
+    margin: 0;
 }

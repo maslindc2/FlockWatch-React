@@ -2,35 +2,34 @@ import { useQuery } from "@tanstack/react-query";
 
 const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
-interface IUsSummaryResponse {
+type USSummaryResponse = {
     data: {
-        allTimeTotals: {
-            totalBackyardFlocksAffected: number;
-            totalBirdsAffected: number;
-            totalCommercialFlocksAffected: number;
-            totalFlocksAffected: number;
-            totalStatesAffected: number;
+        all_time_totals: {
+            total_states_affected: number;
+            total_birds_affected: number;
+            total_flocks_affected: number;
+            total_backyard_flocks_affected: number;
+            total_commercial_flocks_affected: number;
         };
-        periodSummaries: Record<
-            string,
-            {
-                totalBirdsAffected: number;
-                totalFlocksAffected: number;
-                totalBackyardFlocksAffected: number;
-                totalCommercialFlocksAffected: number;
-            }
-        >;
+        period_summaries: {
+            last_30_days: {
+                total_birds_affected: number;
+                total_flocks_affected: number;
+                total_backyard_flocks_affected: number;
+                total_commercial_flocks_affected: number;
+            };
+        };
     };
     metadata: {
-        lastScrapedDate: string;
+        last_scraped_date: string;
     };
-}
+};
 /**
  * This is the TanStack Query hook that we use to make requests, it
  * @param url This is the full url to the Fetch US Summary path on the Flock Watch Node.js server i.e. https://flockwatch.io/data/us-summary
  * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
  */
-async function fetchUsSummary(url: string): Promise<IUsSummaryResponse> {
+async function fetchUsSummary(url: string): Promise<USSummaryResponse> {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch US summary");
     return res.json();
@@ -56,9 +55,9 @@ async function fetchUsSummaryLocal() {
  */
 export function useUsSummaryData(flockWatchServerURL: string) {
     const url = `${flockWatchServerURL}/data/us-summary`;
-    //@ts-ignore
     return useQuery({
         queryKey: ["usSummaryData"],
+        staleTime: 15 * 60 * 1000,
         queryFn: () => (useLocal ? fetchUsSummaryLocal() : fetchUsSummary(url)),
     });
 }

@@ -1,15 +1,23 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
-import { stateAbbreviationToFips } from "../ChoroplethMap/utils/state-abbreviation-fips-processing";
+import type { Topology, GeometryCollection } from "topojson-specification";
+import type { FeatureCollection } from "geojson";
+import { stateAbbreviationToFips } from "../../Utils/state-abbreviation-fips-processing";
 
-interface Props {
+export interface SelectedStateMapProps {
     stateAbbreviation: string;
     stateName: string;
     stateColor: string;
 }
 
-const SelectedStateMap: React.FC<Props> = ({
+interface USATopology extends Topology {
+    objects: {
+        states: GeometryCollection;
+    };
+}
+
+const SelectedStateMap: React.FC<SelectedStateMapProps> = ({
     stateAbbreviation,
     stateName,
     stateColor,
@@ -28,37 +36,31 @@ const SelectedStateMap: React.FC<Props> = ({
 
         svg.selectAll("*").remove();
 
-        // Get the states GeoJSON from TopoJSON
-        d3.json("/states-10m.json").then((usData) => {
-            const us = usData as any;
+        d3.json<USATopology>("/states-10m.json").then((us) => {
+            if (!us?.objects?.states) return;
 
-            if (!us || !us.objects || !us.objects.states) return;
+            const states = topojson.feature(
+                us,
+                us.objects.states as GeometryCollection
+            ) as FeatureCollection;
 
-            const states = (topojson.feature(us, us.objects.states) as any)
-                .features;
-
-            // Filter the selected state
-            const selected = states.find(
-                (d: { id: string }) => d.id === fipsCode
-            );
-
+            // Filter for the selected state
+            const selected = states.features.find((d) => d.id === fipsCode);
             if (!selected) return;
 
-            // Create projection and path for that single state
             const projection = d3
                 .geoMercator()
                 .fitSize([width, height], selected);
             const path = d3.geoPath().projection(projection);
 
-            // Draw the state shape
             svg.append("path")
                 .datum(selected)
-                .attr("d", path as any)
+                .attr("d", path!)
                 .attr("fill", stateColor)
                 .attr("stroke", "#333")
                 .attr("stroke-width", 1.5);
         });
-    }, [fipsCode]);
+    }, [fipsCode, stateColor, stateName]);
 
     return (
         <svg ref={svgRef}>

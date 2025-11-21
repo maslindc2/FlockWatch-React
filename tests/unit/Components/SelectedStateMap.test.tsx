@@ -90,7 +90,7 @@ describe("SelectedStateMap", () => {
     });
 
     it("renders static title and description", () => {
-        (d3.json as vi.Mock).mockResolvedValue(mockTopoJSON);
+        vi.mocked(d3.json).mockResolvedValue(mockTopoJSON);
 
         render(
             <SelectedStateMap

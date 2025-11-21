@@ -1,4 +1,4 @@
-interface InfoTileProps {
+export interface InfoTileProps {
     title: string;
     id: string;
     amount: string;

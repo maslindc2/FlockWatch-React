@@ -3,16 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 
 const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
-interface IFlockRecord {
-    stateAbbreviation: string;
+export interface FlockRecord {
+    state_abbreviation: string;
     state: string;
-    backyardFlocks: number;
-    commercialFlocks: number;
-    birdsAffected: number;
-    totalFlocks: number;
+    backyard_flocks: number;
+    commercial_flocks: number;
+    birds_affected: number;
+    total_flocks: number;
     latitude: number;
     longitude: number;
-    lastReportedDate: string;
+    last_reported_detection: string;
 }
 
 /**
@@ -21,8 +21,7 @@ interface IFlockRecord {
  * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
  */
 async function fetchFlockCases(url: string): Promise<{
-    metadata: any;
-    data: IFlockRecord[];
+    data: FlockRecord[];
 }> {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch flock cases");
@@ -49,9 +48,9 @@ async function fetchFlockCasesLocal() {
  */
 export function useFlockCases(flockWatchServerURL: string) {
     const url = `${flockWatchServerURL}/data/flock-cases`;
-    //@ts-ignore
     return useQuery({
         queryKey: ["flockCases"],
+        staleTime: 15 * 60 * 1000,
         queryFn: () =>
             useLocal ? fetchFlockCasesLocal() : fetchFlockCases(url),
     });

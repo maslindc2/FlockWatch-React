@@ -1,56 +1,48 @@
 import SelectedStateMap from "../SelectedState/SelectedState";
 import InfoTiles from "../InfoTiles/InfoTiles";
 import formatDateForUser from "../../Utils/dateFormatter";
+import { FlockRecord } from "../../Hooks/useFlockCases";
 
-interface IStateInfo {
-    backyardFlocks: string;
-    birdsAffected: string;
-    commercialFlocks: number;
-    lastReportedDate: string;
-    latitude: number;
-    longitude: number;
-    state: string;
-    stateAbbreviation: string;
-    totalFlocks: number;
+interface StateInfo extends FlockRecord {
     color: string;
 }
 
-interface IStateTiles {
-    backyardFlocks: string;
-    birdsAffected: string;
-    commercialFlocks: number;
-    totalFlocks: number;
-}
+type StateTiles = {
+    backyard_flocks: number;
+    birds_affected: number;
+    commercial_flocks: number;
+    total_flocks: number;
+};
 
-interface Props {
-    stateInfo: IStateInfo;
-}
+type Props = {
+    stateInfo: StateInfo;
+};
 
 function formatNumberToLocale(value: number) {
     return value.toLocaleString();
 }
 
-function createInfoTiles(stateInfo: IStateInfo) {
-    const titleMap: Record<keyof IStateTiles, string[]> = {
-        backyardFlocks: [
+function createInfoTiles(stateInfo: StateTiles) {
+    const titleMap: Record<keyof StateTiles, string[]> = {
+        backyard_flocks: [
             "Backyard Flocks Affected",
             "backyard-flocks",
             "/backyard-flocks2.png",
             "rgba(2, 163, 56, 1)",
         ],
-        birdsAffected: [
+        birds_affected: [
             "Birds Affected",
             "birds-affected",
             "/birds-affected.png",
             "#ef8700ff",
         ],
-        commercialFlocks: [
+        commercial_flocks: [
             "Commercial Flocks Affected",
             "commercial-flocks",
             "/commercial-flocks.png",
             "rgba(131, 0, 239, 1)",
         ],
-        totalFlocks: [
+        total_flocks: [
             "Total Flocks Affected",
             "total-flocks",
             "/flocks-affected.webp",
@@ -60,7 +52,7 @@ function createInfoTiles(stateInfo: IStateInfo) {
 
     const infoTilesArr = Object.entries(stateInfo)
         .map(([key, value], index) => {
-            const title = titleMap[key as keyof IStateTiles];
+            const title = titleMap[key as keyof StateTiles];
             if (!title) {
                 return null;
             }
@@ -82,13 +74,20 @@ function createInfoTiles(stateInfo: IStateInfo) {
 export default function StateInfo({ stateInfo }: Props) {
     const stateInfoTiles = createInfoTiles(stateInfo);
     const lastUpdatedDateFormatted = formatDateForUser(
-        stateInfo.lastReportedDate
+        stateInfo.last_reported_detection
     );
     return (
         <>
+            <div
+                aria-live="polite"
+                aria-atomic="true"
+                className="visually-hidden"
+            >
+                {`Showing avian influenza data for ${stateInfo.state}`}
+            </div>
             <section className="description">
                 <h1 className="state-title">
-                    {stateInfo.state} ({stateInfo.stateAbbreviation})
+                    {stateInfo.state} ({stateInfo.state_abbreviation})
                 </h1>
                 <h2>Outbreak Information</h2>
                 <p>Last case reported on {lastUpdatedDateFormatted}</p>
@@ -97,12 +96,12 @@ export default function StateInfo({ stateInfo }: Props) {
             <section className="state-info-container">
                 <section className="state-outline">
                     <SelectedStateMap
-                        stateAbbreviation={stateInfo.stateAbbreviation}
+                        stateAbbreviation={stateInfo.state_abbreviation}
                         stateName={stateInfo.state}
                         stateColor={stateInfo.color}
                     />
                 </section>
-                <section className="home-info">{stateInfoTiles}</section>
+                <section className="state-info-tiles">{stateInfoTiles}</section>
             </section>
         </>
     );

@@ -39,20 +39,33 @@ vi.mock("../../../src/Utils/dateFormatter", () => ({
 
 const mockUsSummary = {
     data: {
-        allTimeTotals: { flocks: 100, birds: 2000, states: 5 },
-        periodSummaries: { last30Days: { flocks: 10, birds: 200, states: 2 } },
+        all_time_totals: {
+            total_states_affected: 51,
+            total_birds_affected: 183664206,
+            total_flocks_affected: 1869,
+            total_backyard_flocks_affected: 1000,
+            total_commercial_flocks_affected: 869,
+        },
+        period_summaries: {
+            last_30_days: {
+                total_birds_affected: 1880000,
+                total_flocks_affected: 88,
+                total_backyard_flocks_affected: 50,
+                total_commercial_flocks_affected: 38,
+            },
+        },
     },
 };
 
 const mockFlockCases = {
     data: [
         {
-            stateAbbreviation: "CA",
-            stateName: "California",
+            state_abbreviation: "CA",
+            state: "California",
             birdsAffected: 100,
         },
     ],
-    metadata: { lastScrapedDate: "2024-12-19T00:00:00.000Z" },
+    metadata: { last_reported_detection: "2024-12-19T00:00:00.000Z" },
 };
 
 describe("App", () => {
