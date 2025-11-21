@@ -50,7 +50,9 @@ header > h1 {
     color: hsl(0, 0%, 63%);
     font-size: 20px;
     cursor: pointer;
-    transition: color 0.2 ease, font-weight 0.2s ease;
+    transition:
+        color 0.2 ease,
+        font-weight 0.2s ease;
 }
 
 .toggle-btn.active {
@@ -116,7 +118,7 @@ header > h1 {
         padding-bottom: 50px;
         padding-top: 30px;
     }
-    .state-dropdown{
+    .state-dropdown {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -217,8 +219,8 @@ section.choropleth-map {
     max-width: 520px;
 }
 
-@media(max-width: 593px){
-    .state-info-tiles{
+@media (max-width: 593px) {
+    .state-info-tiles {
         display: flex;
         gap: 20px;
         justify-content: center;
@@ -334,14 +336,14 @@ section.choropleth-map {
 }
 
 .visually-hidden {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
-  padding: 0;
-  margin: 0;
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+    padding: 0;
+    margin: 0;
 }

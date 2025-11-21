@@ -11,19 +11,19 @@ type USSummaryResponse = {
             total_backyard_flocks_affected: number;
             total_commercial_flocks_affected: number;
         };
-        period_summaries:{
+        period_summaries: {
             last_30_days: {
                 total_birds_affected: number;
                 total_flocks_affected: number;
                 total_backyard_flocks_affected: number;
                 total_commercial_flocks_affected: number;
-            }   
-        }
+            };
+        };
     };
     metadata: {
         last_scraped_date: string;
     };
-}
+};
 /**
  * This is the TanStack Query hook that we use to make requests, it
  * @param url This is the full url to the Fetch US Summary path on the Flock Watch Node.js server i.e. https://flockwatch.io/data/us-summary
