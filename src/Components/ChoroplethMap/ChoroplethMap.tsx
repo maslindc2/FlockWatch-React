@@ -38,7 +38,7 @@ const labelOffsets: Record<string, [number, number]> = {
 
 // This is prevents d3 from generating lines for these states as they do not need a pointer line.
 // An example of this is Florida which does not line up in the middle of state.
-const excludedStates = new Set(["21", "15", "22", "26", "12"]);
+const excludedStates = new Set(["21", "15", "22", "26", "12", "06"]);
 
 const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
     // Create a ref that will allow us to insert d3 states into to create our US Map
