@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StateInfo from "./Components/StateInfo/StateInfo";
 import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap";
 import createInfoTiles from "./Components/InfoTiles/CreateInfoTiles";
@@ -9,6 +9,7 @@ import formatDateForUser from "./Utils/dateFormatter";
 import ErrorComponent from "./Components/TanStackPages/ErrorComponent";
 import * as d3 from "d3";
 import StateDropdown from "./Components/StateDropdown/StateDropdown";
+import { useBackToClose } from "./Hooks/useBackToClose";
 
 interface StateInformation extends FlockRecord {
     color: string;
@@ -26,6 +27,18 @@ function App() {
     // Used for toggling between the two stat modes "Last 30 Days" and "All Time Totals"
     // Default is Last 30 Days
     const [selectedStat, setSelectedStat] = useState("30days");
+
+    // Handle back and forward interactions on mobile
+    useBackToClose(Boolean(selectedState), closeStateInfo);
+
+    useEffect(() => {
+        if (selectedState) {
+            document.body.classList.add("state-window-open");
+        } else {
+            document.body.classList.remove("state-window-open");
+        }
+        return () => document.body.classList.remove("state-window-open");
+    }, [selectedState]);
 
     // Fetch data using our useUsSummaryData with the server URL
     const {
