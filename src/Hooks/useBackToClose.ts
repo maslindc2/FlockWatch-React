@@ -4,14 +4,14 @@ export function useBackToClose(isOpen, onClose) {
     onCloseRef.current = onClose;
 
     useEffect(() => {
-        if(isOpen){
-            history.pushState({open: true}, "");
+        if (isOpen) {
+            history.pushState({ open: true }, "");
         }
     }, [isOpen]);
 
     useEffect(() => {
-        function handlePop(){
-            if(isOpen){
+        function handlePop() {
+            if (isOpen) {
                 onCloseRef.current();
             }
         }
@@ -20,7 +20,7 @@ export function useBackToClose(isOpen, onClose) {
     }, [isOpen]);
 
     useEffect(() => {
-        if(!isOpen){
+        if (!isOpen) {
             history.replaceState({}, "");
         }
     }, [isOpen]);
