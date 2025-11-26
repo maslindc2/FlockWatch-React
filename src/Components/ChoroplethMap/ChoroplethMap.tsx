@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import * as topojson from "topojson-client";
 
 import { useEffect, useRef, type FC } from "react";
-import type { Feature, Geometry } from "geojson";
+import type { FeatureCollection, Geometry } from "geojson";
 import { FlockRecord } from "../../Hooks/useFlockCases";
 
 import {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 // Defining the data type state feature which should use the d3 feature and a key that's of type string
-type StateFeature = Feature<Geometry, { [key: string]: any }>;
+type StateFeature = FeatureCollection<Geometry, { [key: string]: any }>;
 
 const labelOffsets: Record<string, [number, number]> = {
     "21": [0, 4], // KY ***
