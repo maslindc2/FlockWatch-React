@@ -16,10 +16,10 @@ export interface FlockRecord {
 }
 
 interface FlockCasesResponse {
-    data: FlockRecord[]
+    data: FlockRecord[];
     metadata: {
-        last_scraped_date: string
-    }
+        last_scraped_date: string;
+    };
 }
 
 /**
