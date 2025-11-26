@@ -2,7 +2,12 @@ import * as d3 from "d3";
 import * as topojson from "topojson-client";
 
 import { useEffect, useRef, type FC } from "react";
-import type { Feature, FeatureCollection, Geometry, GeoJsonProperties } from "geojson";
+import type {
+    Feature,
+    FeatureCollection,
+    Geometry,
+    GeoJsonProperties,
+} from "geojson";
 import { FlockRecord } from "../../Hooks/useFlockCases";
 
 import {
@@ -17,7 +22,9 @@ interface Props {
 }
 
 // Defining the data type state feature which should use the d3 feature and a key that's of type string
-type StateFeature = Feature<Geometry, { [key: string]: any }> & { id?: string | number };
+type StateFeature = Feature<Geometry, { [key: string]: any }> & {
+    id?: string | number;
+};
 
 const labelOffsets: Record<string, [number, number]> = {
     "21": [0, 4], // KY ***
@@ -61,11 +68,15 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
 
         // Load the TopoJSON map and convert it to GeoJSON with topojson.feature(...)
         d3.json("/states-10m.json").then((usData) => {
-            if(!usData) return;
+            if (!usData) return;
 
             const us = usData as any;
-            const statesCollection = topojson.feature(us, us.objects.states) as unknown as FeatureCollection<Geometry, GeoJsonProperties>;
-            const states: Feature<Geometry, GeoJsonProperties>[] = statesCollection.features;
+            const statesCollection = topojson.feature(
+                us,
+                us.objects.states
+            ) as unknown as FeatureCollection<Geometry, GeoJsonProperties>;
+            const states: Feature<Geometry, GeoJsonProperties>[] =
+                statesCollection.features;
 
             // Map the birdsAffected to the associated FIPS id's for each state
             const birdsAffectedMap = new Map<string, number>();
@@ -226,7 +237,9 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                         ? `translate(${centroid[0] + offset[0]}, ${centroid[1] + offset[1]})`
                         : `translate(${centroid[0]}, ${centroid[1]})`;
                 })
-                .text((d) => d.id ? fipsToStateAbbreviation[d.id] ?? "" : "")
+                .text((d) =>
+                    d.id ? (fipsToStateAbbreviation[d.id] ?? "") : ""
+                )
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "20px")
@@ -237,10 +250,14 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             // Primarily useful for Vermont, New Hampshire, etc.
             svg.append("g")
                 .selectAll("line")
-                .data(states.filter(d => {
-                    const id = d.id?.toString();
-                    return id && labelOffsets[id] && !excludedStates.has(id);
-                }))
+                .data(
+                    states.filter((d) => {
+                        const id = d.id?.toString();
+                        return (
+                            id && labelOffsets[id] && !excludedStates.has(id)
+                        );
+                    })
+                )
                 .join("line")
                 .attr("x1", (d) => path.centroid(d)[0])
                 .attr("y1", (d) => path.centroid(d)[1])
@@ -253,7 +270,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                     return path.centroid(d)[1] + labelOffsets[id]![1];
                 })
                 .attr("stroke", "#333");
-            });
+        });
     });
     return <svg ref={svgRef}></svg>;
 };
