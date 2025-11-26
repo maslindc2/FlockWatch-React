@@ -1,5 +1,5 @@
 // src/hooks/useFlockCases.ts
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 
 const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
@@ -16,10 +16,10 @@ export interface FlockRecord {
 }
 
 interface FlockCasesResponse {
-    data: FlockRecord[]
+    data: FlockRecord[];
     metadata: {
-        last_scraped_date: string
-    }
+        last_scraped_date: string;
+    };
 }
 
 /**
@@ -27,9 +27,7 @@ interface FlockCasesResponse {
  * @param flockWatchServerURL This is the base URL for Flock Watch's Node.JS server i.e. https://flockwatch.io/data/flock-cases
  * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
  */
-async function fetchFlockCases(url: string): Promise<{
-    data: FlockCasesResponse[];
-}> {
+async function fetchFlockCases(url: string): Promise<FlockCasesResponse> {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch flock cases");
     return res.json();
@@ -53,9 +51,9 @@ async function fetchFlockCasesLocal(): Promise<FlockCasesResponse> {
  * @param flockWatchServerURL This is the base URL for Flock Watch's Node.JS server i.e. https://flockwatch.io/data/flock-cases
  * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
  */
-export function useFlockCases(flockWatchServerURL: string) {
+export function useFlockCases(flockWatchServerURL: string): UseQueryResult<FlockCasesResponse, Error> {
     const url = `${flockWatchServerURL}/data/flock-cases`;
-    return useQuery({
+    return useQuery<FlockCasesResponse, Error>({
         queryKey: ["flockCases"],
         staleTime: 15 * 60 * 1000,
         queryFn: () =>

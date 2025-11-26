@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-export function useBackToClose(isOpen, onClose) {
+export function useBackToClose(isOpen: boolean, onClose: () => void) {
     const onCloseRef = useRef(onClose);
     onCloseRef.current = onClose;
 
