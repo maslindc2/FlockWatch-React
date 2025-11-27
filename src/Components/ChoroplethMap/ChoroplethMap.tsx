@@ -2,7 +2,12 @@ import * as d3 from "d3";
 import * as topojson from "topojson-client";
 
 import { useEffect, useRef, type FC } from "react";
-import type { Feature, Geometry } from "geojson";
+import type {
+    Feature,
+    FeatureCollection,
+    Geometry,
+    GeoJsonProperties,
+} from "geojson";
 import { FlockRecord } from "../../Hooks/useFlockCases";
 
 import {
@@ -17,7 +22,9 @@ interface Props {
 }
 
 // Defining the data type state feature which should use the d3 feature and a key that's of type string
-type StateFeature = Feature<Geometry, { [key: string]: any }>;
+type StateFeature = Feature<Geometry, { [key: string]: any }> & {
+    id?: string | number;
+};
 
 const labelOffsets: Record<string, [number, number]> = {
     "21": [0, 4], // KY ***
@@ -61,8 +68,15 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
 
         // Load the TopoJSON map and convert it to GeoJSON with topojson.feature(...)
         d3.json("/states-10m.json").then((usData) => {
+            if (!usData) return;
+
             const us = usData as any;
-            const states = topojson.feature(us, us.objects.states).features;
+            const statesCollection = topojson.feature(
+                us,
+                us.objects.states
+            ) as unknown as FeatureCollection<Geometry, GeoJsonProperties>;
+            const states: Feature<Geometry, GeoJsonProperties>[] =
+                statesCollection.features;
 
             // Map the birdsAffected to the associated FIPS id's for each state
             const birdsAffectedMap = new Map<string, number>();
@@ -163,7 +177,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             // Draw the state shapes and color them
             svg.append("g")
                 .selectAll("path")
-                .data(states as StateFeature[])
+                .data(states as unknown as StateFeature[])
                 .join("path")
                 .on("mouseover", (event) => {
                     // Here we are handling if the mouse hovers over a state
@@ -188,7 +202,8 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .attr("fill", (d: StateFeature) => {
                     // Here we are filling the color of the current state based off the interpolated color from above
                     // This will be white for nothing to the darkest color
-                    const value = birdsAffectedMap.get(d.id);
+                    const fips = d.id?.toString();
+                    const value = fips ? birdsAffectedMap.get(fips) : undefined;
                     // If the value is undefined then set it to white
                     return value !== undefined ? color(value) : "#eee";
                 })
@@ -208,26 +223,23 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             svg.append("g")
                 .selectAll("text")
                 .data(
-                    states.filter((d: d3.GeoPermissibleObjects) => {
+                    states.filter((d) => {
                         const centroid = path.centroid(d);
                         return !isNaN(centroid[0]) && !isNaN(centroid[1]);
                     })
                 )
-                .data(states as StateFeature[])
+                .data(states as unknown as StateFeature[])
                 .join("text")
                 .attr("transform", (d) => {
                     const centroid = path.centroid(d);
-                    const offset = labelOffsets[d.id];
-
-                    if (isNaN(centroid[0]) || isNaN(centroid[1])) {
-                        return null;
-                    }
-
+                    const offset = d.id ? labelOffsets[d.id] : undefined;
                     return offset
                         ? `translate(${centroid[0] + offset[0]}, ${centroid[1] + offset[1]})`
                         : `translate(${centroid[0]}, ${centroid[1]})`;
                 })
-                .text((d) => fipsToStateAbbreviation[d.id as string] || "")
+                .text((d) =>
+                    d.id ? (fipsToStateAbbreviation[d.id] ?? "") : ""
+                )
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "20px")
@@ -239,16 +251,24 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             svg.append("g")
                 .selectAll("line")
                 .data(
-                    states.filter(
-                        (d: { id: string }) =>
-                            labelOffsets[d.id] && !excludedStates.has(d.id)
-                    )
+                    states.filter((d) => {
+                        const id = d.id?.toString();
+                        return (
+                            id && labelOffsets[id] && !excludedStates.has(id)
+                        );
+                    })
                 )
                 .join("line")
                 .attr("x1", (d) => path.centroid(d)[0])
                 .attr("y1", (d) => path.centroid(d)[1])
-                .attr("x2", (d) => path.centroid(d)[0] + labelOffsets[d.id][0])
-                .attr("y2", (d) => path.centroid(d)[1] + labelOffsets[d.id][1])
+                .attr("x2", (d) => {
+                    const id = d.id!.toString();
+                    return path.centroid(d)[0] + labelOffsets[id]![0];
+                })
+                .attr("y2", (d) => {
+                    const id = d.id!.toString();
+                    return path.centroid(d)[1] + labelOffsets[id]![1];
+                })
                 .attr("stroke", "#333");
         });
     });

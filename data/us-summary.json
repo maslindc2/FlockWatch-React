@@ -2,21 +2,21 @@
     "data": {
         "all_time_totals": {
             "total_states_affected": 50,
-            "total_birds_affected": 183664206,
-            "total_flocks_affected": 1869,
-            "total_backyard_flocks_affected": 1000,
-            "total_commercial_flocks_affected": 869
+            "total_birds_affected": 183936796,
+            "total_flocks_affected": 1895,
+            "total_backyard_flocks_affected": 1015,
+            "total_commercial_flocks_affected": 880
         },
         "period_summaries": {
             "last_30_days": {
-                "total_birds_affected": 1880000,
-                "total_flocks_affected": 88,
-                "total_backyard_flocks_affected": 50,
-                "total_commercial_flocks_affected": 38
+                "total_birds_affected": 1690000,
+                "total_flocks_affected": 96,
+                "total_backyard_flocks_affected": 52,
+                "total_commercial_flocks_affected": 44
             }
         }
     },
     "metadata": {
-        "last_scraped_date": "2025-11-19T18:46:03.212Z"
+        "last_scraped_date": "2025-11-27T00:13:48.252Z"
     }
 }

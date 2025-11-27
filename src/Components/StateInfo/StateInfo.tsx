@@ -2,7 +2,6 @@ import SelectedStateMap from "../SelectedState/SelectedState";
 import InfoTiles from "../InfoTiles/InfoTiles";
 import formatDateForUser from "../../Utils/dateFormatter";
 import { FlockRecord } from "../../Hooks/useFlockCases";
-import { useEffect } from "react";
 
 interface StateInfo extends FlockRecord {
     color: string;

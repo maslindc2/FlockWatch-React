@@ -24,14 +24,14 @@
         },
         {
             "state": "Arkansas",
-            "backyard_flocks": 10,
-            "birds_affected": 666120,
+            "backyard_flocks": 11,
+            "birds_affected": 666160,
             "commercial_flocks": 8,
-            "last_reported_detection": "2025-10-07T00:00:00.000Z",
+            "last_reported_detection": "2025-11-24T00:00:00.000Z",
             "latitude": 34.838658403,
             "longitude": -91.630148264,
             "state_abbreviation": "AR",
-            "total_flocks": 18
+            "total_flocks": 19
         },
         {
             "state": "Arizona",
@@ -156,14 +156,14 @@
         },
         {
             "state": "Indiana",
-            "backyard_flocks": 32,
-            "birds_affected": 9066817,
-            "commercial_flocks": 57,
-            "last_reported_detection": "2025-11-18T00:00:00.000Z",
+            "backyard_flocks": 38,
+            "birds_affected": 9262417,
+            "commercial_flocks": 64,
+            "last_reported_detection": "2025-11-24T00:00:00.000Z",
             "latitude": 38.982642957,
             "longitude": -86.593510183,
             "state_abbreviation": "IN",
-            "total_flocks": 89
+            "total_flocks": 102
         },
         {
             "state": "Kansas",
@@ -233,19 +233,19 @@
         },
         {
             "state": "Michigan",
-            "backyard_flocks": 38,
-            "birds_affected": 7622527,
+            "backyard_flocks": 39,
+            "birds_affected": 7622577,
             "commercial_flocks": 24,
-            "last_reported_detection": "2025-11-12T00:00:00.000Z",
+            "last_reported_detection": "2025-11-21T00:00:00.000Z",
             "latitude": 45.313945856,
             "longitude": -85.808139703,
             "state_abbreviation": "MI",
-            "total_flocks": 62
+            "total_flocks": 63
         },
         {
             "state": "Minnesota",
             "backyard_flocks": 49,
-            "birds_affected": 9926493,
+            "birds_affected": 9924693,
             "commercial_flocks": 161,
             "last_reported_detection": "2025-11-12T00:00:00.000Z",
             "latitude": 46.898567503,
@@ -277,47 +277,47 @@
         },
         {
             "state": "Montana",
-            "backyard_flocks": 37,
-            "birds_affected": 170523,
+            "backyard_flocks": 38,
+            "birds_affected": 170553,
             "commercial_flocks": 0,
-            "last_reported_detection": "2025-10-24T00:00:00.000Z",
+            "last_reported_detection": "2025-11-21T00:00:00.000Z",
             "latitude": 46.320554141,
             "longitude": -111.763606891,
             "state_abbreviation": "MT",
-            "total_flocks": 37
+            "total_flocks": 38
         },
         {
             "state": "North Carolina",
             "backyard_flocks": 12,
-            "birds_affected": 3876117,
-            "commercial_flocks": 14,
-            "last_reported_detection": "2025-10-15T00:00:00.000Z",
+            "birds_affected": 3895517,
+            "commercial_flocks": 16,
+            "last_reported_detection": "2025-11-21T00:00:00.000Z",
             "latitude": 35.668521511,
             "longitude": -79.887874722,
             "state_abbreviation": "NC",
-            "total_flocks": 26
+            "total_flocks": 28
         },
         {
             "state": "North Dakota",
-            "backyard_flocks": 32,
-            "birds_affected": 567206,
+            "backyard_flocks": 33,
+            "birds_affected": 567236,
             "commercial_flocks": 12,
-            "last_reported_detection": "2025-11-03T00:00:00.000Z",
+            "last_reported_detection": "2025-11-24T00:00:00.000Z",
             "latitude": 47.387464625,
             "longitude": -98.032345431,
             "state_abbreviation": "ND",
-            "total_flocks": 44
+            "total_flocks": 45
         },
         {
             "state": "Nebraska",
-            "backyard_flocks": 20,
-            "birds_affected": 7052887,
+            "backyard_flocks": 21,
+            "birds_affected": 7052977,
             "commercial_flocks": 10,
-            "last_reported_detection": "2025-03-11T00:00:00.000Z",
+            "last_reported_detection": "2025-11-21T00:00:00.000Z",
             "latitude": 41.530382216,
             "longitude": -97.777590381,
             "state_abbreviation": "NE",
-            "total_flocks": 30
+            "total_flocks": 31
         },
         {
             "state": "New Hampshire",
@@ -376,14 +376,14 @@
         },
         {
             "state": "Ohio",
-            "backyard_flocks": 15,
-            "birds_affected": 25362796,
+            "backyard_flocks": 16,
+            "birds_affected": 25362806,
             "commercial_flocks": 78,
-            "last_reported_detection": "2025-10-16T00:00:00.000Z",
+            "last_reported_detection": "2025-11-18T00:00:00.000Z",
             "latitude": 39.828294059,
             "longitude": -82.398334111,
             "state_abbreviation": "OH",
-            "total_flocks": 93
+            "total_flocks": 94
         },
         {
             "state": "Oklahoma",
@@ -443,13 +443,13 @@
         {
             "state": "South Dakota",
             "backyard_flocks": 27,
-            "birds_affected": 7490640,
-            "commercial_flocks": 130,
-            "last_reported_detection": "2025-11-03T00:00:00.000Z",
+            "birds_affected": 7550040,
+            "commercial_flocks": 132,
+            "last_reported_detection": "2025-11-24T00:00:00.000Z",
             "latitude": 43.909435958,
             "longitude": -98.175625231,
             "state_abbreviation": "SD",
-            "total_flocks": 157
+            "total_flocks": 159
         },
         {
             "state": "Tennessee",
@@ -508,14 +508,14 @@
         },
         {
             "state": "Washington",
-            "backyard_flocks": 54,
-            "birds_affected": 4132808,
+            "backyard_flocks": 58,
+            "birds_affected": 4132928,
             "commercial_flocks": 4,
-            "last_reported_detection": "2025-11-17T00:00:00.000Z",
+            "last_reported_detection": "2025-11-24T00:00:00.000Z",
             "latitude": 47.556837171,
             "longitude": -122.16233971,
             "state_abbreviation": "WA",
-            "total_flocks": 58
+            "total_flocks": 62
         },
         {
             "state": "Wisconsin",
@@ -552,6 +552,6 @@
         }
     ],
     "metadata": {
-        "last_scraped_date": "2025-11-19T18:46:03.212Z"
+        "last_scraped_date": "2025-11-27T00:13:48.252Z"
     }
 }
