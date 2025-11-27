@@ -201,7 +201,10 @@ const states = [
     },
 ];
 
-export default function StateDropdown({ onSelect }) {
+interface StateDropdownProps {
+    onSelect: (stateSelected: string) => void;
+}
+export default function StateDropdown({ onSelect }: StateDropdownProps) {
     return (
         <>
             <h3 id="select-state-heading">
