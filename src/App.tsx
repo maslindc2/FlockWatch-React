@@ -3,12 +3,17 @@ import { useEffect, useState } from "react";
 import StateInfo from "./Components/StateInfo/StateInfo";
 import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap";
 import createInfoTiles from "./Components/KpiTiles/CreateKpiTiles";
+import KpiTiles from "./Components/KpiTiles/KpiTiles";
 import { FlockRecord, useFlockCases } from "./Hooks/useFlockCases.js";
 import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
+import { useStatusSummary } from "./Hooks/useStatusSummary.js";
+import { useSitesData } from "./Hooks/useSitesData.js";
+import { useActiveSites } from "./Hooks/useActiveSites.js";
 import formatDateForUser from "./Utils/dateFormatter";
 import ErrorComponent from "./Components/TanStackPages/ErrorComponent";
 import * as d3 from "d3";
 import StateDropdown from "./Components/StateDropdown/StateDropdown";
+import HorizontalBarChart from "./Components/HorizontalBarChart/HorizontalBarChart";
 import { useBackToClose } from "./Hooks/useBackToClose";
 
 interface StateInformation extends FlockRecord {
@@ -23,10 +28,6 @@ function App() {
     const [selectedState, setSelectedState] = useState<StateInformation | null>(
         null
     );
-
-    // Used for toggling between the two stat modes "Last 30 Days" and "All Time Totals"
-    // Default is Last 30 Days
-    const [selectedStat, setSelectedStat] = useState("30days");
 
     // Handle back and forward interactions on mobile
     useBackToClose(Boolean(selectedState), closeStateInfo);
@@ -54,12 +55,49 @@ function App() {
         data: flockDataFromAPI,
     } = useFlockCases(flockWatchServerURL);
 
+    // Fetch status summary data
+    const {
+        isPending: isStatusSummaryPending,
+        error: statusSummaryError,
+        data: statusSummaryDataFromAPI,
+    } = useStatusSummary(flockWatchServerURL);
+
+    // Fetch sites data for total site count
+    const {
+        isPending: isSitesPending,
+        error: sitesError,
+        data: sitesDataFromAPI,
+    } = useSitesData(flockWatchServerURL);
+
+    // Fetch active sites data for birds at risk
+    const {
+        isPending: isActiveSitesPending,
+        error: activeSitesError,
+        data: activeSitesDataFromAPI,
+    } = useActiveSites(flockWatchServerURL);
+
     // If we are currently loading data render the loading data component
-    if (isUsSummaryPending || isFlockCasesPending) return "...Loading";
+    if (
+        isUsSummaryPending ||
+        isFlockCasesPending ||
+        isStatusSummaryPending ||
+        isSitesPending ||
+        isActiveSitesPending
+    )
+        return "...Loading";
     // If we encountered an error log the error that occurred
-    if (usSummaryError || flockCasesError) {
+    if (
+        usSummaryError ||
+        flockCasesError ||
+        statusSummaryError ||
+        sitesError ||
+        activeSitesError
+    ) {
         console.log(usSummaryError);
         console.log(flockCasesError);
+        console.log(statusSummaryError);
+        console.log(sitesError);
+        console.log(activeSitesError);
         return <ErrorComponent />;
     }
 
@@ -72,10 +110,33 @@ function App() {
     const lastUpdated = flockDataFromAPI.metadata.last_scraped_date;
     // Store the flock data
     const flockData = flockDataFromAPI.data;
+    // Store the total number of sites impacted
+    const sitesTotal = sitesDataFromAPI.total;
+    // Compute total birds at risk from active sites
+    const birdsAtRisk = activeSitesDataFromAPI.data.reduce(
+        (sum: number, site: { birds_affected: number }) =>
+            sum + site.birds_affected,
+        0
+    );
+    const activeSitesCount = activeSitesDataFromAPI.total;
+    // Determine which states have active infections
+    const activeStates = new Set(
+        activeSitesDataFromAPI.data.map(
+            (site: { state: string }) => site.state
+        )
+    );
     // Create info tiles using the us summary all time totals
-    const usInfoTiles = createInfoTiles(usSummaryAllTimeTotals);
+    const usInfoTiles = createInfoTiles(usSummaryAllTimeTotals, {
+        total_flocks_affected: `${sitesTotal.toLocaleString()} total sites`,
+    });
     // Create info tiles using the last 30 days data
     const last30Days = createInfoTiles(usPeriodSummaries.last_30_days);
+    // Store the new confirmations count from the last 30 days
+    const newConfirmations30d =
+        statusSummaryDataFromAPI.data.sites_confirmed_last_30_days;
+    // Store the sites released count from the last 30 days
+    const sitesReleased30d =
+        statusSummaryDataFromAPI.data.sites_released_last_30_days;
     // Format the last updated date
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
 
@@ -121,35 +182,40 @@ function App() {
             {!selectedState ? (
                 <>
                     <section className="stats-section">
-                        <div className="toggle-container">
-                            <button
-                                className={
-                                    selectedStat === "30days"
-                                        ? "toggle-btn active"
-                                        : "toggle-btn"
-                                }
-                                onClick={() => setSelectedStat("30days")}
-                                aria-label="Avian Influenza statistics for the last thirty days in the united states"
-                            >
-                                Last 30 Days
-                            </button>
-
-                            <button
-                                className={
-                                    selectedStat === "allTime"
-                                        ? "toggle-btn active"
-                                        : "toggle-btn"
-                                }
-                                onClick={() => setSelectedStat("allTime")}
-                                aria-label="Avian Influenza statistics for all time in the united states"
-                            >
-                                All Time Totals
-                            </button>
-                        </div>
-                        <section className="info-tiles">
-                            {selectedStat === "30days"
-                                ? last30Days
-                                : usInfoTiles}
+                        <section className="info-tile-group">
+                            <h2 className="info-tile-title">All Time Totals</h2>
+                            <section className="info-tiles">
+                                {usInfoTiles}
+                                <KpiTiles
+                                    id="birds-at-risk"
+                                    title="Birds at risk (active)"
+                                    amount={birdsAtRisk.toLocaleString()}
+                                    subtext={`${activeSitesCount.toLocaleString()} active sites`}
+                                    icon="/rooster.png"
+                                    bgColor="rgba(220, 50, 50, 1)"
+                                />
+                            </section>
+                        </section>
+                        <section className="info-tile-group">
+                            <h2 className="info-tile-title">Last 30 Days</h2>
+                            <section className="info-tiles">
+                                {last30Days}
+                                <KpiTiles
+                                    id="new-confirmations"
+                                    title="New Confirmations (30d)"
+                                    amount={newConfirmations30d.toLocaleString()}
+                                    icon="/rooster.png"
+                                    bgColor="rgba(0, 119, 255, 1)"
+                                />
+                                <KpiTiles
+                                    id="sites-released"
+                                    title="Sites Released (30d)"
+                                    amount={sitesReleased30d.toLocaleString()}
+                                    subtext="depopulation complete"
+                                    icon="/rooster.png"
+                                    bgColor="rgba(0, 150, 100, 1)"
+                                />
+                            </section>
                         </section>
                     </section>
                     <section className="state-dropdown">
@@ -159,6 +225,12 @@ function App() {
                         <ChoroplethMap
                             data={flockData}
                             stateTrigger={findSetSelectedState}
+                        />
+                    </section>
+                    <section className="horizontal-bar-chart">
+                        <HorizontalBarChart
+                            data={flockData}
+                            activeStates={activeStates}
                         />
                     </section>
                 </>

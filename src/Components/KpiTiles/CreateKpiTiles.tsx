@@ -8,7 +8,10 @@ export interface USTileData {
     total_states_affected?: number;
 }
 
-export default function createKpiTiles(tileData: USTileData) {
+export default function createKpiTiles(
+    tileData: USTileData,
+    subtextMap?: Partial<Record<keyof USTileData, string>>
+) {
     const titleMap: Record<keyof USTileData, string[]> = {
         total_backyard_flocks_affected: [
             "Backyard Flocks Affected",
@@ -56,6 +59,7 @@ export default function createKpiTiles(tileData: USTileData) {
                     amount={value.toLocaleString()}
                     icon={title[2]}
                     bgColor={title[3]}
+                    subtext={subtextMap?.[key as keyof USTileData]}
                 />
             );
         })

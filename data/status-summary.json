@@ -1,0 +1,10 @@
+{
+    "data": {
+        "birds_affected_last_30_days": 276675,
+        "sites_confirmed_last_30_days": 23,
+        "sites_released_last_30_days": 11
+    },
+    "metadata": {
+        "last_scraped_date": "2026-06-03T00:50:47.375Z"
+    }
+}

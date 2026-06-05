@@ -1,0 +1,28 @@
+{
+    "data": [
+        { "special_id": "LaGrange 96", "birds_affected": 6000, "confirmed_diagnosis_date": "2026-05-29T00:00:00.000Z", "county": "Lagrange", "production_type": "Commercial Duck Meat Bird", "state": "Indiana", "status": "active" },
+        { "special_id": "Elkhart 46", "birds_affected": 7500, "confirmed_diagnosis_date": "2026-05-28T00:00:00.000Z", "county": "Elkhart", "production_type": "Commercial Duck Meat Bird", "state": "Indiana", "status": "active" },
+        { "special_id": "Elkhart 47", "birds_affected": 28300, "confirmed_diagnosis_date": "2026-05-28T00:00:00.000Z", "county": "Elkhart", "production_type": "WOAH Poultry", "state": "Indiana", "status": "active" },
+        { "special_id": "Elkhart 48", "birds_affected": 28500, "confirmed_diagnosis_date": "2026-05-28T00:00:00.000Z", "county": "Elkhart", "production_type": "WOAH Poultry", "state": "Indiana", "status": "active" },
+        { "special_id": "LaGrange 95", "birds_affected": 5300, "confirmed_diagnosis_date": "2026-05-28T00:00:00.000Z", "county": "Lagrange", "production_type": "Commercial Duck Meat Bird", "state": "Indiana", "status": "active" },
+        { "special_id": "Elkhart 45", "birds_affected": 11600, "confirmed_diagnosis_date": "2026-05-22T00:00:00.000Z", "county": "Elkhart", "production_type": "Commercial Duck Meat Bird", "state": "Indiana", "status": "active" },
+        { "special_id": "Becker 14", "birds_affected": 4300, "confirmed_diagnosis_date": "2026-05-20T00:00:00.000Z", "county": "Becker", "production_type": "Commercial Breeder Operation", "state": "Minnesota", "status": "active" },
+        { "special_id": "Elkhart 44", "birds_affected": 13600, "confirmed_diagnosis_date": "2026-05-20T00:00:00.000Z", "county": "Elkhart", "production_type": "Commercial Duck Meat Bird", "state": "Indiana", "status": "active" },
+        { "special_id": "LaGrange 93", "birds_affected": 7700, "confirmed_diagnosis_date": "2026-05-20T00:00:00.000Z", "county": "Lagrange", "production_type": "Commercial Duck Meat Bird", "state": "Indiana", "status": "active" },
+        { "special_id": "LaGrange 92", "birds_affected": 4400, "confirmed_diagnosis_date": "2026-05-19T00:00:00.000Z", "county": "Lagrange", "production_type": "Commercial Duck Breeder", "state": "Indiana", "status": "active" },
+        { "special_id": "Elkhart 43", "birds_affected": 7300, "confirmed_diagnosis_date": "2026-05-18T00:00:00.000Z", "county": "Elkhart", "production_type": "Commercial Duck Meat Bird", "state": "Indiana", "status": "active" },
+        { "special_id": "LaGrange 91", "birds_affected": 2400, "confirmed_diagnosis_date": "2026-05-18T00:00:00.000Z", "county": "Lagrange", "production_type": "WOAH Poultry", "state": "Indiana", "status": "active" },
+        { "special_id": "Becker 12", "birds_affected": 19900, "confirmed_diagnosis_date": "2026-05-15T00:00:00.000Z", "county": "Becker", "production_type": "Commercial Turkey Breeder Replacement Hens", "state": "Minnesota", "status": "active" },
+        { "special_id": "Becker 13", "birds_affected": 23000, "confirmed_diagnosis_date": "2026-05-15T00:00:00.000Z", "county": "Becker", "production_type": "Commercial Breeder Operation", "state": "Minnesota", "status": "active" },
+        { "special_id": "Elkhart 42", "birds_affected": 29800, "confirmed_diagnosis_date": "2026-05-12T00:00:00.000Z", "county": "Elkhart", "production_type": "Commercial Duck Meat Bird", "state": "Indiana", "status": "active" },
+        { "special_id": "LaGrange 90", "birds_affected": 19700, "confirmed_diagnosis_date": "2026-05-11T00:00:00.000Z", "county": "Lagrange", "production_type": "WOAH Poultry", "state": "Indiana", "status": "active" },
+        { "special_id": "LaGrange 89", "birds_affected": 4600, "confirmed_diagnosis_date": "2026-05-08T00:00:00.000Z", "county": "Lagrange", "production_type": "Commercial Duck Breeder", "state": "Indiana", "status": "active" }
+    ],
+    "total": 17,
+    "page": 1,
+    "limit": 100,
+    "totalPages": 1,
+    "metadata": {
+        "last_scraped_date": "2026-06-03T00:50:47.375Z"
+    }
+}

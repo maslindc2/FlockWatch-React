@@ -1,0 +1,20 @@
+{
+    "data": [
+        {
+            "special_id": "LaGrange 96",
+            "birds_affected": 6000,
+            "confirmed_diagnosis_date": "2026-05-29T00:00:00.000Z",
+            "county": "Lagrange",
+            "production_type": "Commercial Duck Meat Bird",
+            "state": "Indiana",
+            "status": "active"
+        }
+    ],
+    "total": 2027,
+    "page": 1,
+    "limit": 10,
+    "totalPages": 203,
+    "metadata": {
+        "last_scraped_date": "2026-06-03T00:50:47.375Z"
+    }
+}

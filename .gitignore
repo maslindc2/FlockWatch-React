@@ -26,3 +26,5 @@ coverage/
 
 # Env variables
 .env
+
+/Project_info

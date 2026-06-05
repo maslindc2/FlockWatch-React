@@ -4,7 +4,7 @@ import formatDateForUser from "../../../src/Utils/dateFormatter";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom";
 import { SelectedStateMapProps } from "../../../src/Components/SelectedState/SelectedState";
-import { InfoTileProps } from "../../../src/Components/InfoTiles/InfoTiles";
+import { KpiTileProps } from "../../../src/Components/KpiTiles/KpiTiles";
 
 // Mock the Selected State as we already have tests for that
 vi.mock("../../../src/Components/SelectedState/SelectedState", () => ({
@@ -21,9 +21,9 @@ vi.mock("../../../src/Components/SelectedState/SelectedState", () => ({
 }));
 
 // Mock the InfoTiles components as we already have tests for that
-vi.mock("../../../src/Components/InfoTiles/InfoTiles", () => ({
+vi.mock("../../../src/Components/KpiTiles/KpiTiles", () => ({
     __esModule: true,
-    default: ({ id, title, amount, icon, bgColor }: InfoTileProps) => (
+    default: ({ id, title, amount, icon, bgColor }: KpiTileProps) => (
         <div data-testid={`info-tile-${id}`}>
             {title}-{amount}-{icon}-{bgColor}
         </div>

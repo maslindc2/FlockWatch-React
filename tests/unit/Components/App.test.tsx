@@ -5,12 +5,24 @@ import "@testing-library/jest-dom";
 import App from "../../../src/App";
 import { useUsSummaryData } from "../../../src/Hooks/useUsSummaryData";
 import { useFlockCases } from "../../../src/Hooks/useFlockCases";
+import { useStatusSummary } from "../../../src/Hooks/useStatusSummary";
+import { useSitesData } from "../../../src/Hooks/useSitesData";
+import { useActiveSites } from "../../../src/Hooks/useActiveSites";
 
 vi.mock("../../../src/Hooks/useUsSummaryData", () => ({
     useUsSummaryData: vi.fn(),
 }));
 vi.mock("../../../src/Hooks/useFlockCases", () => ({
     useFlockCases: vi.fn(),
+}));
+vi.mock("../../../src/Hooks/useStatusSummary", () => ({
+    useStatusSummary: vi.fn(),
+}));
+vi.mock("../../../src/Hooks/useSitesData", () => ({
+    useSitesData: vi.fn(),
+}));
+vi.mock("../../../src/Hooks/useActiveSites", () => ({
+    useActiveSites: vi.fn(),
 }));
 
 vi.mock("../../../src/Components/StateInfo/StateInfo", () => ({
@@ -62,10 +74,61 @@ const mockFlockCases = {
         {
             state_abbreviation: "CA",
             state: "California",
-            birdsAffected: 100,
+            birds_affected: 100,
+            backyard_flocks: 0,
+            commercial_flocks: 0,
+            total_flocks: 0,
+            latitude: 0,
+            longitude: 0,
+            last_reported_detection: "2024-12-19T00:00:00.000Z",
         },
     ],
-    metadata: { last_reported_detection: "2024-12-19T00:00:00.000Z" },
+    metadata: { last_scraped_date: "2024-12-19T00:00:00.000Z" },
+};
+
+const mockActiveSitesData = {
+    data: [
+        { birds_affected: 6000 },
+        { birds_affected: 7500 },
+        { birds_affected: 28300 },
+        { birds_affected: 28500 },
+        { birds_affected: 5300 },
+        { birds_affected: 11600 },
+        { birds_affected: 4300 },
+        { birds_affected: 13600 },
+        { birds_affected: 7700 },
+        { birds_affected: 4400 },
+        { birds_affected: 7300 },
+        { birds_affected: 2400 },
+        { birds_affected: 19900 },
+        { birds_affected: 23000 },
+        { birds_affected: 29800 },
+        { birds_affected: 19700 },
+        { birds_affected: 4600 },
+    ],
+    total: 17,
+    page: 1,
+    limit: 100,
+    totalPages: 1,
+    metadata: { last_scraped_date: "2026-06-03T00:50:47.375Z" },
+};
+
+const mockSitesData = {
+    data: [],
+    total: 2027,
+    page: 1,
+    limit: 10,
+    totalPages: 203,
+    metadata: { last_scraped_date: "2026-06-03T00:50:47.375Z" },
+};
+
+const mockStatusSummary = {
+    data: {
+        birds_affected_last_30_days: 276675,
+        sites_confirmed_last_30_days: 23,
+        sites_released_last_30_days: 11,
+    },
+    metadata: { last_scraped_date: "2026-06-03T00:50:47.375Z" },
 };
 
 describe("App", () => {
@@ -76,6 +139,9 @@ describe("App", () => {
     it("renders loading state", () => {
         (useUsSummaryData as any).mockReturnValue({ isPending: true });
         (useFlockCases as any).mockReturnValue({ isPending: true });
+        (useStatusSummary as any).mockReturnValue({ isPending: true });
+        (useSitesData as any).mockReturnValue({ isPending: true });
+        (useActiveSites as any).mockReturnValue({ isPending: true });
 
         render(<App />);
         expect(screen.getByText("...Loading")).toBeInTheDocument();
@@ -90,6 +156,18 @@ describe("App", () => {
             isPending: false,
             error: "Error",
         });
+        (useStatusSummary as any).mockReturnValue({
+            isPending: false,
+            error: "Error",
+        });
+        (useSitesData as any).mockReturnValue({
+            isPending: false,
+            error: "Error",
+        });
+        (useActiveSites as any).mockReturnValue({
+            isPending: false,
+            error: "Error",
+        });
 
         render(<App />);
         expect(screen.getByText("So Sorry!")).toBeInTheDocument();
@@ -101,7 +179,7 @@ describe("App", () => {
         expect(screen.getByText("Please try again later!")).toBeInTheDocument();
     });
 
-    it("renders main dashboard", () => {
+    it("renders main dashboard with both tile groups", () => {
         (useUsSummaryData as any).mockReturnValue({
             isPending: false,
             error: null,
@@ -112,6 +190,21 @@ describe("App", () => {
             error: null,
             data: mockFlockCases,
         });
+        (useStatusSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockStatusSummary,
+        });
+        (useSitesData as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockSitesData,
+        });
+        (useActiveSites as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockActiveSitesData,
+        });
 
         render(<App />);
         expect(screen.getByText("Flock Watch")).toBeInTheDocument();
@@ -119,6 +212,18 @@ describe("App", () => {
         expect(
             screen.getByRole("button", { name: "Select California" })
         ).toBeInTheDocument();
+
+        expect(screen.getByText("All Time Totals")).toBeInTheDocument();
+        expect(screen.getByText("Last 30 Days")).toBeInTheDocument();
+        expect(
+            screen.getByText("New Confirmations (30d)")
+        ).toBeInTheDocument();
+        expect(screen.getByText("Sites Released (30d)")).toBeInTheDocument();
+        expect(screen.getByText("depopulation complete")).toBeInTheDocument();
+        expect(screen.getByText("2,027 total sites")).toBeInTheDocument();
+        expect(screen.getByText("Birds at risk (active)")).toBeInTheDocument();
+        expect(screen.getByText("223,900")).toBeInTheDocument();
+        expect(screen.getByText("17 active sites")).toBeInTheDocument();
     });
 
     it("switches to StateInfo view when a state is selected", () => {
@@ -131,6 +236,21 @@ describe("App", () => {
             isPending: false,
             error: null,
             data: mockFlockCases,
+        });
+        (useStatusSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockStatusSummary,
+        });
+        (useSitesData as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockSitesData,
+        });
+        (useActiveSites as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockActiveSitesData,
         });
 
         render(<App />);

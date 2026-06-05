@@ -4,6 +4,7 @@ export interface KpiTileProps {
     amount: string;
     bgColor: string;
     icon: string;
+    subtext?: string;
 }
 export default function KpiTiles({
     title,
@@ -11,9 +12,11 @@ export default function KpiTiles({
     amount,
     bgColor,
     icon,
+    subtext,
 }: KpiTileProps) {
     const labelId = `${id}-label`;
     const valueId = `${id}-value`;
+    const subtextId = subtext ? `${id}-subtext` : undefined;
 
     return (
         <div
@@ -26,6 +29,11 @@ export default function KpiTiles({
                 <h3 aria-labelledby={`${labelId} ${valueId}`}>
                     <span id={valueId}>{amount}</span>
                 </h3>
+                {subtext && (
+                    <p id={subtextId} className="tile-subtext">
+                        {subtext}
+                    </p>
+                )}
             </div>
             <div className="tile-icon">
                 <img src={icon} alt={`${title} Icon`} />

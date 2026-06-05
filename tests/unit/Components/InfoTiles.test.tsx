@@ -1,4 +1,4 @@
-import InfoTiles from "../../../src/Components/InfoTiles/InfoTiles";
+import InfoTiles from "../../../src/Components/KpiTiles/KpiTiles";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -32,8 +32,8 @@ describe("InfoTiles Component", () => {
         expect(infoTileRoot).toBeInTheDocument();
         // Expect it to have the correct classname
         expect(infoTileRoot).toHaveClass("tile-container");
-        // Expect that it has the background color applied to it from above
-        expect(infoTileRoot).toHaveStyle(`background-color: ${TILE_BG_COLOR}`);
+        // Expect that it has the border color applied to it from above
+        expect(infoTileRoot).toHaveStyle(`border: 2px solid ${TILE_BG_COLOR}`);
         // Expect the root to have 2 children a Div and an image which we will be testing next
         expect(infoTileChildren).toHaveLength(2);
     });

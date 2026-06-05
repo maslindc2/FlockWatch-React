@@ -41,31 +41,8 @@ header > h1 {
     padding-top: 30px;
 }
 
-.toggle-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-}
-
-.toggle-btn {
-    border: none;
-    background: transparent;
-    color: hsl(0, 0%, 63%);
-    font-size: 20px;
-    cursor: pointer;
-    transition:
-        color 0.2 ease,
-        font-weight 0.2s ease;
-}
-
-.toggle-btn.active {
-    color: #000;
-    font-weight: 500;
-}
-
-.toggle-btn:hover {
-    color: #333;
+.info-tile-group {
+    margin-bottom: 2rem;
 }
 
 .info-tiles {
@@ -106,12 +83,6 @@ header > h1 {
         padding-top: 30px;
     }
 
-    .toggle-container {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        flex-shrink: 0;
-    }
     .info-tiles {
         display: flex;
         flex-wrap: wrap;
@@ -199,6 +170,12 @@ section.choropleth-map {
     padding-bottom: 50px;
 }
 
+section.horizontal-bar-chart {
+    max-width: 800px;
+    margin: 0 auto 50px;
+    padding-bottom: 50px;
+}
+
 .state-outline {
     flex: 1;
     display: flex;
@@ -282,6 +259,12 @@ section.choropleth-map {
     font-size: 28px;
     font-weight: bold;
     z-index: 1;
+}
+
+.tile-subtext {
+    margin: 2px 0 0;
+    font-size: 11px;
+    color: #555;
 }
 
 .tile-icon {
