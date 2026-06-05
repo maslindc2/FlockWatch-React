@@ -2,7 +2,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import StateInfo from "./Components/StateInfo/StateInfo";
 import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap";
-import createInfoTiles from "./Components/InfoTiles/CreateInfoTiles";
+import createInfoTiles from "./Components/KpiTiles/CreateKpiTiles";
 import { FlockRecord, useFlockCases } from "./Hooks/useFlockCases.js";
 import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
 import formatDateForUser from "./Utils/dateFormatter";
@@ -16,7 +16,7 @@ interface StateInformation extends FlockRecord {
 }
 
 const flockWatchServerURL =
-    import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:3000/data";
+    import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:8080/data";
 
 function App() {
     // Used for displaying specific states statistics

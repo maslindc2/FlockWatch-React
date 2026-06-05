@@ -1,4 +1,4 @@
-import InfoTiles from "./InfoTiles";
+import KpiTiles from "./KpiTiles";
 
 export interface USTileData {
     total_backyard_flocks_affected: number;
@@ -8,7 +8,7 @@ export interface USTileData {
     total_states_affected?: number;
 }
 
-export default function createInfoTiles(tileData: USTileData) {
+export default function createKpiTiles(tileData: USTileData) {
     const titleMap: Record<keyof USTileData, string[]> = {
         total_backyard_flocks_affected: [
             "Backyard Flocks Affected",
@@ -49,7 +49,7 @@ export default function createInfoTiles(tileData: USTileData) {
                 return null;
             }
             return (
-                <InfoTiles
+                <KpiTiles
                     key={index}
                     id={title[1]}
                     title={title[0]}

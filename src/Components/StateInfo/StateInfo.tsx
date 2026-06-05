@@ -1,5 +1,5 @@
 import SelectedStateMap from "../SelectedState/SelectedState";
-import InfoTiles from "../InfoTiles/InfoTiles";
+import InfoTiles from "../KpiTiles/KpiTiles";
 import formatDateForUser from "../../Utils/dateFormatter";
 import { FlockRecord } from "../../Hooks/useFlockCases";
 

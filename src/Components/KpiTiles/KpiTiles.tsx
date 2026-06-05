@@ -1,23 +1,23 @@
-export interface InfoTileProps {
+export interface KpiTileProps {
     title: string;
     id: string;
     amount: string;
     bgColor: string;
     icon: string;
 }
-export default function InfoTiles({
+export default function KpiTiles({
     title,
     id,
     amount,
     bgColor,
     icon,
-}: InfoTileProps) {
+}: KpiTileProps) {
     const labelId = `${id}-label`;
     const valueId = `${id}-value`;
 
     return (
         <div
-            style={{ backgroundColor: bgColor }}
+            style={{ border: `2px solid ${bgColor}` }}
             className="tile-container"
             title={title}
         >

@@ -258,7 +258,7 @@ section.choropleth-map {
 
 .tile-container {
     position: relative;
-    color: white;
+    color: black;
     width: 250px; /* container grows with content */
     height: 100px;
     overflow: hidden;
