@@ -170,10 +170,28 @@ section.choropleth-map {
     padding-bottom: 50px;
 }
 
-section.horizontal-bar-chart {
-    max-width: 800px;
+section.chart-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1160px;
     margin: 0 auto 50px;
     padding-bottom: 50px;
+}
+
+.bar-chart-wrapper {
+    flex: 1 1 600px;
+    min-width: 0;
+}
+
+.pie-charts-column {
+    flex: 0 0 auto;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .state-outline {

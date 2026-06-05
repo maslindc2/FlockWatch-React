@@ -8,6 +8,7 @@ import { useFlockCases } from "../../../src/Hooks/useFlockCases";
 import { useStatusSummary } from "../../../src/Hooks/useStatusSummary";
 import { useSitesData } from "../../../src/Hooks/useSitesData";
 import { useActiveSites } from "../../../src/Hooks/useActiveSites";
+import { useHistoricalSummary } from "../../../src/Hooks/useHistoricalSummary";
 
 vi.mock("../../../src/Hooks/useUsSummaryData", () => ({
     useUsSummaryData: vi.fn(),
@@ -23,6 +24,9 @@ vi.mock("../../../src/Hooks/useSitesData", () => ({
 }));
 vi.mock("../../../src/Hooks/useActiveSites", () => ({
     useActiveSites: vi.fn(),
+}));
+vi.mock("../../../src/Hooks/useHistoricalSummary", () => ({
+    useHistoricalSummary: vi.fn(),
 }));
 
 vi.mock("../../../src/Components/StateInfo/StateInfo", () => ({
@@ -131,6 +135,18 @@ const mockStatusSummary = {
     metadata: { last_scraped_date: "2026-06-03T00:50:47.375Z" },
 };
 
+const mockHistoricalSummary = {
+    data: {
+        total_active_sites: 17,
+        total_birds_active: 223900,
+        total_birds_affected_all_time: 206687076,
+        total_na_sites: 639,
+        total_released_sites: 1571,
+        total_sites_all_time: 2227,
+    },
+    metadata: { last_scraped_date: "2026-06-03T00:50:47.375Z" },
+};
+
 describe("App", () => {
     beforeEach(() => {
         vi.clearAllMocks();
@@ -142,6 +158,7 @@ describe("App", () => {
         (useStatusSummary as any).mockReturnValue({ isPending: true });
         (useSitesData as any).mockReturnValue({ isPending: true });
         (useActiveSites as any).mockReturnValue({ isPending: true });
+        (useHistoricalSummary as any).mockReturnValue({ isPending: true });
 
         render(<App />);
         expect(screen.getByText("...Loading")).toBeInTheDocument();
@@ -165,6 +182,10 @@ describe("App", () => {
             error: "Error",
         });
         (useActiveSites as any).mockReturnValue({
+            isPending: false,
+            error: "Error",
+        });
+        (useHistoricalSummary as any).mockReturnValue({
             isPending: false,
             error: "Error",
         });
@@ -204,6 +225,11 @@ describe("App", () => {
             isPending: false,
             error: null,
             data: mockActiveSitesData,
+        });
+        (useHistoricalSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockHistoricalSummary,
         });
 
         render(<App />);
@@ -251,6 +277,11 @@ describe("App", () => {
             isPending: false,
             error: null,
             data: mockActiveSitesData,
+        });
+        (useHistoricalSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockHistoricalSummary,
         });
 
         render(<App />);

@@ -9,11 +9,14 @@ import { useUsSummaryData } from "./Hooks/useUsSummaryData.js";
 import { useStatusSummary } from "./Hooks/useStatusSummary.js";
 import { useSitesData } from "./Hooks/useSitesData.js";
 import { useActiveSites } from "./Hooks/useActiveSites.js";
+import { useHistoricalSummary } from "./Hooks/useHistoricalSummary.js";
 import formatDateForUser from "./Utils/dateFormatter";
 import ErrorComponent from "./Components/TanStackPages/ErrorComponent";
 import * as d3 from "d3";
 import StateDropdown from "./Components/StateDropdown/StateDropdown";
 import HorizontalBarChart from "./Components/HorizontalBarChart/HorizontalBarChart";
+import PieChart from "./Components/PieChart/PieChart";
+import SiteStatusPieChart from "./Components/SiteStatusPieChart/SiteStatusPieChart";
 import { useBackToClose } from "./Hooks/useBackToClose";
 
 interface StateInformation extends FlockRecord {
@@ -76,13 +79,21 @@ function App() {
         data: activeSitesDataFromAPI,
     } = useActiveSites(flockWatchServerURL);
 
+    // Fetch historical summary data
+    const {
+        isPending: isHistoricalSummaryPending,
+        error: historicalSummaryError,
+        data: historicalSummaryDataFromAPI,
+    } = useHistoricalSummary(flockWatchServerURL);
+
     // If we are currently loading data render the loading data component
     if (
         isUsSummaryPending ||
         isFlockCasesPending ||
         isStatusSummaryPending ||
         isSitesPending ||
-        isActiveSitesPending
+        isActiveSitesPending ||
+        isHistoricalSummaryPending
     )
         return "...Loading";
     // If we encountered an error log the error that occurred
@@ -91,13 +102,15 @@ function App() {
         flockCasesError ||
         statusSummaryError ||
         sitesError ||
-        activeSitesError
+        activeSitesError ||
+        historicalSummaryError
     ) {
         console.log(usSummaryError);
         console.log(flockCasesError);
         console.log(statusSummaryError);
         console.log(sitesError);
         console.log(activeSitesError);
+        console.log(historicalSummaryError);
         return <ErrorComponent />;
     }
 
@@ -227,11 +240,39 @@ function App() {
                             stateTrigger={findSetSelectedState}
                         />
                     </section>
-                    <section className="horizontal-bar-chart">
-                        <HorizontalBarChart
-                            data={flockData}
-                            activeStates={activeStates}
-                        />
+                    <section className="chart-row">
+                        <div className="bar-chart-wrapper">
+                            <HorizontalBarChart
+                                data={flockData}
+                                activeStates={activeStates}
+                            />
+                        </div>
+                        <div className="pie-charts-column">
+                            <PieChart
+                                backyardFlocks={
+                                    usPeriodSummaries.last_30_days
+                                        .total_backyard_flocks_affected
+                                }
+                                commercialFlocks={
+                                    usPeriodSummaries.last_30_days
+                                        .total_commercial_flocks_affected
+                                }
+                            />
+                            <SiteStatusPieChart
+                                activeSites={
+                                    historicalSummaryDataFromAPI.data
+                                        .total_active_sites
+                                }
+                                releasedSites={
+                                    historicalSummaryDataFromAPI.data
+                                        .total_released_sites
+                                }
+                                naSites={
+                                    historicalSummaryDataFromAPI.data
+                                        .total_na_sites
+                                }
+                            />
+                        </div>
                     </section>
                 </>
             ) : (
