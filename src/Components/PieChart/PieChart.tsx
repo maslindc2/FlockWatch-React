@@ -4,17 +4,24 @@ import { useEffect, useRef, type FC } from "react";
 interface Props {
     backyardFlocks: number;
     commercialFlocks: number;
+    timeRange: "allTime" | "last30Days";
+    onToggle: (range: "allTime" | "last30Days") => void;
 }
 
 const CHART_WIDTH = 320;
-const CHART_HEIGHT = 220;
-const PIE_RADIUS = 75;
+const CHART_HEIGHT = 270;
+const PIE_RADIUS = 68;
 const COLORS = {
     backyard: "#1a5276",
     commercial: "#85c1e9",
 };
 
-const PieChart: FC<Props> = ({ backyardFlocks, commercialFlocks }) => {
+const PieChart: FC<Props> = ({
+    backyardFlocks,
+    commercialFlocks,
+    timeRange,
+    onToggle,
+}) => {
     const svgRef = useRef<SVGSVGElement | null>(null);
 
     useEffect(() => {
@@ -48,7 +55,7 @@ const PieChart: FC<Props> = ({ backyardFlocks, commercialFlocks }) => {
             .outerRadius(PIE_RADIUS);
 
         const centerX = 90;
-        const centerY = CHART_HEIGHT / 2;
+        const centerY = CHART_HEIGHT / 2 + 10;
 
         const pieGroup = svg
             .append("g")
@@ -115,13 +122,56 @@ const PieChart: FC<Props> = ({ backyardFlocks, commercialFlocks }) => {
         svg
             .append("text")
             .attr("x", CHART_WIDTH / 2)
-            .attr("y", 20)
+            .attr("y", 18)
             .attr("text-anchor", "middle")
             .attr("font-size", "14px")
             .attr("font-weight", "600")
             .attr("fill", "#333")
-            .text("Flocks Affected (Last 30 Days)");
-    }, [backyardFlocks, commercialFlocks]);
+            .text("Flocks Affected");
+
+        const toggleOptions: Array<{ label: string; value: "allTime" | "last30Days" }> = [
+            { label: "All Time", value: "allTime" },
+            { label: "Last 30 Days", value: "last30Days" },
+        ];
+
+        const btnWidth = 85;
+        const btnHeight = 24;
+        const btnGap = 6;
+        const totalWidth = toggleOptions.length * btnWidth + (toggleOptions.length - 1) * btnGap;
+        const startX = (CHART_WIDTH - totalWidth) / 2;
+        const btnY = 32;
+
+        toggleOptions.forEach((opt, i) => {
+            const x = startX + i * (btnWidth + btnGap);
+            const isSelected = timeRange === opt.value;
+
+            svg
+                .append("rect")
+                .attr("x", x)
+                .attr("y", btnY)
+                .attr("width", btnWidth)
+                .attr("height", btnHeight)
+                .attr("fill", isSelected ? "#333" : "#e8e8e8")
+                .attr("stroke", "#ccc")
+                .attr("stroke-width", 1)
+                .attr("rx", 4)
+                .attr("ry", 4)
+                .style("cursor", "pointer")
+                .on("click", () => onToggle(opt.value));
+
+            svg
+                .append("text")
+                .attr("x", x + btnWidth / 2)
+                .attr("y", btnY + btnHeight / 2)
+                .attr("text-anchor", "middle")
+                .attr("alignment-baseline", "central")
+                .attr("font-size", "11px")
+                .attr("font-weight", isSelected ? "600" : "400")
+                .attr("fill", isSelected ? "#fff" : "#333")
+                .attr("pointer-events", "none")
+                .text(opt.label);
+        });
+    }, [backyardFlocks, commercialFlocks, timeRange, onToggle]);
 
     return <svg ref={svgRef}></svg>;
 };

@@ -35,6 +35,11 @@ function App() {
         null
     );
 
+    // Toggle for the Flocks Affected pie chart time range
+    const [flocksTimeRange, setFlocksTimeRange] = useState<
+        "allTime" | "last30Days"
+    >("allTime");
+
     // Handle back and forward interactions on mobile
     useBackToClose(Boolean(selectedState), closeStateInfo);
 
@@ -265,13 +270,21 @@ function App() {
                         <div className="pie-charts-column">
                             <PieChart
                                 backyardFlocks={
-                                    usPeriodSummaries.last_30_days
-                                        .total_backyard_flocks_affected
+                                    flocksTimeRange === "allTime"
+                                        ? usSummaryAllTimeTotals
+                                              .total_backyard_flocks_affected
+                                        : usPeriodSummaries.last_30_days
+                                              .total_backyard_flocks_affected
                                 }
                                 commercialFlocks={
-                                    usPeriodSummaries.last_30_days
-                                        .total_commercial_flocks_affected
+                                    flocksTimeRange === "allTime"
+                                        ? usSummaryAllTimeTotals
+                                              .total_commercial_flocks_affected
+                                        : usPeriodSummaries.last_30_days
+                                              .total_commercial_flocks_affected
                                 }
+                                timeRange={flocksTimeRange}
+                                onToggle={setFlocksTimeRange}
                             />
                             <SiteStatusPieChart
                                 activeSites={
