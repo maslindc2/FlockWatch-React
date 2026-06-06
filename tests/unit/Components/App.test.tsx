@@ -10,6 +10,7 @@ import { useSitesData } from "../../../src/Hooks/useSitesData";
 import { useActiveSites } from "../../../src/Hooks/useActiveSites";
 import { useHistoricalSummary } from "../../../src/Hooks/useHistoricalSummary";
 import { useProductionTypeSummary } from "../../../src/Hooks/useProductionTypeSummary";
+import { useSitesTimeline } from "../../../src/Hooks/useSitesTimeline";
 
 vi.mock("../../../src/Hooks/useUsSummaryData", () => ({
     useUsSummaryData: vi.fn(),
@@ -32,6 +33,9 @@ vi.mock("../../../src/Hooks/useHistoricalSummary", () => ({
 vi.mock("../../../src/Hooks/useProductionTypeSummary", () => ({
     useProductionTypeSummary: vi.fn(),
 }));
+vi.mock("../../../src/Hooks/useSitesTimeline", () => ({
+    useSitesTimeline: vi.fn(),
+}));
 
 vi.mock("../../../src/Components/StateInfo/StateInfo", () => ({
     default: ({ stateInfo }: { stateInfo: any }) => (
@@ -51,6 +55,10 @@ vi.mock("../../../src/Components/ChoroplethMap/ChoroplethMap", () => ({
             Select California
         </button>
     ),
+}));
+
+vi.mock("../../../src/Components/SitesTimelineChart/SitesTimelineChart", () => ({
+    default: () => <div data-testid="timeline-chart">Timeline Chart</div>,
 }));
 
 vi.mock("../../../src/Utils/dateFormatter", () => ({
@@ -151,6 +159,21 @@ const mockHistoricalSummary = {
     metadata: { last_scraped_date: "2026-06-03T00:50:47.375Z" },
 };
 
+const mockTimelineData = {
+    data: {
+        granularity: "month",
+        periods: [
+            {
+                period: "2022-02",
+                new_confirmations: 10,
+                birds_affected: 1154298,
+                cumulative_birds_affected: 1154298,
+            },
+        ],
+    },
+    metadata: { last_scraped_date: "2026-06-04T23:19:44.252Z" },
+};
+
 const mockProductionTypeSummary = {
     data: [
         {
@@ -182,6 +205,7 @@ describe("App", () => {
         (useActiveSites as any).mockReturnValue({ isPending: true });
         (useHistoricalSummary as any).mockReturnValue({ isPending: true });
         (useProductionTypeSummary as any).mockReturnValue({ isPending: true });
+        (useSitesTimeline as any).mockReturnValue({ isPending: true });
 
         render(<App />);
         expect(screen.getByText("...Loading")).toBeInTheDocument();
@@ -213,6 +237,10 @@ describe("App", () => {
             error: "Error",
         });
         (useProductionTypeSummary as any).mockReturnValue({
+            isPending: false,
+            error: "Error",
+        });
+        (useSitesTimeline as any).mockReturnValue({
             isPending: false,
             error: "Error",
         });
@@ -262,6 +290,11 @@ describe("App", () => {
             isPending: false,
             error: null,
             data: mockProductionTypeSummary,
+        });
+        (useSitesTimeline as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockTimelineData,
         });
 
         render(<App />);
@@ -319,6 +352,11 @@ describe("App", () => {
             isPending: false,
             error: null,
             data: mockProductionTypeSummary,
+        });
+        (useSitesTimeline as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockTimelineData,
         });
 
         render(<App />);

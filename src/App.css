@@ -439,3 +439,50 @@ section.chart-row {
     align-items: center;
     gap: 6px;
 }
+
+.timeline-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.timeline-controls {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.timeline-btn {
+    padding: 6px 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    transition: all 0.15s ease;
+}
+
+.timeline-btn:hover {
+    background: #f0f0f0;
+}
+
+.timeline-btn.active {
+    background: #0077ff;
+    color: #fff;
+    border-color: #0077ff;
+}
+
+.timeline-tooltip strong {
+    font-size: 13px;
+    color: #333;
+}
+
+.timeline-error {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    padding: 40px 0;
+}

@@ -21,6 +21,8 @@ import { useBackToClose } from "./Hooks/useBackToClose";
 import { useProductionTypeSummary } from "./Hooks/useProductionTypeSummary";
 import ProductionTypeBarChart from "./Components/ProductionTypeBarChart/ProductionTypeBarChart";
 import RecentConfirmations from "./Components/RecentConfirmations/RecentConfirmations";
+import { useSitesTimeline } from "./Hooks/useSitesTimeline";
+import SitesTimelineChart from "./Components/SitesTimelineChart/SitesTimelineChart";
 
 interface StateInformation extends FlockRecord {
     color: string;
@@ -39,6 +41,11 @@ function App() {
     const [flocksTimeRange, setFlocksTimeRange] = useState<
         "allTime" | "last30Days"
     >("allTime");
+
+    // Granularity for the timeline chart
+    const [timelineGranularity, setTimelineGranularity] = useState<
+        "week" | "month" | "year"
+    >("month");
 
     // Handle back and forward interactions on mobile
     useBackToClose(Boolean(selectedState), closeStateInfo);
@@ -100,6 +107,12 @@ function App() {
         error: productionTypeSummaryError,
         data: productionTypeSummaryDataFromAPI,
     } = useProductionTypeSummary(flockWatchServerURL);
+
+    // Fetch sites timeline data
+    const {
+        error: timelineError,
+        data: timelineDataFromAPI,
+    } = useSitesTimeline(flockWatchServerURL, timelineGranularity);
 
     // If we are currently loading data render the loading data component
     if (
@@ -312,6 +325,21 @@ function App() {
                             <RecentConfirmations
                                 sites={sitesDataFromAPI.data}
                             />
+                        </div>
+                    </section>
+                    <section className="chart-row">
+                        <div className="timeline-wrapper">
+                            {timelineError ? (
+                                <p className="timeline-error">
+                                    Failed to load timeline data
+                                </p>
+                            ) : (
+                                <SitesTimelineChart
+                                    data={timelineDataFromAPI?.data?.periods ?? []}
+                                    granularity={timelineGranularity}
+                                    onGranularityChange={setTimelineGranularity}
+                                />
+                            )}
                         </div>
                     </section>
                 </>
