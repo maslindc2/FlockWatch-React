@@ -9,6 +9,7 @@ import { useStatusSummary } from "../../../src/Hooks/useStatusSummary";
 import { useSitesData } from "../../../src/Hooks/useSitesData";
 import { useActiveSites } from "../../../src/Hooks/useActiveSites";
 import { useHistoricalSummary } from "../../../src/Hooks/useHistoricalSummary";
+import { useProductionTypeSummary } from "../../../src/Hooks/useProductionTypeSummary";
 
 vi.mock("../../../src/Hooks/useUsSummaryData", () => ({
     useUsSummaryData: vi.fn(),
@@ -27,6 +28,9 @@ vi.mock("../../../src/Hooks/useActiveSites", () => ({
 }));
 vi.mock("../../../src/Hooks/useHistoricalSummary", () => ({
     useHistoricalSummary: vi.fn(),
+}));
+vi.mock("../../../src/Hooks/useProductionTypeSummary", () => ({
+    useProductionTypeSummary: vi.fn(),
 }));
 
 vi.mock("../../../src/Components/StateInfo/StateInfo", () => ({
@@ -147,6 +151,24 @@ const mockHistoricalSummary = {
     metadata: { last_scraped_date: "2026-06-03T00:50:47.375Z" },
 };
 
+const mockProductionTypeSummary = {
+    data: [
+        {
+            production_type: "Commercial Table Egg Layer",
+            total_sites: 129,
+            total_birds_affected: 142863900,
+            by_status: { active: 0, released: 129, na: 0 },
+        },
+        {
+            production_type: "Commercial Turkey Meat Bird",
+            total_sites: 476,
+            total_birds_affected: 20758200,
+            by_status: { active: 0, released: 474, na: 2 },
+        },
+    ],
+    metadata: { last_scraped_date: "2026-06-03T00:50:47.375Z" },
+};
+
 describe("App", () => {
     beforeEach(() => {
         vi.clearAllMocks();
@@ -159,6 +181,7 @@ describe("App", () => {
         (useSitesData as any).mockReturnValue({ isPending: true });
         (useActiveSites as any).mockReturnValue({ isPending: true });
         (useHistoricalSummary as any).mockReturnValue({ isPending: true });
+        (useProductionTypeSummary as any).mockReturnValue({ isPending: true });
 
         render(<App />);
         expect(screen.getByText("...Loading")).toBeInTheDocument();
@@ -186,6 +209,10 @@ describe("App", () => {
             error: "Error",
         });
         (useHistoricalSummary as any).mockReturnValue({
+            isPending: false,
+            error: "Error",
+        });
+        (useProductionTypeSummary as any).mockReturnValue({
             isPending: false,
             error: "Error",
         });
@@ -230,6 +257,11 @@ describe("App", () => {
             isPending: false,
             error: null,
             data: mockHistoricalSummary,
+        });
+        (useProductionTypeSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockProductionTypeSummary,
         });
 
         render(<App />);
@@ -282,6 +314,11 @@ describe("App", () => {
             isPending: false,
             error: null,
             data: mockHistoricalSummary,
+        });
+        (useProductionTypeSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockProductionTypeSummary,
         });
 
         render(<App />);

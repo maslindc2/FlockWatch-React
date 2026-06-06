@@ -18,6 +18,8 @@ import HorizontalBarChart from "./Components/HorizontalBarChart/HorizontalBarCha
 import PieChart from "./Components/PieChart/PieChart";
 import SiteStatusPieChart from "./Components/SiteStatusPieChart/SiteStatusPieChart";
 import { useBackToClose } from "./Hooks/useBackToClose";
+import { useProductionTypeSummary } from "./Hooks/useProductionTypeSummary";
+import ProductionTypeBarChart from "./Components/ProductionTypeBarChart/ProductionTypeBarChart";
 
 interface StateInformation extends FlockRecord {
     color: string;
@@ -86,6 +88,13 @@ function App() {
         data: historicalSummaryDataFromAPI,
     } = useHistoricalSummary(flockWatchServerURL);
 
+    // Fetch production type summary data
+    const {
+        isPending: isProductionTypeSummaryPending,
+        error: productionTypeSummaryError,
+        data: productionTypeSummaryDataFromAPI,
+    } = useProductionTypeSummary(flockWatchServerURL);
+
     // If we are currently loading data render the loading data component
     if (
         isUsSummaryPending ||
@@ -93,7 +102,8 @@ function App() {
         isStatusSummaryPending ||
         isSitesPending ||
         isActiveSitesPending ||
-        isHistoricalSummaryPending
+        isHistoricalSummaryPending ||
+        isProductionTypeSummaryPending
     )
         return "...Loading";
     // If we encountered an error log the error that occurred
@@ -103,7 +113,8 @@ function App() {
         statusSummaryError ||
         sitesError ||
         activeSitesError ||
-        historicalSummaryError
+        historicalSummaryError ||
+        productionTypeSummaryError
     ) {
         console.log(usSummaryError);
         console.log(flockCasesError);
@@ -111,6 +122,7 @@ function App() {
         console.log(sitesError);
         console.log(activeSitesError);
         console.log(historicalSummaryError);
+        console.log(productionTypeSummaryError);
         return <ErrorComponent />;
     }
 
@@ -152,6 +164,8 @@ function App() {
         statusSummaryDataFromAPI.data.sites_released_last_30_days;
     // Format the last updated date
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
+    // Store the production type summary data
+    const productionTypeData = productionTypeSummaryDataFromAPI.data;
 
     function findSelectedStateColor(birdsAffectedInState: number): string {
         // For determining the color needed for the State Info component we need to first determine the color of the state
@@ -271,6 +285,13 @@ function App() {
                                     historicalSummaryDataFromAPI.data
                                         .total_na_sites
                                 }
+                            />
+                        </div>
+                    </section>
+                    <section className="chart-row">
+                        <div className="bar-chart-wrapper">
+                            <ProductionTypeBarChart
+                                data={productionTypeData}
                             />
                         </div>
                     </section>

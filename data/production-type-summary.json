@@ -1,0 +1,30 @@
+{
+    "data": [
+        { "total_sites": 4, "total_birds_affected": 144200, "production_type": "Commercial Breeder (Multiple Bird Species)", "by_status": { "active": 0, "released": 4, "na": 0 } },
+        { "total_sites": 12, "total_birds_affected": 201900, "production_type": "Commercial Breeder Operation", "by_status": { "active": 2, "released": 10, "na": 0 } },
+        { "total_sites": 21, "total_birds_affected": 732000, "production_type": "Commercial Broiler Breeder", "by_status": { "active": 0, "released": 21, "na": 0 } },
+        { "total_sites": 2, "total_birds_affected": 63900, "production_type": "Commercial Broiler Breeder Pullets", "by_status": { "active": 0, "released": 2, "na": 0 } },
+        { "total_sites": 70, "total_birds_affected": 12276900, "production_type": "Commercial Broiler Production", "by_status": { "active": 0, "released": 70, "na": 0 } },
+        { "total_sites": 42, "total_birds_affected": 695700, "production_type": "Commercial Duck Breeder", "by_status": { "active": 2, "released": 40, "na": 0 } },
+        { "total_sites": 93, "total_birds_affected": 1405100, "production_type": "Commercial Duck Meat Bird", "by_status": { "active": 8, "released": 84, "na": 1 } },
+        { "total_sites": 11, "total_birds_affected": 249200, "production_type": "Commercial Raised for Release Upland Game Bird", "by_status": { "active": 0, "released": 11, "na": 0 } },
+        { "total_sites": 1, "total_birds_affected": 30000, "production_type": "Commercial Raised for Release Waterfowl", "by_status": { "active": 0, "released": 1, "na": 0 } },
+        { "total_sites": 3, "total_birds_affected": 123000, "production_type": "Commercial Table Egg Breeder", "by_status": { "active": 0, "released": 3, "na": 0 } },
+        { "total_sites": 129, "total_birds_affected": 142863900, "production_type": "Commercial Table Egg Layer", "by_status": { "active": 0, "released": 129, "na": 0 } },
+        { "total_sites": 25, "total_birds_affected": 10372200, "production_type": "Commercial Table Egg Pullets", "by_status": { "active": 0, "released": 25, "na": 0 } },
+        { "total_sites": 40, "total_birds_affected": 701600, "production_type": "Commercial Turkey Breeder Hens", "by_status": { "active": 0, "released": 40, "na": 0 } },
+        { "total_sites": 9, "total_birds_affected": 207400, "production_type": "Commercial Turkey Breeder Replacement Hens", "by_status": { "active": 1, "released": 8, "na": 0 } },
+        { "total_sites": 4, "total_birds_affected": 11760, "production_type": "Commercial Turkey Breeder Toms", "by_status": { "active": 0, "released": 4, "na": 0 } },
+        { "total_sites": 476, "total_birds_affected": 20758200, "production_type": "Commercial Turkey Meat Bird", "by_status": { "active": 0, "released": 474, "na": 2 } },
+        { "total_sites": 1, "total_birds_affected": 8100, "production_type": "Commercial Turkey Poult Supplier", "by_status": { "active": 0, "released": 1, "na": 0 } },
+        { "total_sites": 26, "total_birds_affected": 709340, "production_type": "Commercial Upland Gamebird Producer", "by_status": { "active": 0, "released": 26, "na": 0 } },
+        { "total_sites": 71, "total_birds_affected": 34284, "production_type": "Live Bird Market", "by_status": { "active": 0, "released": 2, "na": 69 } },
+        { "total_sites": 2, "total_birds_affected": 1470, "production_type": "Live Bird Sales  (non-slaughter)", "by_status": { "active": 0, "released": 1, "na": 1 } },
+        { "total_sites": 1, "total_birds_affected": 650, "production_type": "Primary Broiler Breeder Pedigree Farm", "by_status": { "active": 0, "released": 1, "na": 0 } },
+        { "total_sites": 733, "total_birds_affected": 46973, "production_type": "WOAH Non-Poultry", "by_status": { "active": 0, "released": 245, "na": 488 } },
+        { "total_sites": 252, "total_birds_affected": 2396459, "production_type": "WOAH Poultry", "by_status": { "active": 3, "released": 249, "na": 0 } }
+    ],
+    "metadata": {
+        "last_scraped_date": "2026-06-04T23:19:44.252Z"
+    }
+}
