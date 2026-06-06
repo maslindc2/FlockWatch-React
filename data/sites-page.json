@@ -8,6 +8,87 @@
             "production_type": "Commercial Duck Meat Bird",
             "state": "Indiana",
             "status": "active"
+        },
+        {
+            "special_id": "Elkhart 46",
+            "birds_affected": 7500,
+            "confirmed_diagnosis_date": "2026-05-28T00:00:00.000Z",
+            "county": "Elkhart",
+            "production_type": "Commercial Duck Meat Bird",
+            "state": "Indiana",
+            "status": "active"
+        },
+        {
+            "special_id": "Elkhart 47",
+            "birds_affected": 28300,
+            "confirmed_diagnosis_date": "2026-05-28T00:00:00.000Z",
+            "county": "Elkhart",
+            "production_type": "WOAH Poultry",
+            "state": "Indiana",
+            "status": "active"
+        },
+        {
+            "special_id": "Elkhart 48",
+            "birds_affected": 28500,
+            "confirmed_diagnosis_date": "2026-05-28T00:00:00.000Z",
+            "county": "Elkhart",
+            "production_type": "WOAH Poultry",
+            "state": "Indiana",
+            "status": "active"
+        },
+        {
+            "special_id": "LaGrange 95",
+            "birds_affected": 5300,
+            "confirmed_diagnosis_date": "2026-05-28T00:00:00.000Z",
+            "county": "Lagrange",
+            "production_type": "Commercial Duck Meat Bird",
+            "state": "Indiana",
+            "status": "active"
+        },
+        {
+            "special_id": "LaGrange 94",
+            "birds_affected": 28300,
+            "confirmed_diagnosis_date": "2026-05-28T00:00:00.000Z",
+            "county": "Lagrange",
+            "production_type": "WOAH Poultry",
+            "state": "Indiana",
+            "status": "released"
+        },
+        {
+            "special_id": "Elkhart 45",
+            "birds_affected": 11600,
+            "confirmed_diagnosis_date": "2026-05-22T00:00:00.000Z",
+            "county": "Elkhart",
+            "production_type": "Commercial Duck Meat Bird",
+            "state": "Indiana",
+            "status": "active"
+        },
+        {
+            "special_id": "Susquehanna 01",
+            "birds_affected": 60,
+            "confirmed_diagnosis_date": "2026-05-22T00:00:00.000Z",
+            "county": "Susquehanna",
+            "production_type": "WOAH Non-Poultry",
+            "state": "Pennsylvania",
+            "status": "na"
+        },
+        {
+            "special_id": "Becker 14",
+            "birds_affected": 4300,
+            "confirmed_diagnosis_date": "2026-05-20T00:00:00.000Z",
+            "county": "Becker",
+            "production_type": "Commercial Breeder Operation",
+            "state": "Minnesota",
+            "status": "active"
+        },
+        {
+            "special_id": "Elkhart 44",
+            "birds_affected": 13600,
+            "confirmed_diagnosis_date": "2026-05-20T00:00:00.000Z",
+            "county": "Elkhart",
+            "production_type": "Commercial Duck Meat Bird",
+            "state": "Indiana",
+            "status": "active"
         }
     ],
     "total": 2027,

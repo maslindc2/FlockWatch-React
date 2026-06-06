@@ -20,6 +20,7 @@ import SiteStatusPieChart from "./Components/SiteStatusPieChart/SiteStatusPieCha
 import { useBackToClose } from "./Hooks/useBackToClose";
 import { useProductionTypeSummary } from "./Hooks/useProductionTypeSummary";
 import ProductionTypeBarChart from "./Components/ProductionTypeBarChart/ProductionTypeBarChart";
+import RecentConfirmations from "./Components/RecentConfirmations/RecentConfirmations";
 
 interface StateInformation extends FlockRecord {
     color: string;
@@ -292,6 +293,11 @@ function App() {
                         <div className="bar-chart-wrapper">
                             <ProductionTypeBarChart
                                 data={productionTypeData}
+                            />
+                        </div>
+                        <div className="pie-charts-column">
+                            <RecentConfirmations
+                                sites={sitesDataFromAPI.data}
                             />
                         </div>
                     </section>

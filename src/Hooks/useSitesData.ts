@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
-type SiteRecord = {
+export type SiteRecord = {
     special_id: string;
     birds_affected: number;
     confirmed_diagnosis_date: string;
