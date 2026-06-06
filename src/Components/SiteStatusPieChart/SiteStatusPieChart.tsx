@@ -10,6 +10,7 @@ interface Props {
 const CHART_WIDTH = 320;
 const CHART_HEIGHT = 220;
 const PIE_RADIUS = 75;
+const INNER_RADIUS = 32;
 const COLORS = {
     active: "#dc322f",
     released: "#27ae60",
@@ -48,7 +49,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
 
         const arc = d3
             .arc<d3.PieArcDatum<{ label: string; value: number }>>()
-            .innerRadius(0)
+            .innerRadius(INNER_RADIUS)
             .outerRadius(PIE_RADIUS);
 
         const centerX = 90;
@@ -75,6 +76,17 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             })
             .attr("stroke", "#fff")
             .attr("stroke-width", 2);
+
+        svg
+            .append("text")
+            .attr("x", centerX)
+            .attr("y", centerY)
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "central")
+            .attr("font-size", "18px")
+            .attr("font-weight", "700")
+            .attr("fill", "#333")
+            .text(total.toLocaleString());
 
         const labelX = centerX + PIE_RADIUS + 20;
         const labelStartY = centerY - 28;

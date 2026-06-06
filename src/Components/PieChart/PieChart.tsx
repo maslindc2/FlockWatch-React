@@ -11,6 +11,7 @@ interface Props {
 const CHART_WIDTH = 320;
 const CHART_HEIGHT = 270;
 const PIE_RADIUS = 68;
+const INNER_RADIUS = 30;
 const COLORS = {
     backyard: "#1a5276",
     commercial: "#85c1e9",
@@ -51,7 +52,7 @@ const PieChart: FC<Props> = ({
 
         const arc = d3
             .arc<d3.PieArcDatum<{ label: string; value: number }>>()
-            .innerRadius(0)
+            .innerRadius(INNER_RADIUS)
             .outerRadius(PIE_RADIUS);
 
         const centerX = 90;
@@ -73,6 +74,27 @@ const PieChart: FC<Props> = ({
             )
             .attr("stroke", "#fff")
             .attr("stroke-width", 2);
+
+        svg
+            .append("text")
+            .attr("x", centerX)
+            .attr("y", centerY - 5)
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "central")
+            .attr("font-size", "16px")
+            .attr("font-weight", "700")
+            .attr("fill", "#333")
+            .text(total.toLocaleString());
+
+        svg
+            .append("text")
+            .attr("x", centerX)
+            .attr("y", centerY + 14)
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "central")
+            .attr("font-size", "10px")
+            .attr("fill", "#666")
+            .text("flocks");
 
         const labelX = centerX + PIE_RADIUS + 20;
         const labelStartY = centerY - 20;
