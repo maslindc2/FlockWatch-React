@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { useEffect, useRef, type FC } from "react";
+import { useTheme } from "../../theme/theme";
 
 interface Props {
     backyardFlocks: number;
@@ -12,10 +13,6 @@ const CHART_WIDTH = 320;
 const CHART_HEIGHT = 270;
 const PIE_RADIUS = 68;
 const INNER_RADIUS = 30;
-const COLORS = {
-    backyard: "#1a5276",
-    commercial: "#85c1e9",
-};
 
 const PieChart: FC<Props> = ({
     backyardFlocks,
@@ -23,6 +20,7 @@ const PieChart: FC<Props> = ({
     timeRange,
     onToggle,
 }) => {
+    const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
 
     useEffect(() => {
@@ -69,10 +67,10 @@ const PieChart: FC<Props> = ({
             .attr("d", arc)
             .attr("fill", (d) =>
                 d.data.label === "Backyard"
-                    ? COLORS.backyard
-                    : COLORS.commercial
+                    ? chartColors.pieBackyard
+                    : chartColors.pieCommercial
             )
-            .attr("stroke", "#fff")
+            .attr("stroke", chartColors.pieStroke)
             .attr("stroke-width", 2);
 
         svg
@@ -83,7 +81,7 @@ const PieChart: FC<Props> = ({
             .attr("alignment-baseline", "central")
             .attr("font-size", "16px")
             .attr("font-weight", "700")
-            .attr("fill", "#333")
+            .attr("fill", chartColors.pieTextColor)
             .text(total.toLocaleString());
 
         svg
@@ -93,7 +91,7 @@ const PieChart: FC<Props> = ({
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "central")
             .attr("font-size", "10px")
-            .attr("fill", "#666")
+            .attr("fill", chartColors.pieSubtextColor)
             .text("flocks");
 
         const labelX = centerX + PIE_RADIUS + 20;
@@ -105,13 +103,13 @@ const PieChart: FC<Props> = ({
                 label: "Backyard",
                 count: backyardFlocks,
                 percent: backyardPercent,
-                color: COLORS.backyard,
+                color: chartColors.pieBackyard,
             },
             {
                 label: "Commercial",
                 count: commercialFlocks,
                 percent: commercialPercent,
-                color: COLORS.commercial,
+                color: chartColors.pieCommercial,
             },
         ];
 
@@ -135,7 +133,7 @@ const PieChart: FC<Props> = ({
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "12px")
-                .attr("fill", "#333")
+                .attr("fill", chartColors.pieTextColor)
                 .text(
                     `${item.label} - ${item.count.toLocaleString()} (${item.percent}%)`
                 );
@@ -148,7 +146,7 @@ const PieChart: FC<Props> = ({
             .attr("text-anchor", "middle")
             .attr("font-size", "14px")
             .attr("font-weight", "600")
-            .attr("fill", "#333")
+            .attr("fill", chartColors.pieTextColor)
             .text("Flocks Affected");
 
         const toggleOptions: Array<{ label: string; value: "allTime" | "last30Days" }> = [
@@ -173,8 +171,8 @@ const PieChart: FC<Props> = ({
                 .attr("y", btnY)
                 .attr("width", btnWidth)
                 .attr("height", btnHeight)
-                .attr("fill", isSelected ? "#333" : "#e8e8e8")
-                .attr("stroke", "#ccc")
+                .attr("fill", isSelected ? chartColors.pieToggleSelectedBg : chartColors.pieToggleUnselectedBg)
+                .attr("stroke", chartColors.pieToggleStroke)
                 .attr("stroke-width", 1)
                 .attr("rx", 4)
                 .attr("ry", 4)
@@ -189,11 +187,11 @@ const PieChart: FC<Props> = ({
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "11px")
                 .attr("font-weight", isSelected ? "600" : "400")
-                .attr("fill", isSelected ? "#fff" : "#333")
+                .attr("fill", isSelected ? chartColors.pieToggleSelectedText : chartColors.pieToggleUnselectedText)
                 .attr("pointer-events", "none")
                 .text(opt.label);
         });
-    }, [backyardFlocks, commercialFlocks, timeRange, onToggle]);
+    }, [backyardFlocks, commercialFlocks, timeRange, onToggle, theme]);
 
     return <svg ref={svgRef}></svg>;
 };

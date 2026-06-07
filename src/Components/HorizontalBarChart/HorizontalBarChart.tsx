@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { useEffect, useRef, type FC } from "react";
 import { FlockRecord } from "../../Hooks/useFlockCases";
+import { useTheme } from "../../theme/theme";
 
 interface Props {
     data: FlockRecord[];
@@ -15,6 +16,7 @@ const BAR_HEIGHT = 30;
 const BAR_GAP = 6;
 
 const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
+    const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
 
     useEffect(() => {
@@ -47,7 +49,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
             const y = i * (BAR_HEIGHT + BAR_GAP);
             const barWidth = barWidthScale(d.birds_affected);
             const isActive = activeStates.has(d.state);
-            const barColor = isActive ? "#dc322f" : "#0077ff";
+            const barColor = isActive ? chartColors.barActiveColor : chartColors.barInactiveColor;
 
             chartGroup
                 .append("rect")
@@ -55,7 +57,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("y", y)
                 .attr("width", chartWidth)
                 .attr("height", BAR_HEIGHT)
-                .attr("fill", "#e8e8e8")
+                .attr("fill", chartColors.barBg)
                 .attr("rx", 3)
                 .attr("ry", 3);
 
@@ -77,7 +79,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "12px")
                 .attr("font-weight", "600")
-                .attr("fill", "#333")
+                .attr("fill", chartColors.barTextColor)
                 .text(d.state);
 
             chartGroup
@@ -87,7 +89,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "13px")
-                .attr("fill", "#333")
+                .attr("fill", chartColors.barTextColor)
                 .text(d.birds_affected.toLocaleString());
         });
 
@@ -98,7 +100,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
             .attr("text-anchor", "middle")
             .attr("font-size", "20px")
             .attr("font-weight", "600")
-            .attr("fill", "#333")
+            .attr("fill", chartColors.barTitleColor)
             .text("Top 10 States by Birds Affected");
 
         const legendGroup = svg
@@ -109,7 +111,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
             .append("rect")
             .attr("width", 12)
             .attr("height", 12)
-            .attr("fill", "#dc322f")
+            .attr("fill", chartColors.barActiveColor)
             .attr("rx", 2)
             .attr("ry", 2);
 
@@ -119,9 +121,9 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
             .attr("y", 10)
             .attr("text-anchor", "start")
             .attr("font-size", "12px")
-            .attr("fill", "#666")
+            .attr("fill", chartColors.barLegendColor)
             .text("Red = has active sites today");
-    }, [data, activeStates]);
+    }, [data, activeStates, theme]);
 
     return <svg ref={svgRef}></svg>;
 };

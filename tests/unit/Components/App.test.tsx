@@ -2,7 +2,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { ThemeProvider } from "../../../src/theme/ThemeProvider";
 import App from "../../../src/App";
+
+function renderWithTheme(ui: React.ReactElement) {
+    return render(<ThemeProvider>{ui}</ThemeProvider>);
+}
 import { useUsSummaryData } from "../../../src/Hooks/useUsSummaryData";
 import { useFlockCases } from "../../../src/Hooks/useFlockCases";
 import { useStatusSummary } from "../../../src/Hooks/useStatusSummary";
@@ -207,7 +212,7 @@ describe("App", () => {
         (useProductionTypeSummary as any).mockReturnValue({ isPending: true });
         (useSitesTimeline as any).mockReturnValue({ isPending: true });
 
-        render(<App />);
+        renderWithTheme(<App />);
         expect(screen.getByText("...Loading")).toBeInTheDocument();
     });
 
@@ -245,7 +250,7 @@ describe("App", () => {
             error: "Error",
         });
 
-        render(<App />);
+        renderWithTheme(<App />);
         expect(screen.getByText("So Sorry!")).toBeInTheDocument();
         expect(
             screen.getByText(
@@ -297,7 +302,7 @@ describe("App", () => {
             data: mockTimelineData,
         });
 
-        render(<App />);
+        renderWithTheme(<App />);
         expect(screen.getByText("Flock Watch")).toBeInTheDocument();
         expect(screen.getByText(/Last updated on/)).toBeInTheDocument();
         expect(
@@ -359,11 +364,14 @@ describe("App", () => {
             data: mockTimelineData,
         });
 
-        render(<App />);
+        renderWithTheme(<App />);
 
         fireEvent.click(screen.getByText("Select California"));
 
-        const closeButton = screen.getByRole("button");
+        const buttons = screen.getAllByRole("button");
+        const closeButton = buttons.find((b) =>
+            b.classList.contains("close-button")
+        );
         expect(closeButton).toBeInTheDocument();
         expect(closeButton).toHaveClass("close-button");
     });

@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { useEffect, useRef, type FC } from "react";
+import { useTheme } from "../../theme/theme";
 
 interface Props {
     activeSites: number;
@@ -11,13 +12,9 @@ const CHART_WIDTH = 320;
 const CHART_HEIGHT = 220;
 const PIE_RADIUS = 75;
 const INNER_RADIUS = 32;
-const COLORS = {
-    active: "#dc322f",
-    released: "#27ae60",
-    na: "#95a5a6",
-};
 
 const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) => {
+    const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
 
     useEffect(() => {
@@ -67,14 +64,14 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .attr("fill", (d) => {
                 switch (d.data.label) {
                     case "Active":
-                        return COLORS.active;
+                        return chartColors.siteStatusActive;
                     case "Released":
-                        return COLORS.released;
+                        return chartColors.siteStatusReleased;
                     default:
-                        return COLORS.na;
+                        return chartColors.siteStatusNa;
                 }
             })
-            .attr("stroke", "#fff")
+            .attr("stroke", chartColors.pieStroke)
             .attr("stroke-width", 2);
 
         svg
@@ -85,7 +82,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .attr("alignment-baseline", "central")
             .attr("font-size", "18px")
             .attr("font-weight", "700")
-            .attr("fill", "#333")
+            .attr("fill", chartColors.pieTextColor)
             .text(total.toLocaleString());
 
         const labelX = centerX + PIE_RADIUS + 20;
@@ -97,19 +94,19 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
                 label: "Active",
                 count: activeSites,
                 percent: activePercent,
-                color: COLORS.active,
+                color: chartColors.siteStatusActive,
             },
             {
                 label: "Released",
                 count: releasedSites,
                 percent: releasedPercent,
-                color: COLORS.released,
+                color: chartColors.siteStatusReleased,
             },
             {
                 label: "N/A",
                 count: naSites,
                 percent: naPercent,
-                color: COLORS.na,
+                color: chartColors.siteStatusNa,
             },
         ];
 
@@ -133,7 +130,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "12px")
-                .attr("fill", "#333")
+                .attr("fill", chartColors.pieTextColor)
                 .text(
                     `${item.label} - ${item.count.toLocaleString()} (${item.percent}%)`
                 );
@@ -146,9 +143,9 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .attr("text-anchor", "middle")
             .attr("font-size", "14px")
             .attr("font-weight", "600")
-            .attr("fill", "#333")
+            .attr("fill", chartColors.pieTextColor)
             .text("Site Status (All Time)");
-    }, [activeSites, releasedSites, naSites]);
+    }, [activeSites, releasedSites, naSites, theme]);
 
     return <svg ref={svgRef}></svg>;
 };

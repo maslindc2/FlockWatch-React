@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { useEffect, useRef, type FC } from "react";
 import { ProductionTypeSummary } from "../../Hooks/useProductionTypeSummary";
+import { useTheme } from "../../theme/theme";
 
 interface Props {
     data: ProductionTypeSummary[];
@@ -14,6 +15,7 @@ const BAR_HEIGHT = 30;
 const BAR_GAP = 6;
 
 const ProductionTypeBarChart: FC<Props> = ({ data }) => {
+    const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
 
     useEffect(() => {
@@ -42,7 +44,7 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
         const colorScale = d3
             .scaleLinear<string>()
             .domain([0, maxAffected])
-            .range(["#cce5ff", "#004b99"]);
+            .range(chartColors.prodBarColorRange);
 
         const chartGroup = svg
             .append("g")
@@ -60,7 +62,7 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
                 .attr("y", y)
                 .attr("width", chartWidth)
                 .attr("height", BAR_HEIGHT)
-                .attr("fill", "#e8e8e8")
+                .attr("fill", chartColors.prodBarBg)
                 .attr("rx", 3)
                 .attr("ry", 3);
 
@@ -82,7 +84,7 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "12px")
                 .attr("font-weight", "600")
-                .attr("fill", "#333")
+                .attr("fill", chartColors.prodBarTextColor)
                 .text(d.production_type);
 
             chartGroup
@@ -92,7 +94,7 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "13px")
-                .attr("fill", "#333")
+                .attr("fill", chartColors.prodBarTextColor)
                 .text(d.total_birds_affected.toLocaleString());
         });
 
@@ -103,9 +105,9 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
             .attr("text-anchor", "middle")
             .attr("font-size", "20px")
             .attr("font-weight", "600")
-            .attr("fill", "#333")
+            .attr("fill", chartColors.prodBarTitleColor)
             .text("Birds Affected by Production Type");
-    }, [data]);
+    }, [data, theme]);
 
     return <svg ref={svgRef}></svg>;
 };

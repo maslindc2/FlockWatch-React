@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { useEffect, useRef, type FC } from "react";
 import type { TimelinePeriod } from "../../Hooks/useSitesTimeline";
+import { useTheme } from "../../theme/theme";
 
 interface Props {
     data: TimelinePeriod[];
@@ -37,6 +38,7 @@ const SitesTimelineChart: FC<Props> = ({
     granularity,
     onGranularityChange,
 }) => {
+    const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const tooltipRef = useRef<HTMLDivElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -87,7 +89,7 @@ const SitesTimelineChart: FC<Props> = ({
             .attr("text-anchor", "middle")
             .attr("font-size", "20px")
             .attr("font-weight", "600")
-            .attr("fill", "#333")
+            .attr("fill", chartColors.timelineTitleColor)
             .text("Avian Influenza Outbreak Timeline");
 
         const chartGroup = svg
@@ -107,7 +109,7 @@ const SitesTimelineChart: FC<Props> = ({
                     .tickFormat(() => "")
             )
             .selectAll("line")
-            .attr("stroke", "#e8e8e8")
+            .attr("stroke", chartColors.timelineGridColor)
             .attr("stroke-dasharray", "4");
 
         const xAxis = d3.axisBottom(xScale);
@@ -167,7 +169,7 @@ const SitesTimelineChart: FC<Props> = ({
             .attr("transform", "rotate(-90)")
             .attr("text-anchor", "middle")
             .attr("font-size", "12px")
-            .attr("fill", "#666")
+            .attr("fill", chartColors.timelineAxisLabelColor)
             .text("New Confirmations");
 
         svg.append("text")
@@ -176,7 +178,7 @@ const SitesTimelineChart: FC<Props> = ({
             .attr("transform", "rotate(-90)")
             .attr("text-anchor", "middle")
             .attr("font-size", "12px")
-            .attr("fill", "#666")
+            .attr("fill", chartColors.timelineAxisLabelColor)
             .text("Birds Affected");
 
         const areaConfirmations = d3
@@ -189,7 +191,7 @@ const SitesTimelineChart: FC<Props> = ({
         chartGroup
             .append("path")
             .datum(parsed)
-            .attr("fill", "#dc322f")
+            .attr("fill", chartColors.timelineConfirmationsColor)
             .attr("fill-opacity", 0.08)
             .attr("d", areaConfirmations);
 
@@ -203,7 +205,7 @@ const SitesTimelineChart: FC<Props> = ({
         chartGroup
             .append("path")
             .datum(parsed)
-            .attr("fill", "#0077ff")
+            .attr("fill", chartColors.timelineBirdsColor)
             .attr("fill-opacity", 0.08)
             .attr("d", areaBirds);
 
@@ -217,7 +219,7 @@ const SitesTimelineChart: FC<Props> = ({
             .append("path")
             .datum(parsed)
             .attr("fill", "none")
-            .attr("stroke", "#dc322f")
+            .attr("stroke", chartColors.timelineConfirmationsColor)
             .attr("stroke-width", 2)
             .attr("d", lineConfirmations);
 
@@ -231,7 +233,7 @@ const SitesTimelineChart: FC<Props> = ({
             .append("path")
             .datum(parsed)
             .attr("fill", "none")
-            .attr("stroke", "#0077ff")
+            .attr("stroke", chartColors.timelineBirdsColor)
             .attr("stroke-width", 2)
             .attr("d", lineBirds);
 
@@ -243,8 +245,8 @@ const SitesTimelineChart: FC<Props> = ({
             );
 
         [
-            { label: "New Confirmations", color: "#dc322f", x: 0 },
-            { label: "Birds Affected", color: "#0077ff", x: 180 },
+            { label: "New Confirmations", color: chartColors.timelineConfirmationsColor, x: 0 },
+            { label: "Birds Affected", color: chartColors.timelineBirdsColor, x: 180 },
         ].forEach((entry) => {
             legendGroup
                 .append("rect")
@@ -259,7 +261,7 @@ const SitesTimelineChart: FC<Props> = ({
                 .attr("x", entry.x + 18)
                 .attr("y", 2)
                 .attr("font-size", "12px")
-                .attr("fill", "#666")
+                .attr("fill", chartColors.timelineLegendColor)
                 .text(entry.label);
         });
 
@@ -271,7 +273,7 @@ const SitesTimelineChart: FC<Props> = ({
 
         const verticalLine = chartGroup
             .append("line")
-            .attr("stroke", "#999")
+            .attr("stroke", chartColors.timelineCrosshairColor)
             .attr("stroke-width", 1)
             .attr("stroke-dasharray", "4")
             .attr("y1", 0)
@@ -281,13 +283,13 @@ const SitesTimelineChart: FC<Props> = ({
         const confirmCircle = chartGroup
             .append("circle")
             .attr("r", 5)
-            .attr("fill", "#dc322f")
+            .attr("fill", chartColors.timelineConfirmationsColor)
             .style("opacity", 0);
 
         const birdsCircle = chartGroup
             .append("circle")
             .attr("r", 5)
-            .attr("fill", "#0077ff")
+            .attr("fill", chartColors.timelineBirdsColor)
             .style("opacity", 0);
 
         chartGroup
@@ -366,7 +368,7 @@ const SitesTimelineChart: FC<Props> = ({
                 birdsCircle.style("opacity", 0);
                 tooltip.style("opacity", 0);
             });
-    }, [data, granularity]);
+    }, [data, granularity, theme]);
 
     return (
         <div ref={containerRef} style={{ position: "relative" }}>
@@ -389,13 +391,13 @@ const SitesTimelineChart: FC<Props> = ({
                     position: "absolute",
                     opacity: 0,
                     pointerEvents: "none",
-                    background: "rgba(255,255,255,0.95)",
-                    border: "1px solid #ddd",
+                    background: chartColors.timelineTooltipBg,
+                    border: `1px solid ${chartColors.timelineTooltipBorder}`,
                     borderRadius: "4px",
                     padding: "8px 12px",
                     fontSize: "12px",
                     lineHeight: "1.6",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+                    boxShadow: `0 2px 6px ${chartColors.timelineTooltipShadow}`,
                     zIndex: 10,
                 }}
             ></div>

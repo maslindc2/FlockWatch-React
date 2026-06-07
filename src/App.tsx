@@ -10,6 +10,7 @@ import { useStatusSummary } from "./Hooks/useStatusSummary.js";
 import { useSitesData } from "./Hooks/useSitesData.js";
 import { useActiveSites } from "./Hooks/useActiveSites.js";
 import { useHistoricalSummary } from "./Hooks/useHistoricalSummary.js";
+import { useProductionTypeSummary } from "./Hooks/useProductionTypeSummary.js";
 import formatDateForUser from "./Utils/dateFormatter";
 import ErrorComponent from "./Components/TanStackPages/ErrorComponent";
 import * as d3 from "d3";
@@ -18,11 +19,11 @@ import HorizontalBarChart from "./Components/HorizontalBarChart/HorizontalBarCha
 import PieChart from "./Components/PieChart/PieChart";
 import SiteStatusPieChart from "./Components/SiteStatusPieChart/SiteStatusPieChart";
 import { useBackToClose } from "./Hooks/useBackToClose";
-import { useProductionTypeSummary } from "./Hooks/useProductionTypeSummary";
+import { useSitesTimeline } from "./Hooks/useSitesTimeline";
 import ProductionTypeBarChart from "./Components/ProductionTypeBarChart/ProductionTypeBarChart";
 import RecentConfirmations from "./Components/RecentConfirmations/RecentConfirmations";
-import { useSitesTimeline } from "./Hooks/useSitesTimeline";
 import SitesTimelineChart from "./Components/SitesTimelineChart/SitesTimelineChart";
+import { useTheme } from "./theme/theme";
 
 interface StateInformation extends FlockRecord {
     color: string;
@@ -32,22 +33,20 @@ const flockWatchServerURL =
     import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:8080/data";
 
 function App() {
-    // Used for displaying specific states statistics
+    const { theme, chartColors, toggleTheme } = useTheme();
+
     const [selectedState, setSelectedState] = useState<StateInformation | null>(
         null
     );
 
-    // Toggle for the Flocks Affected pie chart time range
     const [flocksTimeRange, setFlocksTimeRange] = useState<
         "allTime" | "last30Days"
     >("allTime");
 
-    // Granularity for the timeline chart
     const [timelineGranularity, setTimelineGranularity] = useState<
         "week" | "month" | "year"
     >("month");
 
-    // Handle back and forward interactions on mobile
     useBackToClose(Boolean(selectedState), closeStateInfo);
 
     useEffect(() => {
@@ -59,62 +58,53 @@ function App() {
         return () => document.body.classList.remove("state-window-open");
     }, [selectedState]);
 
-    // Fetch data using our useUsSummaryData with the server URL
     const {
         isPending: isUsSummaryPending,
         error: usSummaryError,
         data: usSummaryDataFromAPI,
     } = useUsSummaryData(flockWatchServerURL);
 
-    // Fetch data using our useFlockCases with the server URL
     const {
         isPending: isFlockCasesPending,
         error: flockCasesError,
         data: flockDataFromAPI,
     } = useFlockCases(flockWatchServerURL);
 
-    // Fetch status summary data
     const {
         isPending: isStatusSummaryPending,
         error: statusSummaryError,
         data: statusSummaryDataFromAPI,
     } = useStatusSummary(flockWatchServerURL);
 
-    // Fetch sites data for total site count
     const {
         isPending: isSitesPending,
         error: sitesError,
         data: sitesDataFromAPI,
     } = useSitesData(flockWatchServerURL);
 
-    // Fetch active sites data for birds at risk
     const {
         isPending: isActiveSitesPending,
         error: activeSitesError,
         data: activeSitesDataFromAPI,
     } = useActiveSites(flockWatchServerURL);
 
-    // Fetch historical summary data
     const {
         isPending: isHistoricalSummaryPending,
         error: historicalSummaryError,
         data: historicalSummaryDataFromAPI,
     } = useHistoricalSummary(flockWatchServerURL);
 
-    // Fetch production type summary data
     const {
         isPending: isProductionTypeSummaryPending,
         error: productionTypeSummaryError,
         data: productionTypeSummaryDataFromAPI,
     } = useProductionTypeSummary(flockWatchServerURL);
 
-    // Fetch sites timeline data
     const {
         error: timelineError,
         data: timelineDataFromAPI,
     } = useSitesTimeline(flockWatchServerURL, timelineGranularity);
 
-    // If we are currently loading data render the loading data component
     if (
         isUsSummaryPending ||
         isFlockCasesPending ||
@@ -125,7 +115,6 @@ function App() {
         isProductionTypeSummaryPending
     )
         return "...Loading";
-    // If we encountered an error log the error that occurred
     if (
         usSummaryError ||
         flockCasesError ||
@@ -145,56 +134,40 @@ function App() {
         return <ErrorComponent />;
     }
 
-    // Store the all time totals
     const usSummaryAllTimeTotals = usSummaryDataFromAPI.data.all_time_totals;
-
-    // Store the period summaries for the US
     const usPeriodSummaries = usSummaryDataFromAPI.data.period_summaries;
-    // Store the last update date
     const lastUpdated = flockDataFromAPI.metadata.last_scraped_date;
-    // Store the flock data
     const flockData = flockDataFromAPI.data;
-    // Store the total number of sites impacted
     const sitesTotal = sitesDataFromAPI.total;
-    // Compute total birds at risk from active sites
     const birdsAtRisk = activeSitesDataFromAPI.data.reduce(
         (sum: number, site: { birds_affected: number }) =>
             sum + site.birds_affected,
         0
     );
     const activeSitesCount = activeSitesDataFromAPI.total;
-    // Determine which states have active infections
     const activeStates = new Set(
         activeSitesDataFromAPI.data.map(
             (site: { state: string }) => site.state
         )
     );
-    // Create info tiles using the us summary all time totals
     const usInfoTiles = createInfoTiles(usSummaryAllTimeTotals, {
         total_flocks_affected: `${sitesTotal.toLocaleString()} total sites`,
     });
-    // Create info tiles using the last 30 days data
     const last30Days = createInfoTiles(usPeriodSummaries.last_30_days);
-    // Store the new confirmations count from the last 30 days
     const newConfirmations30d =
         statusSummaryDataFromAPI.data.sites_confirmed_last_30_days;
-    // Store the sites released count from the last 30 days
     const sitesReleased30d =
         statusSummaryDataFromAPI.data.sites_released_last_30_days;
-    // Format the last updated date
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
-    // Store the production type summary data
     const productionTypeData = productionTypeSummaryDataFromAPI.data;
 
     function findSelectedStateColor(birdsAffectedInState: number): string {
-        // For determining the color needed for the State Info component we need to first determine the color of the state
-        // that is found on the Choropleth Map
         const maxNumBirdsAffected =
             d3.max(flockData, (state) => state.birds_affected) ?? 1;
         const color = d3
             .scaleLinear<string>()
             .domain([0, maxNumBirdsAffected / 8, maxNumBirdsAffected])
-            .range(["#d0ffc6ff", "#94d190ff", "#006400"]);
+            .range(chartColors.selectedStateColorRange);
         return color(birdsAffectedInState);
     }
 
@@ -217,6 +190,17 @@ function App() {
             <header>
                 <div className="logo-banner">
                     <h1>Flock Watch</h1>
+                    <button
+                        className="theme-toggle"
+                        onClick={toggleTheme}
+                        aria-label={
+                            theme === "light"
+                                ? "Switch to dark mode"
+                                : "Switch to light mode"
+                        }
+                    >
+                        {theme === "light" ? "\u263E" : "\u2600"}
+                    </button>
                     <img
                         src="/game-icons_chicken.svg"
                         alt="Flock Watch Logo"

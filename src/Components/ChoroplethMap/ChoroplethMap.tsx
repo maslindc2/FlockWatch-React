@@ -9,6 +9,7 @@ import type {
     GeoJsonProperties,
 } from "geojson";
 import { FlockRecord } from "../../Hooks/useFlockCases";
+import { useTheme } from "../../theme/theme";
 
 import {
     stateAbbreviationToFips,
@@ -48,7 +49,7 @@ const labelOffsets: Record<string, [number, number]> = {
 const excludedStates = new Set(["21", "15", "22", "26", "12", "06"]);
 
 const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
-    // Create a ref that will allow us to insert d3 states into to create our US Map
+    const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
 
     // Runs on every render to display the Choropleth Map
@@ -102,7 +103,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             const color = d3
                 .scaleLinear<string>()
                 .domain([0, maxAffected / 8, maxAffected])
-                .range(["#defad7ff", "#94d190ff", "#006400"]);
+                .range(chartColors.choroplethColorRange);
 
             const legendWidth = 250;
             const legendHeight = 10;
@@ -117,9 +118,9 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             linearGradient
                 .selectAll("stop")
                 .data([
-                    { offset: "0%", color: "#ffffffff" },
-                    { offset: "50%", color: "#94d190ff" },
-                    { offset: "100%", color: "#006400" },
+                    { offset: "0%", color: chartColors.choroplethLegendRange[0] },
+                    { offset: "50%", color: chartColors.choroplethLegendRange[1] },
+                    { offset: "100%", color: chartColors.choroplethLegendRange[2] },
                 ])
                 .join("stop")
                 .attr("offset", (d) => d.offset)
@@ -139,7 +140,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .attr("width", legendWidth)
                 .attr("height", legendHeight)
                 .style("fill", "url(#legend-gradient)")
-                .attr("stroke", "#333")
+                .attr("stroke", chartColors.choroplethLegendStroke)
                 .attr("stroke-width", 0.5);
 
             // Define scale and axis for the legend
@@ -160,7 +161,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .call(legendAxis)
                 .selectAll("text")
                 .style("font-size", "15px")
-                .style("fill", "#000")
+                .style("fill", chartColors.choroplethLabelColor)
                 .select(".domain")
                 .remove();
 
@@ -171,7 +172,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .attr("y", -8)
                 .attr("text-anchor", "middle")
                 .attr("font-size", "15px")
-                .attr("fill", "#000")
+                .attr("fill", chartColors.choroplethLabelColor)
                 .text("Birds Affected");
 
             // Draw the state shapes and color them
@@ -188,7 +189,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                     // Set the original fill color
                     element.attr("data-original-fill", originalFill);
                     // Shade the current state to our hover color
-                    element.attr("fill", "hsla(0, 0%, 17%, 0.55)");
+                    element.attr("fill", chartColors.choroplethHover);
                 })
                 .on("mouseout", (event) => {
                     // When we move our mouse off the state this will reset the current state back to it's original color
@@ -205,7 +206,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                     const fips = d.id?.toString();
                     const value = fips ? birdsAffectedMap.get(fips) : undefined;
                     // If the value is undefined then set it to white
-                    return value !== undefined ? color(value) : "#eee";
+                    return value !== undefined ? color(value) : chartColors.choroplethNoData;
                 })
                 .on("click", (event, d: StateFeature) => {
                     // When a state is clicked we find what state was clicked and then use this to display that state's particular stats
@@ -216,7 +217,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                         stateTrigger(abbreviation);
                     }
                 })
-                .attr("stroke", "hsla(0, 0%, 21%, 1.00)") // This is the border line between states
+                .attr("stroke", chartColors.choroplethStroke) // This is the border line between states
                 .attr("stroke-width", 1); // This is how wide the border line should be between states
 
             // We can't have a blank map so let's put some labels (Also who even remembers all 50 states)
@@ -243,7 +244,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "20px")
-                .attr("fill", "#000")
+                .attr("fill", chartColors.choroplethLabelColor)
                 .attr("pointer-events", "none");
 
             // This section allows us to offset the state labels and add pointers
@@ -269,9 +270,9 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                     const id = d.id!.toString();
                     return path.centroid(d)[1] + labelOffsets[id]![1];
                 })
-                .attr("stroke", "#333");
+                .attr("stroke", chartColors.choroplethPointerLine);
         });
-    });
+    }, [data, stateTrigger, theme]);
     return <svg ref={svgRef}></svg>;
 };
 
