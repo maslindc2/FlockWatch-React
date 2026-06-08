@@ -248,14 +248,14 @@ function App() {
                             </section>
                         </section>
                     </section>
-                    <section className="state-dropdown">
-                        <StateDropdown onSelect={findSetSelectedState} />
-                    </section>
                     <section className="choropleth-map">
-                        <ChoroplethMap
-                            data={flockData}
-                            stateTrigger={findSetSelectedState}
-                        />
+                        <div className="choropleth-container">
+                            <StateDropdown onSelect={findSetSelectedState} />
+                            <ChoroplethMap
+                                data={flockData}
+                                stateTrigger={findSetSelectedState}
+                            />
+                        </div>
                     </section>
                     <section className="chart-row">
                         <div className="bar-chart-wrapper">

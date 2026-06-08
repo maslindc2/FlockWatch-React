@@ -273,7 +273,11 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .attr("stroke", chartColors.choroplethPointerLine);
         });
     }, [data, stateTrigger, theme]);
-    return <svg ref={svgRef}></svg>;
+    return (
+        <div className="choropleth-container">
+            <svg ref={svgRef}></svg>
+        </div>
+    );
 };
 
 export default ChoroplethMap;
