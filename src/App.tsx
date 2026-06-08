@@ -265,38 +265,40 @@ function App() {
                             />
                         </div>
                         <div className="pie-charts-column">
-                            <PieChart
-                                backyardFlocks={
-                                    flocksTimeRange === "allTime"
-                                        ? usSummaryAllTimeTotals
-                                              .total_backyard_flocks_affected
-                                        : usPeriodSummaries.last_30_days
-                                              .total_backyard_flocks_affected
-                                }
-                                commercialFlocks={
-                                    flocksTimeRange === "allTime"
-                                        ? usSummaryAllTimeTotals
-                                              .total_commercial_flocks_affected
-                                        : usPeriodSummaries.last_30_days
-                                              .total_commercial_flocks_affected
-                                }
-                                timeRange={flocksTimeRange}
-                                onToggle={setFlocksTimeRange}
-                            />
-                            <SiteStatusPieChart
-                                activeSites={
-                                    historicalSummaryDataFromAPI.data
-                                        .total_active_sites
-                                }
-                                releasedSites={
-                                    historicalSummaryDataFromAPI.data
-                                        .total_released_sites
-                                }
-                                naSites={
-                                    historicalSummaryDataFromAPI.data
-                                        .total_na_sites
-                                }
-                            />
+                            <div className="pie-charts-group">
+                                <PieChart
+                                    backyardFlocks={
+                                        flocksTimeRange === "allTime"
+                                            ? usSummaryAllTimeTotals
+                                                  .total_backyard_flocks_affected
+                                            : usPeriodSummaries.last_30_days
+                                                  .total_backyard_flocks_affected
+                                    }
+                                    commercialFlocks={
+                                        flocksTimeRange === "allTime"
+                                            ? usSummaryAllTimeTotals
+                                                  .total_commercial_flocks_affected
+                                            : usPeriodSummaries.last_30_days
+                                                  .total_commercial_flocks_affected
+                                    }
+                                    timeRange={flocksTimeRange}
+                                    onToggle={setFlocksTimeRange}
+                                />
+                                <SiteStatusPieChart
+                                    activeSites={
+                                        historicalSummaryDataFromAPI.data
+                                            .total_active_sites
+                                    }
+                                    releasedSites={
+                                        historicalSummaryDataFromAPI.data
+                                            .total_released_sites
+                                    }
+                                    naSites={
+                                        historicalSummaryDataFromAPI.data
+                                            .total_na_sites
+                                    }
+                                />
+                            </div>
                         </div>
                     </section>
                     <section className="chart-row">
