@@ -125,7 +125,11 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
             .text("Red = has active sites today");
     }, [data, activeStates, theme]);
 
-    return <svg ref={svgRef}></svg>;
+    return (
+        <div className="bar-chart-container">
+            <svg ref={svgRef}></svg>
+        </div>
+    );
 };
 
 export default HorizontalBarChart;

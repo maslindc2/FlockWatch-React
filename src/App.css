@@ -260,6 +260,13 @@ section.chart-row {
   min-width: 0;
 }
 
+.bar-chart-container {
+  background: var(--surface-primary);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px var(--shadow-sm);
+}
+
 .pie-charts-column {
   flex: 0 0 auto;
   width: 320px;
