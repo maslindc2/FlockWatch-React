@@ -19,7 +19,7 @@
 }
 
 [data-theme="dark"] {
-  --bg-primary: #121212;
+  --bg-primary: #262624;
   --bg-secondary: #1a1a1a;
   --surface-primary: #1e1e2e;
   --surface-hover: #2a2a3e;
@@ -327,6 +327,7 @@ section.chart-row {
 
 .tile-container {
   position: relative;
+  background: var(--surface-primary);
   color: var(--tile-text-color);
   width: 250px;
   height: 100px;
