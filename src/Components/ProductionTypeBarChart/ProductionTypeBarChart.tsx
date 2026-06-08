@@ -109,7 +109,11 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
             .text("Birds Affected by Production Type");
     }, [data, theme]);
 
-    return <svg ref={svgRef}></svg>;
+    return (
+        <div className="bar-chart-container">
+            <svg ref={svgRef}></svg>
+        </div>
+    );
 };
 
 export default ProductionTypeBarChart;

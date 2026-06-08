@@ -539,6 +539,13 @@ section.chart-row {
   margin: 0 auto;
 }
 
+.timeline-chart-container {
+  background: var(--surface-primary);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px var(--shadow-sm);
+}
+
 .timeline-controls {
   display: flex;
   gap: 8px;

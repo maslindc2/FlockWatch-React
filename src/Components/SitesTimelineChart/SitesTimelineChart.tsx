@@ -371,7 +371,7 @@ const SitesTimelineChart: FC<Props> = ({
     }, [data, granularity, theme]);
 
     return (
-        <div ref={containerRef} style={{ position: "relative" }}>
+        <div ref={containerRef} className="timeline-chart-container" style={{ position: "relative" }}>
             <div className="timeline-controls">
                 {(["week", "month", "year"] as const).map((g) => (
                     <button
