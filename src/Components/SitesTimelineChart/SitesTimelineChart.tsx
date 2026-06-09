@@ -11,7 +11,7 @@ interface Props {
 
 const CHART_WIDTH = 900;
 const CHART_HEIGHT = 420;
-const MARGIN = { top: 40, right: 80, bottom: 80, left: 70 };
+const MARGIN = { top: 40, right: 110, bottom: 80, left: 70 };
 const INNER_WIDTH = CHART_WIDTH - MARGIN.left - MARGIN.right;
 const INNER_HEIGHT = CHART_HEIGHT - MARGIN.top - MARGIN.bottom;
 
@@ -160,7 +160,7 @@ const SitesTimelineChart: FC<Props> = ({
                 d3
                     .axisRight(yRightScale)
                     .ticks(6)
-                    .tickFormat((d) => d.toLocaleString())
+                    .tickFormat((d) => `${(d / 1_000_000).toFixed(1)} M`)
             )
             .selectAll("text")
             .attr("fill", chartColors.timelineAxisLabelColor)
@@ -177,7 +177,7 @@ const SitesTimelineChart: FC<Props> = ({
 
         svg.append("text")
             .attr("x", -(MARGIN.top + INNER_HEIGHT / 2))
-            .attr("y", CHART_WIDTH - MARGIN.right + 35)
+            .attr("y", CHART_WIDTH - MARGIN.right + 60)
             .attr("transform", "rotate(-90)")
             .attr("text-anchor", "middle")
             .attr("font-size", "12px")
