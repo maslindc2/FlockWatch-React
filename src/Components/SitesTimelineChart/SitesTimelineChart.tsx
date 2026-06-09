@@ -11,7 +11,7 @@ interface Props {
 
 const CHART_WIDTH = 900;
 const CHART_HEIGHT = 420;
-const MARGIN = { top: 40, right: 80, bottom: 60, left: 70 };
+const MARGIN = { top: 40, right: 80, bottom: 80, left: 70 };
 const INNER_WIDTH = CHART_WIDTH - MARGIN.left - MARGIN.right;
 const INNER_HEIGHT = CHART_HEIGHT - MARGIN.top - MARGIN.bottom;
 
@@ -138,6 +138,7 @@ const SitesTimelineChart: FC<Props> = ({
             .selectAll("text")
             .attr("transform", "rotate(-45)")
             .attr("text-anchor", "end")
+            .attr("fill", chartColors.timelineAxisLabelColor)
             .style("font-size", "11px");
 
         chartGroup
@@ -149,6 +150,7 @@ const SitesTimelineChart: FC<Props> = ({
                     .tickFormat((d) => d.toLocaleString())
             )
             .selectAll("text")
+            .attr("fill", chartColors.timelineAxisLabelColor)
             .style("font-size", "11px");
 
         chartGroup
@@ -161,6 +163,7 @@ const SitesTimelineChart: FC<Props> = ({
                     .tickFormat((d) => d.toLocaleString())
             )
             .selectAll("text")
+            .attr("fill", chartColors.timelineAxisLabelColor)
             .style("font-size", "11px");
 
         svg.append("text")
@@ -241,7 +244,7 @@ const SitesTimelineChart: FC<Props> = ({
             .append("g")
             .attr(
                 "transform",
-                `translate(0, ${INNER_HEIGHT + 35})`
+                `translate(0, ${INNER_HEIGHT + 50})`
             );
 
         [

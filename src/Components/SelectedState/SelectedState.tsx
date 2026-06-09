@@ -57,7 +57,7 @@ const SelectedStateMap: React.FC<SelectedStateMapProps> = ({
                 .datum(selected)
                 .attr("d", path!)
                 .attr("fill", stateColor)
-                .attr("stroke", "#333")
+                .style("stroke", "var(--border-color)")
                 .attr("stroke-width", 1.5);
         });
     }, [fipsCode, stateColor, stateName]);
