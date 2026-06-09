@@ -153,7 +153,6 @@ function App() {
     const usInfoTiles = createInfoTiles(usSummaryAllTimeTotals, {
         total_flocks_affected: `${sitesTotal.toLocaleString()} total sites`,
     });
-    const last30Days = createInfoTiles(usPeriodSummaries.last_30_days);
     const newConfirmations30d =
         statusSummaryDataFromAPI.data.sites_confirmed_last_30_days;
     const sitesReleased30d =
@@ -213,7 +212,7 @@ function App() {
                 <>
                     <section className="stats-section">
                         <section className="info-tile-group">
-                            <h2 className="info-tile-title">All Time Totals</h2>
+                            <h2 className="info-tile-title">Overview</h2>
                             <section className="info-tiles">
                                 {usInfoTiles}
                                 <KpiTiles
@@ -224,12 +223,6 @@ function App() {
                                     icon="/rooster.png"
                                     bgColor="rgba(220, 50, 50, 1)"
                                 />
-                            </section>
-                        </section>
-                        <section className="info-tile-group">
-                            <h2 className="info-tile-title">Last 30 Days</h2>
-                            <section className="info-tiles">
-                                {last30Days}
                                 <KpiTiles
                                     id="new-confirmations"
                                     title="New Confirmations (30d)"

@@ -309,8 +309,8 @@ describe("App", () => {
             screen.getByRole("button", { name: "Select California" })
         ).toBeInTheDocument();
 
-        expect(screen.getByText("All Time Totals")).toBeInTheDocument();
-        expect(screen.getAllByText("Last 30 Days").length).toBeGreaterThanOrEqual(1);
+        expect(screen.getByText("Overview")).toBeInTheDocument();
+        expect(screen.queryByText("All Time Totals")).not.toBeInTheDocument();
         expect(
             screen.getByText("New Confirmations (30d)")
         ).toBeInTheDocument();
