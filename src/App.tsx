@@ -329,6 +329,7 @@ function App() {
                     <button
                         onClick={closeStateInfo}
                         className="close-button"
+                        aria-label="Close state information"
                     ></button>
                     <StateInfo stateInfo={selectedState} />
                 </div>

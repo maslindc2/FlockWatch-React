@@ -531,7 +531,7 @@ section.chart-row {
 
 .entry-date {
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .recent-confirmations-legend {

@@ -154,50 +154,8 @@ const PieChart: FC<Props> = ({
             .attr("fill", chartColors.pieTextColor)
             .text("Flocks Affected");
 
-        const toggleOptions: Array<{ label: string; value: "allTime" | "last30Days" }> = [
-            { label: "All Time", value: "allTime" },
-            { label: "Last 30 Days", value: "last30Days" },
-        ];
-
-        const btnWidth = 85;
-        const btnHeight = 24;
-        const btnGap = 6;
-        const totalWidth = toggleOptions.length * btnWidth + (toggleOptions.length - 1) * btnGap;
-        const startX = (CHART_WIDTH - totalWidth) / 2;
-        const btnY = 32;
-
-        toggleOptions.forEach((opt, i) => {
-            const x = startX + i * (btnWidth + btnGap);
-            const isSelected = timeRange === opt.value;
-
-            svg
-                .append("rect")
-                .attr("x", x)
-                .attr("y", btnY)
-                .attr("width", btnWidth)
-                .attr("height", btnHeight)
-                .attr("fill", isSelected ? chartColors.pieToggleSelectedBg : chartColors.pieToggleUnselectedBg)
-                .attr("stroke", chartColors.pieToggleStroke)
-                .attr("stroke-width", 1)
-                .attr("rx", 4)
-                .attr("ry", 4)
-                .style("cursor", "pointer")
-                .on("click", () => onToggle(opt.value));
-
-            svg
-                .append("text")
-                .attr("x", x + btnWidth / 2)
-                .attr("y", btnY + btnHeight / 2)
-                .attr("text-anchor", "middle")
-                .attr("alignment-baseline", "central")
-                .attr("font-size", "11px")
-                .attr("font-weight", isSelected ? "600" : "400")
-                .attr("fill", isSelected ? chartColors.pieToggleSelectedText : chartColors.pieToggleUnselectedText)
-                .attr("pointer-events", "none")
-                .text(opt.label);
-        });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [backyardFlocks, commercialFlocks, timeRange, onToggle, theme]);
+    }, [backyardFlocks, commercialFlocks, theme]);
 
     const total = backyardFlocks + commercialFlocks;
     const chartLabel =
@@ -205,7 +163,41 @@ const PieChart: FC<Props> = ({
             ? `Donut chart showing flocks affected, ${timeRange === "allTime" ? "all time" : "last 30 days"}. Backyard: ${backyardFlocks.toLocaleString()} (${((backyardFlocks / total) * 100).toFixed(1)}%), Commercial: ${commercialFlocks.toLocaleString()} (${((commercialFlocks / total) * 100).toFixed(1)}%). Total: ${total.toLocaleString()} flocks.`
             : "Donut chart showing flocks affected. No data available.";
 
-    return <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>;
+    const toggleBtnStyle = (selected: boolean): React.CSSProperties => ({
+        padding: "6px 14px",
+        border: `1px solid ${chartColors.pieToggleStroke}`,
+        borderRadius: "4px",
+        background: selected ? chartColors.pieToggleSelectedBg : chartColors.pieToggleUnselectedBg,
+        color: selected ? chartColors.pieToggleSelectedText : chartColors.pieToggleUnselectedText,
+        fontWeight: selected ? 600 : 400,
+        fontSize: "11px",
+        cursor: "pointer",
+        fontFamily: "inherit",
+        lineHeight: 1,
+        transition: "all 0.15s ease",
+    });
+
+    return (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div style={{ display: "flex", gap: "6px", marginBottom: "8px" }}>
+                <button
+                    style={toggleBtnStyle(timeRange === "allTime")}
+                    onClick={() => onToggle("allTime")}
+                    aria-pressed={timeRange === "allTime"}
+                >
+                    All Time
+                </button>
+                <button
+                    style={toggleBtnStyle(timeRange === "last30Days")}
+                    onClick={() => onToggle("last30Days")}
+                    aria-pressed={timeRange === "last30Days"}
+                >
+                    Last 30 Days
+                </button>
+            </div>
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
+        </div>
+    );
 };
 
 export default PieChart;
