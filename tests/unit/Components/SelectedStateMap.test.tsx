@@ -50,6 +50,13 @@ vi.mock("d3", () => {
                         }
                         return element.getAttribute(name);
                     }),
+                    style: vi.fn(function (name, value) {
+                        if (value !== undefined) {
+                            element.style[name] = value;
+                            return this;
+                        }
+                        return element.style[name];
+                    }),
                 };
             }),
         })),
@@ -138,7 +145,7 @@ describe("SelectedStateMap", () => {
             const path = document.querySelector("path");
             expect(path).toBeInTheDocument();
             expect(path).toHaveAttribute("fill", "red");
-            expect(path).toHaveAttribute("stroke", "#333");
+            expect(path).toHaveStyle("stroke: var(--border-color)");
         });
     });
 
