@@ -116,7 +116,41 @@ function App() {
         isHistoricalSummaryPending ||
         isProductionTypeSummaryPending
     )
-        return "...Loading";
+        return (
+            <>
+                <a href="#main-content" className="skip-link">
+                    Skip to main content
+                </a>
+                <div className="loading-screen">
+                    <header>
+                        <div className="logo-banner">
+                            <h1>Flock Watch</h1>
+                            <button
+                                className="theme-toggle"
+                                onClick={toggleTheme}
+                                aria-label={
+                                    theme === "light"
+                                        ? "Switch to dark mode"
+                                        : "Switch to light mode"
+                                }
+                            >
+                                {theme === "light" ? "\u263E" : "\u2600"}
+                            </button>
+                            <img
+                                src="/game-icons_chicken.svg"
+                                alt="Flock Watch Logo"
+                            />
+                        </div>
+                    </header>
+                    <div className="loading-spinner" role="status" aria-live="polite">
+                        <div className="spinner" />
+                        <span className="visually-hidden">
+                            Loading avian influenza data…
+                        </span>
+                    </div>
+                </div>
+            </>
+        );
     if (
         usSummaryError ||
         flockCasesError ||
