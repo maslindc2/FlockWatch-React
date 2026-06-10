@@ -178,7 +178,7 @@ const PieChart: FC<Props> = ({
     });
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div className="pie-chart-wrapper" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <div style={{ display: "flex", gap: "6px", marginBottom: "8px" }}>
                 <button
                     style={toggleBtnStyle(timeRange === "allTime")}

@@ -196,6 +196,24 @@ function App() {
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
     const productionTypeData = productionTypeSummaryDataFromAPI.data;
 
+    const timelinePeriods = timelineDataFromAPI?.data?.periods;
+    let confirmationsTrend: string | null = null;
+    if (timelinePeriods && timelinePeriods.length >= 2) {
+        const sorted = [...timelinePeriods].sort((a, b) =>
+            b.period.localeCompare(a.period)
+        );
+        const current = sorted[0].new_confirmations;
+        const previous = sorted[1].new_confirmations;
+        if (previous > 0) {
+            const diff = current - previous;
+            const pct = Math.round((diff / previous) * 100);
+            const arrow = diff >= 0 ? "\u2191" : "\u2193";
+            confirmationsTrend = `${arrow} ${Math.abs(pct)}% vs previous month`;
+        } else if (current > 0) {
+            confirmationsTrend = `+${current.toLocaleString()} vs previous month`;
+        }
+    }
+
     function findSelectedStateColor(birdsAffectedInState: number): string {
         const maxNumBirdsAffected =
             d3.max(flockData, (state) => state.birds_affected) ?? 1;
@@ -267,6 +285,7 @@ function App() {
                                     id="new-confirmations"
                                     title="New Confirmations (30d)"
                                     amount={newConfirmations30d.toLocaleString()}
+                                    subtext={confirmationsTrend ?? undefined}
                                     icon="/rooster.png"
                                     bgColor="rgba(0, 119, 255, 1)"
                                 />

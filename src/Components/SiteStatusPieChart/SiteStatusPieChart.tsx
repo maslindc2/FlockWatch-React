@@ -159,7 +159,11 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             ? `Donut chart showing site status breakdown all time. Active: ${activeSites.toLocaleString()} (${((activeSites / total) * 100).toFixed(1)}%), Released: ${releasedSites.toLocaleString()} (${((releasedSites / total) * 100).toFixed(1)}%), N/A: ${naSites.toLocaleString()} (${((naSites / total) * 100).toFixed(1)}%). Total: ${total.toLocaleString()} sites.`
             : "Donut chart showing site status breakdown. No data available.";
 
-    return <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>;
+    return (
+        <div className="site-status-pie-wrapper">
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
+        </div>
+    );
 };
 
 export default SiteStatusPieChart;

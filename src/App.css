@@ -673,3 +673,32 @@ section.chart-row {
   font-size: 14px;
   padding: 40px 0;
 }
+
+.choropleth-container svg,
+.bar-chart-container svg,
+.pie-chart-wrapper svg,
+.site-status-pie-wrapper svg,
+.timeline-chart-container svg {
+  display: block;
+  width: 100%;
+}
+
+.choropleth-container svg {
+  aspect-ratio: 980 / 780;
+}
+
+.bar-chart-container svg {
+  aspect-ratio: 800 / 460;
+}
+
+.pie-chart-wrapper svg {
+  aspect-ratio: 320 / 270;
+}
+
+.site-status-pie-wrapper svg {
+  aspect-ratio: 320 / 220;
+}
+
+.timeline-chart-container svg {
+  aspect-ratio: 900 / 420;
+}
