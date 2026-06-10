@@ -187,7 +187,11 @@ function App() {
     }
 
     return (
-        <main>
+        <>
+            <a href="#main-content" className="skip-link">
+                Skip to main content
+            </a>
+            <main id="main-content" tabIndex={-1}>
             <header>
                 <div className="logo-banner">
                     <h1>Flock Watch</h1>
@@ -335,7 +339,8 @@ function App() {
                 </div>
             )}
         </main>
-    );
+    </>
+);
 }
 
 export default App;
