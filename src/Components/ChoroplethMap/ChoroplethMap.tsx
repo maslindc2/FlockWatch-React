@@ -233,7 +233,6 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                         return !isNaN(centroid[0]) && !isNaN(centroid[1]);
                     })
                 )
-                .data(states as unknown as StateFeature[])
                 .join("text")
                 .attr("transform", (d) => {
                     const centroid = path.centroid(d);
@@ -278,9 +277,15 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, stateTrigger, theme]);
+
+    const chartLabel =
+        data.length > 0
+            ? `Map of the United States showing total birds affected by avian influenza by state. Top affected states: ${[...data].sort((a, b) => b.birds_affected - a.birds_affected).slice(0, 3).map((d) => `${d.state}: ${d.birds_affected.toLocaleString()} birds`).join(", ")}.`
+            : "Map of the United States showing avian influenza data.";
+
     return (
         <div className="choropleth-container">
-            <svg ref={svgRef}></svg>
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );
 };

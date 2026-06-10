@@ -153,7 +153,13 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeSites, releasedSites, naSites, theme]);
 
-    return <svg ref={svgRef}></svg>;
+    const total = activeSites + releasedSites + naSites;
+    const chartLabel =
+        total > 0
+            ? `Donut chart showing site status breakdown all time. Active: ${activeSites.toLocaleString()} (${((activeSites / total) * 100).toFixed(1)}%), Released: ${releasedSites.toLocaleString()} (${((releasedSites / total) * 100).toFixed(1)}%), N/A: ${naSites.toLocaleString()} (${((naSites / total) * 100).toFixed(1)}%). Total: ${total.toLocaleString()} sites.`
+            : "Donut chart showing site status breakdown. No data available.";
+
+    return <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>;
 };
 
 export default SiteStatusPieChart;

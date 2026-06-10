@@ -379,6 +379,11 @@ const SitesTimelineChart: FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, granularity, theme]);
 
+    const chartLabel =
+        data.length > 0
+            ? `Timeline chart showing avian influenza outbreak from ${data[0].period} to ${data[data.length - 1].period} at ${granularity} granularity with ${data.length} data points.`
+            : "Timeline chart showing avian influenza outbreak over time.";
+
     return (
         <div ref={containerRef} className="timeline-chart-container" style={{ position: "relative" }}>
             <div className="timeline-controls">
@@ -392,7 +397,34 @@ const SitesTimelineChart: FC<Props> = ({
                     </button>
                 ))}
             </div>
-            <svg ref={svgRef}></svg>
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
+            <details style={{ marginTop: "12px", cursor: "pointer" }}>
+                <summary style={{ fontSize: "13px", color: "var(--text-secondary)" }}>
+                    View timeline data as a table
+                </summary>
+                <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", marginTop: "8px" }}>
+                        <thead>
+                            <tr>
+                                <th style={{ textAlign: "left", padding: "4px 8px", borderBottom: "2px solid var(--border-color)" }}>Period</th>
+                                <th style={{ textAlign: "right", padding: "4px 8px", borderBottom: "2px solid var(--border-color)" }}>New Confirmations</th>
+                                <th style={{ textAlign: "right", padding: "4px 8px", borderBottom: "2px solid var(--border-color)" }}>Birds Affected</th>
+                                <th style={{ textAlign: "right", padding: "4px 8px", borderBottom: "2px solid var(--border-color)" }}>Cumulative</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map((d) => (
+                                <tr key={d.period}>
+                                    <td style={{ padding: "2px 8px", borderBottom: "1px solid var(--border-light)" }}>{d.period}</td>
+                                    <td style={{ textAlign: "right", padding: "2px 8px", borderBottom: "1px solid var(--border-light)" }}>{d.new_confirmations.toLocaleString()}</td>
+                                    <td style={{ textAlign: "right", padding: "2px 8px", borderBottom: "1px solid var(--border-light)" }}>{d.birds_affected.toLocaleString()}</td>
+                                    <td style={{ textAlign: "right", padding: "2px 8px", borderBottom: "1px solid var(--border-light)" }}>{d.cumulative_birds_affected.toLocaleString()}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </details>
             <div
                 ref={tooltipRef}
                 className="timeline-tooltip"

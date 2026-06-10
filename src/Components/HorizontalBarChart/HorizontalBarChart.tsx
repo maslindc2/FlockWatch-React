@@ -131,9 +131,14 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, activeStates, theme]);
 
+    const sorted = [...data]
+        .sort((a, b) => b.birds_affected - a.birds_affected)
+        .slice(0, TOP_N);
+    const chartLabel = `Bar chart showing top 10 states by birds affected. ${sorted.map((d) => `${d.state}: ${d.birds_affected.toLocaleString()} birds${activeStates.has(d.state) ? ", currently active" : ""}`).join(". ")}.`;
+
     return (
         <div className="bar-chart-container">
-            <svg ref={svgRef}></svg>
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );
 };

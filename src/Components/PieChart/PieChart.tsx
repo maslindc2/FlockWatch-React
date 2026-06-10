@@ -199,7 +199,13 @@ const PieChart: FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [backyardFlocks, commercialFlocks, timeRange, onToggle, theme]);
 
-    return <svg ref={svgRef}></svg>;
+    const total = backyardFlocks + commercialFlocks;
+    const chartLabel =
+        total > 0
+            ? `Donut chart showing flocks affected, ${timeRange === "allTime" ? "all time" : "last 30 days"}. Backyard: ${backyardFlocks.toLocaleString()} (${((backyardFlocks / total) * 100).toFixed(1)}%), Commercial: ${commercialFlocks.toLocaleString()} (${((commercialFlocks / total) * 100).toFixed(1)}%). Total: ${total.toLocaleString()} flocks.`
+            : "Donut chart showing flocks affected. No data available.";
+
+    return <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>;
 };
 
 export default PieChart;

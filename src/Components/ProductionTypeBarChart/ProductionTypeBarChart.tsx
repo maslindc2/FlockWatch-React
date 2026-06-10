@@ -114,9 +114,14 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, theme]);
 
+    const sorted = [...data]
+        .sort((a, b) => b.total_birds_affected - a.total_birds_affected)
+        .slice(0, TOP_N);
+    const chartLabel = `Bar chart showing top 10 production types by birds affected. ${sorted.map((d) => `${d.production_type}: ${d.total_birds_affected.toLocaleString()} birds`).join(". ")}.`;
+
     return (
         <div className="bar-chart-container">
-            <svg ref={svgRef}></svg>
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );
 };
