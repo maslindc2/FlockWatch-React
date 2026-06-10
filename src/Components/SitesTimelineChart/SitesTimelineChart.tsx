@@ -376,6 +376,7 @@ const SitesTimelineChart: FC<Props> = ({
                 birdsCircle.style("opacity", 0);
                 tooltip.style("opacity", 0);
             });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, granularity, theme]);
 
     return (

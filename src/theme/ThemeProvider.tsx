@@ -11,7 +11,7 @@ function getInitialTheme(): Theme {
   try {
     const stored = localStorage.getItem("flockwatch-theme") as Theme | null;
     if (stored === "light" || stored === "dark") return stored;
-  } catch {}
+  } catch { /* ignore */ }
   if (
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -33,7 +33,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     document.documentElement.setAttribute("data-theme", theme);
     try {
       localStorage.setItem("flockwatch-theme", theme);
-    } catch {}
+    } catch { /* ignore */ }
   }, [theme]);
 
   const toggleTheme = useCallback(() => {

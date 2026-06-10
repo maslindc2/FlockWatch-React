@@ -17,7 +17,7 @@ vi.mock(
 );
 
 vi.mock("topojson-client", () => ({
-    feature: vi.fn((_us: any, _obj: any) => ({
+    feature: vi.fn(() => ({
         features: [{ id: "53", geometry: {} }], // matches WA mapping
     })),
 }));

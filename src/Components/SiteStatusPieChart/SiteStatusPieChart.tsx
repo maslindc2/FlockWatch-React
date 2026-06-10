@@ -150,6 +150,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .attr("font-weight", "600")
             .attr("fill", chartColors.pieTextColor)
             .text("Site Status (All Time)");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeSites, releasedSites, naSites, theme]);
 
     return <svg ref={svgRef}></svg>;

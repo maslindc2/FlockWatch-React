@@ -8,6 +8,7 @@ import type {
     Geometry,
     GeoJsonProperties,
 } from "geojson";
+import type { Topology } from "topojson-specification";
 import { FlockRecord } from "../../Hooks/useFlockCases";
 import { useTheme } from "../../theme/theme";
 
@@ -23,7 +24,7 @@ interface Props {
 }
 
 /** A US state feature with an optional string id. */
-type StateFeature = Feature<Geometry, { [key: string]: any }> & {
+type StateFeature = Feature<Geometry, { [key: string]: unknown }> & {
     id?: string | number;
 };
 
@@ -74,7 +75,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
         d3.json("/states-10m.json").then((usData) => {
             if (!usData) return;
 
-            const us = usData as any;
+            const us = usData as unknown as Topology;
             const statesCollection = topojson.feature(
                 us,
                 us.objects.states
@@ -275,6 +276,7 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 })
                 .attr("stroke", chartColors.choroplethPointerLine);
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, stateTrigger, theme]);
     return (
         <div className="choropleth-container">

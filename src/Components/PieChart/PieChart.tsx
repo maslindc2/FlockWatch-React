@@ -196,6 +196,7 @@ const PieChart: FC<Props> = ({
                 .attr("pointer-events", "none")
                 .text(opt.label);
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [backyardFlocks, commercialFlocks, timeRange, onToggle, theme]);
 
     return <svg ref={svgRef}></svg>;

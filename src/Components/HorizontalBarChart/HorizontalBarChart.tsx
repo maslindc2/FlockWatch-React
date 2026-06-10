@@ -128,6 +128,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
             .attr("font-size", "12px")
             .attr("fill", chartColors.barLegendColor)
             .text("Red = has active sites today");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, activeStates, theme]);
 
     return (

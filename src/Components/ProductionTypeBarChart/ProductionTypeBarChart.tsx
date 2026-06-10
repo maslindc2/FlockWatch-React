@@ -111,6 +111,7 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
             .attr("font-weight", "600")
             .attr("fill", chartColors.prodBarTitleColor)
             .text("Birds Affected by Production Type");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, theme]);
 
     return (
