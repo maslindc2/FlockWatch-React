@@ -1,3 +1,4 @@
+/** Props for a single KPI tile. */
 export interface KpiTileProps {
     title: string;
     id: string;
@@ -6,6 +7,7 @@ export interface KpiTileProps {
     icon: string;
     subtext?: string;
 }
+/** A single KPI tile displaying a label, amount, and optional subtext. */
 export default function KpiTiles({
     title,
     id,

@@ -21,6 +21,11 @@ function getInitialTheme(): Theme {
   return "light";
 }
 
+/**
+ * Provides theme context to the component tree.
+ * Persists the user's preference in localStorage and respects
+ * the OS-level `prefers-color-scheme` media query as the default.
+ */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
 

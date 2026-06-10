@@ -3,6 +3,7 @@ import { useEffect, useRef, type FC } from "react";
 import { FlockRecord } from "../../Hooks/useFlockCases";
 import { useTheme } from "../../theme/theme";
 
+/** Props for the HorizontalBarChart component. */
 interface Props {
     data: FlockRecord[];
     activeStates: Set<string>;
@@ -15,6 +16,10 @@ const MARGIN = { top: 60, right: 140, bottom: 50, left: 130 };
 const BAR_HEIGHT = 30;
 const BAR_GAP = 6;
 
+/**
+ * Horizontal bar chart showing the top 10 states by birds affected,
+ * with color coding for states that still have active sites.
+ */
 const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
+/** Aggregate summary of all-time HPAI site statuses. */
 type HistoricalSummaryResponse = {
     data: {
         total_active_sites: number;
@@ -16,6 +17,10 @@ type HistoricalSummaryResponse = {
     };
 };
 
+/**
+ * Fetch historical summary from the server.
+ * @param url - Full API URL for historical-summary data.
+ */
 async function fetchHistoricalSummary(
     url: string
 ): Promise<HistoricalSummaryResponse> {
@@ -25,12 +30,20 @@ async function fetchHistoricalSummary(
 }
 
 /* v8 ignore start -- @preserve*/
+/**
+ * Load historical-summary fixture for local development.
+ * Enabled by setting `VITE_USE_LOCAL=true`.
+ */
 async function fetchHistoricalSummaryLocal(): Promise<HistoricalSummaryResponse> {
     const data = await import("../../data/historical-summary.json");
     return data;
 }
 /* v8 ignore stop -- @preserve*/
 
+/**
+ * TanStack Query hook to fetch the historical site-status summary.
+ * @param flockWatchServerURL - Base URL of the Flock Watch server.
+ */
 export function useHistoricalSummary(flockWatchServerURL: string) {
     const url = `${flockWatchServerURL}/data/historical-summary`;
     return useQuery({

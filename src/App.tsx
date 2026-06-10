@@ -25,6 +25,7 @@ import RecentConfirmations from "./Components/RecentConfirmations/RecentConfirma
 import SitesTimelineChart from "./Components/SitesTimelineChart/SitesTimelineChart";
 import { useTheme } from "./theme/theme";
 
+/** Combined state data with map color. */
 interface StateInformation extends FlockRecord {
     color: string;
 }
@@ -32,6 +33,7 @@ interface StateInformation extends FlockRecord {
 const flockWatchServerURL =
     import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:8080/data";
 
+/** Root application component. Fetches all data and renders the dashboard. */
 function App() {
     const { theme, chartColors, toggleTheme } = useTheme();
 

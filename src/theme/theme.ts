@@ -1,7 +1,9 @@
 import { createContext, useContext } from "react";
 
+/** Color scheme identifier. */
 export type Theme = "light" | "dark";
 
+/** All chart and UI color values used across the application. */
 export interface ChartColors {
   choroplethColorRange: string[];
   choroplethLegendRange: string[];
@@ -48,6 +50,7 @@ export interface ChartColors {
   selectedStateColorRange: string[];
 }
 
+/** Light-mode chart and UI color palette. */
 export const lightChartColors: ChartColors = {
   choroplethColorRange: ["#defad7ff", "#94d190ff", "#006400"],
   choroplethLegendRange: ["#ffffffff", "#94d190ff", "#006400"],
@@ -94,6 +97,7 @@ export const lightChartColors: ChartColors = {
   selectedStateColorRange: ["#d0ffc6ff", "#94d190ff", "#006400"],
 };
 
+/** Dark-mode chart and UI color palette. */
 export const darkChartColors: ChartColors = {
   choroplethColorRange: ["#1b3a1b", "#2d6a2d", "#00cc00"],
   choroplethLegendRange: ["#ffffffff", "#94d190ff", "#00cc00"],
@@ -140,6 +144,7 @@ export const darkChartColors: ChartColors = {
   selectedStateColorRange: ["#1b3a1b", "#2d6a2d", "#00cc00"],
 };
 
+/** Shape of the theme context value. */
 export interface ThemeContextType {
   theme: Theme;
   chartColors: ChartColors;
@@ -150,6 +155,7 @@ export const ThemeContext = createContext<ThemeContextType | undefined>(
   undefined
 );
 
+/** Hook to access the current theme, chart colors, and toggle function. */
 export function useTheme(): ThemeContextType {
   const ctx = useContext(ThemeContext);
   if (!ctx) throw new Error("useTheme must be used within ThemeProvider");

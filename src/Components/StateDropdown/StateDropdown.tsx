@@ -201,9 +201,12 @@ const states = [
     },
 ];
 
+/** Props for the StateDropdown component. */
 interface StateDropdownProps {
     onSelect: (stateSelected: string) => void;
 }
+
+/** Dropdown select listing all 50 US states. */
 export default function StateDropdown({ onSelect }: StateDropdownProps) {
     return (
         <>

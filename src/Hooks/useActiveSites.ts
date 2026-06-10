@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
+/** A site record with active status from the API. */
 type ActiveSiteRecord = {
     special_id: string;
     birds_affected: number;
@@ -12,6 +13,7 @@ type ActiveSiteRecord = {
     status: string;
 };
 
+/** Paginated response containing active sites. */
 type ActiveSitesResponse = {
     data: ActiveSiteRecord[];
     total: number;
@@ -38,6 +40,10 @@ async function fetchActiveSitesLocal() {
 }
 /* v8 ignore stop -- @preserve*/
 
+/**
+ * Fetch active (ongoing) HPAI sites with their bird counts.
+ * @param flockWatchServerURL - Base URL of the Flock Watch server.
+ */
 export function useActiveSites(flockWatchServerURL: string) {
     const url = `${flockWatchServerURL}/data/sites/status/active?page=1&limit=100`;
     return useQuery({

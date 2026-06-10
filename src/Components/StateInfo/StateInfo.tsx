@@ -3,6 +3,7 @@ import InfoTiles from "../KpiTiles/KpiTiles";
 import formatDateForUser from "../../Utils/dateFormatter";
 import { FlockRecord } from "../../Hooks/useFlockCases";
 
+/** Combined state info including a color for the map highlight. */
 interface StateInfo extends FlockRecord {
     color: string;
 }
@@ -71,6 +72,7 @@ function createInfoTiles(stateInfo: StateTiles) {
     return infoTilesArr;
 }
 
+/** Detail panel showing state-level outbreak info, map, and KPI tiles. */
 export default function StateInfo({ stateInfo }: Props) {
     const stateInfoTiles = createInfoTiles(stateInfo);
     const lastUpdatedDateFormatted = formatDateForUser(

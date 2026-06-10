@@ -1,4 +1,11 @@
 import { useEffect, useRef } from "react";
+
+/**
+ * Push a history state when `isOpen` becomes true so the browser back button
+ * triggers `onClose`. Replaces the state when the panel closes.
+ * @param isOpen - Whether the overlay / panel is visible.
+ * @param onClose - Callback invoked when the user presses back.
+ */
 export function useBackToClose(isOpen: boolean, onClose: () => void) {
     const onCloseRef = useRef(onClose);
     onCloseRef.current = onClose;

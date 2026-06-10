@@ -1,8 +1,8 @@
-// src/hooks/useFlockCases.ts
 import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 
 const useLocal = import.meta.env.VITE_USE_LOCAL === "true";
 
+/** Aggregate flock case data per US state. */
 export interface FlockRecord {
     state_abbreviation: string;
     state: string;
@@ -23,9 +23,8 @@ interface FlockCasesResponse {
 }
 
 /**
- * This is the TanStack Query hook that we use to make requests, it
- * @param flockWatchServerURL This is the base URL for Flock Watch's Node.JS server i.e. https://flockwatch.io/data/flock-cases
- * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
+ * Fetch flock case data from the Flock Watch server.
+ * @param url - Full API URL for flock-case data.
  */
 async function fetchFlockCases(url: string): Promise<FlockCasesResponse> {
     const res = await fetch(url);
@@ -35,11 +34,8 @@ async function fetchFlockCases(url: string): Promise<FlockCasesResponse> {
 
 /* v8 ignore start -- @preserve*/
 /**
- * This function is responsible for returning the data from our JSON files locally during development,
- * this functionality is determined by setting the env var VITE_USE_LOCAL to true
- * VITE_USE_LOCAL = false will run the fetchFlockCases function instead.
- * This function will be ignored by Vitest as it's dev only
- * @returns A sample response that directly resembles a response from the Flock Watch Server
+ * Load flock-case fixture data for local development.
+ * Enabled by setting `VITE_USE_LOCAL=true`. Ignored by Vitest.
  */
 async function fetchFlockCasesLocal(): Promise<FlockCasesResponse> {
     const data = await import("../../data/flock-data.json");
@@ -47,9 +43,8 @@ async function fetchFlockCasesLocal(): Promise<FlockCasesResponse> {
 }
 /* v8 ignore stop -- @preserve*/
 /**
- * This is the TanStack Query hook that we use to make requests to the Flock Watch Server
- * @param flockWatchServerURL This is the base URL for Flock Watch's Node.JS server i.e. https://flockwatch.io/data/flock-cases
- * @returns This returns parsed response from our Node.JS server if successful, if in progress isProgress is returned, if the query failed isError will be returned
+ * TanStack Query hook to fetch flock case data by US state.
+ * @param flockWatchServerURL - Base URL of the Flock Watch server.
  */
 export function useFlockCases(
     flockWatchServerURL: string

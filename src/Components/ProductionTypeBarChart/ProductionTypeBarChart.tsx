@@ -3,6 +3,7 @@ import { useEffect, useRef, type FC } from "react";
 import { ProductionTypeSummary } from "../../Hooks/useProductionTypeSummary";
 import { useTheme } from "../../theme/theme";
 
+/** Props for the ProductionTypeBarChart component. */
 interface Props {
     data: ProductionTypeSummary[];
 }
@@ -14,6 +15,9 @@ const MARGIN = { top: 60, right: 140, bottom: 50, left: 320 };
 const BAR_HEIGHT = 30;
 const BAR_GAP = 6;
 
+/**
+ * Horizontal bar chart showing the top 10 production types by birds affected.
+ */
 const ProductionTypeBarChart: FC<Props> = ({ data }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);

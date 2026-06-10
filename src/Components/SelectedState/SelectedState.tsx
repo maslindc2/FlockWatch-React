@@ -5,6 +5,7 @@ import type { Topology, GeometryCollection } from "topojson-specification";
 import type { FeatureCollection } from "geojson";
 import { stateAbbreviationToFips } from "../../Utils/state-abbreviation-fips-processing";
 
+/** Props for the SelectedStateMap component. */
 export interface SelectedStateMapProps {
     stateAbbreviation: string;
     stateName: string;
@@ -17,6 +18,7 @@ interface USATopology extends Topology {
     };
 }
 
+/** Renders an isolated map outline of a single selected US state. */
 const SelectedStateMap: React.FC<SelectedStateMapProps> = ({
     stateAbbreviation,
     stateName,

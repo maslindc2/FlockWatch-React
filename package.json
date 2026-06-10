@@ -11,6 +11,7 @@
         "test:coverage": "vitest run --coverage",
         "lint": "eslint . --fix",
         "preview": "vite preview",
+        "docs": "typedoc",
         "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|tsx|json)\""
     },
     "dependencies": {
@@ -48,6 +49,7 @@
         "jest-environment-jsdom": "^30.0.5",
         "prettier": "3.6.2",
         "ts-node": "^10.9.2",
+        "typedoc": "^0.28.19",
         "typescript": "~5.8.3",
         "typescript-eslint": "^8.35.1",
         "vite": "^7.3.2",

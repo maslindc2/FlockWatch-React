@@ -1,5 +1,6 @@
 import KpiTiles from "./KpiTiles";
 
+/** Data shape used to render the US overview KPI tiles. */
 export interface USTileData {
     total_backyard_flocks_affected: number;
     total_birds_affected: number;
@@ -8,6 +9,11 @@ export interface USTileData {
     total_states_affected?: number;
 }
 
+/**
+ * Build an array of KpiTile elements from US-level aggregate data.
+ * @param tileData - US summary numbers to display.
+ * @param subtextMap - Optional map of keys to subtext strings.
+ */
 export default function createKpiTiles(
     tileData: USTileData,
     subtextMap?: Partial<Record<keyof USTileData, string>>

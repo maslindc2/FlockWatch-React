@@ -1,3 +1,4 @@
+/** Mapping of US state abbreviations to FIPS codes. */
 const stateAbbreviationToFips: Record<string, string> = {
     AL: "01",
     AK: "02",
@@ -51,6 +52,7 @@ const stateAbbreviationToFips: Record<string, string> = {
     WY: "56",
 };
 
+/** Reverse mapping of FIPS codes to state abbreviations. */
 const fipsToStateAbbreviation = Object.fromEntries(
     Object.entries(stateAbbreviationToFips).map(([abbr, fips]) => [fips, abbr])
 );

@@ -3,6 +3,7 @@ import { useEffect, useRef, type FC } from "react";
 import type { TimelinePeriod } from "../../Hooks/useSitesTimeline";
 import { useTheme } from "../../theme/theme";
 
+/** Props for the SitesTimelineChart component. */
 interface Props {
     data: TimelinePeriod[];
     granularity: "week" | "month" | "year";
@@ -33,6 +34,10 @@ function parsePeriod(period: string): Date | null {
     return null;
 }
 
+/**
+ * Dual-axis timeline chart showing new confirmations and birds affected
+ * over time, with granularity controls (week / month / year).
+ */
 const SitesTimelineChart: FC<Props> = ({
     data,
     granularity,

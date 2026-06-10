@@ -16,13 +16,13 @@ import {
     fipsToStateAbbreviation,
 } from "../../Utils/state-abbreviation-fips-processing";
 
-// Specifying we are expecting a prop containing a structure IAllFlockCases
+/** Props for the ChoroplethMap component. */
 interface Props {
     data: FlockRecord[];
     stateTrigger: (abbreviation: string) => void;
 }
 
-// Defining the data type state feature which should use the d3 feature and a key that's of type string
+/** A US state feature with an optional string id. */
 type StateFeature = Feature<Geometry, { [key: string]: any }> & {
     id?: string | number;
 };
@@ -44,10 +44,13 @@ const labelOffsets: Record<string, [number, number]> = {
     "50": [-30, -40], // VT
 };
 
-// This is prevents d3 from generating lines for these states as they do not need a pointer line.
-// An example of this is Florida which does not line up in the middle of state.
+/** States that should not receive pointer lines (their labels are self-positioning). */
 const excludedStates = new Set(["21", "15", "22", "26", "12", "06"]);
 
+/**
+ * US choropleth map colored by birds affected per state.
+ * Clicking a state triggers the `stateTrigger` callback.
+ */
 const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);

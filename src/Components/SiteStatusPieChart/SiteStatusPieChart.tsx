@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { useEffect, useRef, type FC } from "react";
 import { useTheme } from "../../theme/theme";
 
+/** Props for the SiteStatusPieChart component. */
 interface Props {
     activeSites: number;
     releasedSites: number;
@@ -13,6 +14,10 @@ const CHART_HEIGHT = 220;
 const PIE_RADIUS = 75;
 const INNER_RADIUS = 32;
 
+/**
+ * Donut chart showing all-time site status breakdown
+ * (active vs released vs N/A).
+ */
 const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);

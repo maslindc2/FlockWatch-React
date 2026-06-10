@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { useEffect, useRef, type FC } from "react";
 import { useTheme } from "../../theme/theme";
 
+/** Props for the PieChart component. */
 interface Props {
     backyardFlocks: number;
     commercialFlocks: number;
@@ -14,6 +15,10 @@ const CHART_HEIGHT = 270;
 const PIE_RADIUS = 68;
 const INNER_RADIUS = 30;
 
+/**
+ * Donut chart comparing backyard vs commercial flocks affected,
+ * with a toggle between "All Time" and "Last 30 Days".
+ */
 const PieChart: FC<Props> = ({
     backyardFlocks,
     commercialFlocks,

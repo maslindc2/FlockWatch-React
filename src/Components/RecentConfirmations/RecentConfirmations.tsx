@@ -1,10 +1,12 @@
 import { type FC } from "react";
 import { SiteRecord } from "../../Hooks/useSitesData";
 
+/** Props for the RecentConfirmations component. */
 interface Props {
     sites: SiteRecord[];
 }
 
+/** A county-level group of HPAI sites. */
 interface CountyGroup {
     county: string;
     state: string;
@@ -64,6 +66,7 @@ function groupByCounty(sites: SiteRecord[]): CountyGroup[] {
     return [...groups.values()];
 }
 
+/** Recent HPAI confirmations grouped by county, sorted by most recent. */
 const RecentConfirmations: FC<Props> = ({ sites }) => {
     const grouped = groupByCounty(sites)
         .sort(
