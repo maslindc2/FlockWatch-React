@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { useEffect, useRef, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { useTheme } from "../../theme/theme";
 
 /** Props for the PieChart component. */
@@ -27,6 +27,28 @@ const PieChart: FC<Props> = ({
 }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el || isVisible) return;
+        if (typeof IntersectionObserver === "undefined") {
+            setIsVisible(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [isVisible]);
 
     useEffect(() => {
         const total = backyardFlocks + commercialFlocks;
@@ -65,11 +87,10 @@ const PieChart: FC<Props> = ({
             .append("g")
             .attr("transform", `translate(${centerX}, ${centerY})`);
 
-        pieGroup
+        const pathSelection = pieGroup
             .selectAll("path")
             .data(data)
             .join("path")
-            .attr("d", arc)
             .attr("fill", (d) =>
                 d.data.label === "Backyard"
                     ? chartColors.pieBackyard
@@ -77,6 +98,27 @@ const PieChart: FC<Props> = ({
             )
             .attr("stroke", chartColors.pieStroke)
             .attr("stroke-width", 2);
+
+        if (isVisible) {
+            pathSelection
+                .attr("d", (d) => {
+                    const collapsed = { ...d, endAngle: d.startAngle };
+                    return arc(collapsed as any) || "";
+                })
+                .transition()
+                .duration(600)
+                .delay((_, i) => i * 80)
+                .ease(d3.easeCubicOut)
+                .attrTween("d", (d) => {
+                    const interpolate = d3.interpolate(
+                        { ...d, endAngle: d.startAngle } as any,
+                        d as any
+                    );
+                    return (t: number) => arc(interpolate(t)) || "";
+                });
+        } else {
+            pathSelection.attr("d", arc);
+        }
 
         svg
             .append("text")
@@ -154,8 +196,7 @@ const PieChart: FC<Props> = ({
             .attr("fill", chartColors.pieTextColor)
             .text("Flocks Affected");
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [backyardFlocks, commercialFlocks, theme]);
+    }, [backyardFlocks, commercialFlocks, theme, isVisible]);
 
     const total = backyardFlocks + commercialFlocks;
     const chartLabel =
@@ -178,7 +219,7 @@ const PieChart: FC<Props> = ({
     });
 
     return (
-        <div className="pie-chart-wrapper" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div className="pie-chart-wrapper" ref={containerRef} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <div style={{ display: "flex", gap: "6px", marginBottom: "8px" }}>
                 <button
                     style={toggleBtnStyle(timeRange === "allTime")}

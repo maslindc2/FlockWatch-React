@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { useEffect, useRef, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { useTheme } from "../../theme/theme";
 
 interface ProductionTypeEntry {
@@ -20,6 +20,28 @@ const INNER_RADIUS = 35;
 const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el || isVisible) return;
+        if (typeof IntersectionObserver === "undefined") {
+            setIsVisible(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [isVisible]);
 
     useEffect(() => {
         if (data.length === 0) return;
@@ -58,14 +80,34 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
             .append("g")
             .attr("transform", `translate(${centerX}, ${centerY})`);
 
-        pieGroup
+        const pathSelection = pieGroup
             .selectAll("path")
             .data(pieData)
             .join("path")
-            .attr("d", arc)
             .attr("fill", (d) => colorScale(d.data.label))
             .attr("stroke", chartColors.pieStroke)
             .attr("stroke-width", 2);
+
+        if (isVisible) {
+            pathSelection
+                .attr("d", (d) => {
+                    const collapsed = { ...d, endAngle: d.startAngle };
+                    return arc(collapsed as any) || "";
+                })
+                .transition()
+                .duration(600)
+                .delay((_, i) => i * 80)
+                .ease(d3.easeCubicOut)
+                .attrTween("d", (d) => {
+                    const interpolate = d3.interpolate(
+                        { ...d, endAngle: d.startAngle } as any,
+                        d as any
+                    );
+                    return (t: number) => arc(interpolate(t)) || "";
+                });
+        } else {
+            pathSelection.attr("d", arc);
+        }
 
         svg
             .append("text")
@@ -106,8 +148,7 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
                 .attr("fill", chartColors.pieTextColor)
                 .text(`${d.label} - ${d.count} (${pct}%)`);
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, theme]);
+    }, [data, theme, isVisible]);
 
     const total = data.reduce((sum, d) => sum + d.count, 0);
     const chartLabel =
@@ -116,7 +157,7 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
             : `Donut chart showing active sites by production type in ${stateName}. No data available.`;
 
     return (
-        <div className="state-production-pie-wrapper">
+        <div className="state-production-pie-wrapper" ref={containerRef}>
             <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );
