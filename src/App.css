@@ -360,6 +360,65 @@ section.chart-row {
   }
 }
 
+.state-production-section {
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.state-production-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.state-production-chart {
+  display: flex;
+  justify-content: center;
+}
+
+.state-production-pie-wrapper {
+  display: inline-block;
+  width: 100%;
+  max-width: 320px;
+}
+
+.state-county-table-wrapper {
+  overflow-x: auto;
+  margin-top: 0.5rem;
+}
+
+.state-county-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.state-county-table th,
+.state-county-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.state-county-table th {
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-secondary);
+}
+
+.state-county-table .county-types {
+  font-size: 12px;
+  color: var(--text-secondary);
+  max-width: 220px;
+}
+
+.state-county-table tbody tr:hover {
+  background: var(--hover-bg);
+}
+
 .tile-container {
   position: relative;
   background: var(--surface-primary);
@@ -701,4 +760,8 @@ section.chart-row {
 
 .timeline-chart-container svg {
   aspect-ratio: 900 / 420;
+}
+
+.state-production-pie-wrapper svg {
+  aspect-ratio: 280 / 220;
 }

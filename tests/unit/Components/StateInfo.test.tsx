@@ -33,6 +33,16 @@ vi.mock("../../../src/Components/KpiTiles/KpiTiles", () => ({
 // Mock the dateFormatter as we have tests for it already
 vi.mock("../../../src/Utils/dateFormatter");
 
+// Mock the StateProductionPieChart as it uses d3 internally
+vi.mock("../../../src/Components/StateProductionPieChart/StateProductionPieChart", () => ({
+    __esModule: true,
+    default: ({ data, stateName }: { data: { label: string; count: number }[]; stateName: string }) => (
+        <div data-testid="state-production-pie-chart">
+            {stateName}-{data.length} types
+        </div>
+    ),
+}));
+
 describe("StateInfo", () => {
     // Create our mock state info based on the Washington State flock info
     const mockStateInfo = {
@@ -53,8 +63,21 @@ describe("StateInfo", () => {
         vi.mocked(formatDateForUser).mockReturnValue("02/10/2025");
     });
 
+    const defaultProps = {
+        stateActiveSitesCount: 5,
+        stateBirdsAtRisk: 25000,
+        stateProductionTypes: [
+            { label: "Commercial Duck", count: 3 },
+            { label: "Backyard Flock", count: 2 },
+        ],
+        stateCountyData: [
+            { county: "Elkhart", count: 3, birds: 18000, types: "Commercial Duck Meat Bird" },
+            { county: "Lagrange", count: 2, birds: 7000, types: "WOAH Poultry, Commercial Duck Breeder" },
+        ],
+    };
+
     it("should contain the state title and abbreviation when the component is rendered", () => {
-        render(<StateInfo stateInfo={mockStateInfo} />);
+        render(<StateInfo stateInfo={mockStateInfo} {...defaultProps} />);
         expect(
             screen.getByRole("heading", {
                 level: 1,
@@ -64,7 +87,7 @@ describe("StateInfo", () => {
     });
 
     it("should render the the last case reported when the state info component is rendered", () => {
-        render(<StateInfo stateInfo={mockStateInfo} />);
+        render(<StateInfo stateInfo={mockStateInfo} {...defaultProps} />);
         expect(
             screen.getByText("Last case reported on 02/10/2025")
         ).toBeInTheDocument();
@@ -74,14 +97,14 @@ describe("StateInfo", () => {
     });
 
     it("should render the mocked state info and SelectedStateMap should have the text content when the StateInfo is rendered", () => {
-        render(<StateInfo stateInfo={mockStateInfo} />);
+        render(<StateInfo stateInfo={mockStateInfo} {...defaultProps} />);
         expect(screen.getByTestId("selected-state-map")).toHaveTextContent(
             "WA-Washington-blue"
         );
     });
 
     it("should render the InfoTiles with the expected text content using mockedStateInfo when the StateInfo component is rendered", () => {
-        render(<StateInfo stateInfo={mockStateInfo} />);
+        render(<StateInfo stateInfo={mockStateInfo} {...defaultProps} />);
 
         // Expect the backyard flock info tile to have the expected text content
         expect(
@@ -102,5 +125,62 @@ describe("StateInfo", () => {
         expect(screen.getByTestId("info-tile-total-flocks")).toHaveTextContent(
             "Total Flocks Affected"
         );
+
+        // Expect new active-site KPI tiles
+        expect(
+            screen.getByTestId("info-tile-state-active-sites")
+        ).toHaveTextContent("Active Sites (current)");
+
+        expect(
+            screen.getByTestId("info-tile-state-birds-at-risk")
+        ).toHaveTextContent("Birds at Risk (active)");
+    });
+
+    it("should render the production-type pie chart section when there are active production types", () => {
+        render(<StateInfo stateInfo={mockStateInfo} {...defaultProps} />);
+
+        expect(
+            screen.getByText("Active Sites by Production Type")
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByTestId("state-production-pie-chart")
+        ).toHaveTextContent("Washington-2 types");
+    });
+
+    it("should render the county table with affected counties when there are active sites", () => {
+        render(<StateInfo stateInfo={mockStateInfo} {...defaultProps} />);
+
+        expect(
+            screen.getByText("Affected Counties")
+        ).toBeInTheDocument();
+
+        expect(screen.getByText("Elkhart")).toBeInTheDocument();
+        expect(screen.getByText("Lagrange")).toBeInTheDocument();
+
+        // County table headers
+        expect(screen.getByText("County")).toBeInTheDocument();
+        expect(screen.getByText("Active Sites")).toBeInTheDocument();
+        expect(screen.getByText("Birds at Risk")).toBeInTheDocument();
+    });
+
+    it("should not render the production-type pie chart section when there are no active sites", () => {
+        render(
+            <StateInfo
+                stateInfo={mockStateInfo}
+                stateActiveSitesCount={0}
+                stateBirdsAtRisk={0}
+                stateProductionTypes={[]}
+                stateCountyData={[]}
+            />
+        );
+
+        expect(
+            screen.queryByText("Active Sites by Production Type")
+        ).not.toBeInTheDocument();
+
+        expect(
+            screen.queryByText("Affected Counties")
+        ).not.toBeInTheDocument();
     });
 });

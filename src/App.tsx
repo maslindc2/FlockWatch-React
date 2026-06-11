@@ -214,6 +214,43 @@ function App() {
         }
     }
 
+    const stateActiveSites = selectedState
+        ? activeSitesDataFromAPI.data.filter(
+            (site: { state: string }) => site.state === selectedState.state
+        )
+        : [];
+    const stateActiveSitesCount = stateActiveSites.length;
+    const stateBirdsAtRisk = stateActiveSites.reduce(
+        (sum: number, site: { birds_affected: number }) => sum + site.birds_affected,
+        0
+    );
+    const productionTypeCounts: Record<string, number> = {};
+    stateActiveSites.forEach((site: { production_type: string }) => {
+        productionTypeCounts[site.production_type] = (productionTypeCounts[site.production_type] || 0) + 1;
+    });
+    const stateProductionTypes = Object.entries(productionTypeCounts)
+        .map(([label, count]) => ({ label, count }))
+        .sort((a, b) => b.count - a.count);
+
+    const countyCounts: Record<string, { count: number; birds: number; types: Set<string> }> = {};
+    stateActiveSites.forEach((site: { county: string; birds_affected: number; production_type: string }) => {
+        const key = site.county;
+        if (!countyCounts[key]) {
+            countyCounts[key] = { count: 0, birds: 0, types: new Set() };
+        }
+        countyCounts[key].count += 1;
+        countyCounts[key].birds += site.birds_affected;
+        countyCounts[key].types.add(site.production_type);
+    });
+    const stateCountyData = Object.entries(countyCounts)
+        .map(([county, info]) => ({
+            county,
+            count: info.count,
+            birds: info.birds,
+            types: Array.from(info.types).sort().join(", "),
+        }))
+        .sort((a, b) => b.count - a.count);
+
     function findSelectedStateColor(birdsAffectedInState: number): string {
         const maxNumBirdsAffected =
             d3.max(flockData, (state) => state.birds_affected) ?? 1;
@@ -388,7 +425,13 @@ function App() {
                         className="close-button"
                         aria-label="Close state information"
                     ></button>
-                    <StateInfo stateInfo={selectedState} />
+                    <StateInfo
+                        stateInfo={selectedState}
+                        stateActiveSitesCount={stateActiveSitesCount}
+                        stateBirdsAtRisk={stateBirdsAtRisk}
+                        stateProductionTypes={stateProductionTypes}
+                        stateCountyData={stateCountyData}
+                    />
                 </div>
             )}
         </main>

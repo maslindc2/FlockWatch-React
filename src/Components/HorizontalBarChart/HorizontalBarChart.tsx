@@ -112,22 +112,32 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
             .append("g")
             .attr("transform", `translate(${MARGIN.left}, ${CHART_HEIGHT - MARGIN.bottom + 20})`);
 
-        legendGroup
-            .append("rect")
-            .attr("width", 12)
-            .attr("height", 12)
-            .attr("fill", chartColors.barActiveColor)
-            .attr("rx", 2)
-            .attr("ry", 2);
+        const legendItems = [
+            { label: "Has active sites", color: chartColors.barActiveColor },
+            { label: "No active sites", color: chartColors.barInactiveColor },
+        ];
 
-        legendGroup
-            .append("text")
-            .attr("x", 18)
-            .attr("y", 10)
-            .attr("text-anchor", "start")
-            .attr("font-size", "12px")
-            .attr("fill", chartColors.barLegendColor)
-            .text("Red = has active sites today");
+        legendItems.forEach((item, i) => {
+            const x = i * 180;
+            legendGroup
+                .append("rect")
+                .attr("x", x)
+                .attr("y", -8)
+                .attr("width", 12)
+                .attr("height", 12)
+                .attr("fill", item.color)
+                .attr("rx", 2)
+                .attr("ry", 2);
+
+            legendGroup
+                .append("text")
+                .attr("x", x + 18)
+                .attr("y", 2)
+                .attr("text-anchor", "start")
+                .attr("font-size", "12px")
+                .attr("fill", chartColors.barLegendColor)
+                .text(item.label);
+        });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, activeStates, theme]);
 

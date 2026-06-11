@@ -222,7 +222,7 @@ export default function StateDropdown({ onSelect }: StateDropdownProps) {
                 id="state-select"
                 aria-labelledby="select-state-heading"
             >
-                <option value="">Select a State</option>
+                <option value="">—</option>
                 {states.map((state) => (
                     <option
                         key={state.state_abbreviation}
