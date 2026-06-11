@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { useEffect, useRef, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { ProductionTypeSummary } from "../../Hooks/useProductionTypeSummary";
 import { useTheme } from "../../theme/theme";
 
@@ -21,6 +21,28 @@ const BAR_GAP = 6;
 const ProductionTypeBarChart: FC<Props> = ({ data }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el || isVisible) return;
+        if (typeof IntersectionObserver === "undefined") {
+            setIsVisible(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [isVisible]);
 
     useEffect(() => {
         const sorted = [...data]
@@ -70,20 +92,24 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
                 .attr("rx", 3)
                 .attr("ry", 3);
 
-            chartGroup
+            const barRect = chartGroup
                 .append("rect")
                 .attr("x", 0)
                 .attr("y", y)
-                .attr("width", 0)
+                .attr("width", isVisible ? 0 : barWidth)
                 .attr("height", BAR_HEIGHT)
                 .attr("fill", colorScale(d.total_birds_affected))
                 .attr("rx", 3)
-                .attr("ry", 3)
-                .transition()
-                .duration(600)
-                .delay(i * 80)
-                .ease(d3.easeCubicOut)
-                .attr("width", barWidth);
+                .attr("ry", 3);
+
+            if (isVisible) {
+                barRect
+                    .transition()
+                    .duration(600)
+                    .delay(i * 80)
+                    .ease(d3.easeCubicOut)
+                    .attr("width", barWidth);
+            }
 
             chartGroup
                 .append("text")
@@ -116,8 +142,7 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
             .attr("font-weight", "600")
             .attr("fill", chartColors.prodBarTitleColor)
             .text("Birds Affected by Production Type");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, theme]);
+    }, [data, theme, isVisible]);
 
     const sorted = [...data]
         .sort((a, b) => b.total_birds_affected - a.total_birds_affected)
@@ -125,7 +150,7 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
     const chartLabel = `Bar chart showing top 10 production types by birds affected. ${sorted.map((d) => `${d.production_type}: ${d.total_birds_affected.toLocaleString()} birds`).join(". ")}.`;
 
     return (
-        <div className="bar-chart-container">
+        <div className="bar-chart-container" ref={containerRef}>
             <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );

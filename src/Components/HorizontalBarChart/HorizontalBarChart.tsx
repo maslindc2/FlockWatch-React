@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { useEffect, useRef, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { FlockRecord } from "../../Hooks/useFlockCases";
 import { useTheme } from "../../theme/theme";
 
@@ -23,6 +23,28 @@ const BAR_GAP = 6;
 const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el || isVisible) return;
+        if (typeof IntersectionObserver === "undefined") {
+            setIsVisible(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [isVisible]);
 
     useEffect(() => {
         const sorted = [...data]
@@ -66,20 +88,24 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("rx", 3)
                 .attr("ry", 3);
 
-            chartGroup
+            const barRect = chartGroup
                 .append("rect")
                 .attr("x", 0)
                 .attr("y", y)
-                .attr("width", 0)
+                .attr("width", isVisible ? 0 : barWidth)
                 .attr("height", BAR_HEIGHT)
                 .attr("fill", barColor)
                 .attr("rx", 3)
-                .attr("ry", 3)
-                .transition()
-                .duration(600)
-                .delay(i * 80)
-                .ease(d3.easeCubicOut)
-                .attr("width", barWidth);
+                .attr("ry", 3);
+
+            if (isVisible) {
+                barRect
+                    .transition()
+                    .duration(600)
+                    .delay(i * 80)
+                    .ease(d3.easeCubicOut)
+                    .attr("width", barWidth);
+            }
 
             chartGroup
                 .append("text")
@@ -143,8 +169,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("fill", chartColors.barLegendColor)
                 .text(item.label);
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, activeStates, theme]);
+    }, [data, activeStates, theme, isVisible]);
 
     const sorted = [...data]
         .sort((a, b) => b.birds_affected - a.birds_affected)
@@ -152,7 +177,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
     const chartLabel = `Bar chart showing top 10 states by birds affected. ${sorted.map((d) => `${d.state}: ${d.birds_affected.toLocaleString()} birds${activeStates.has(d.state) ? ", currently active" : ""}`).join(". ")}.`;
 
     return (
-        <div className="bar-chart-container">
+        <div className="bar-chart-container" ref={containerRef}>
             <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );
