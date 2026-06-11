@@ -3,22 +3,7 @@ import StateInfo from "../../../src/Components/StateInfo/StateInfo";
 import formatDateForUser from "../../../src/Utils/dateFormatter";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom";
-import { SelectedStateMapProps } from "../../../src/Components/SelectedState/SelectedState";
 import { KpiTileProps } from "../../../src/Components/KpiTiles/KpiTiles";
-
-// Mock the Selected State as we already have tests for that
-vi.mock("../../../src/Components/SelectedState/SelectedState", () => ({
-    __esModule: true,
-    default: ({
-        stateAbbreviation,
-        stateName,
-        stateColor,
-    }: SelectedStateMapProps) => (
-        <div data-testid="selected-state-map">
-            {stateAbbreviation}-{stateName}-{stateColor}
-        </div>
-    ),
-}));
 
 // Mock the InfoTiles components as we already have tests for that
 vi.mock("../../../src/Components/KpiTiles/KpiTiles", () => ({
@@ -93,13 +78,6 @@ describe("StateInfo", () => {
         ).toBeInTheDocument();
         expect(formatDateForUser).toHaveBeenCalledWith(
             "2025-02-10T00:00:00.000Z"
-        );
-    });
-
-    it("should render the mocked state info and SelectedStateMap should have the text content when the StateInfo is rendered", () => {
-        render(<StateInfo stateInfo={mockStateInfo} {...defaultProps} />);
-        expect(screen.getByTestId("selected-state-map")).toHaveTextContent(
-            "WA-Washington-blue"
         );
     });
 

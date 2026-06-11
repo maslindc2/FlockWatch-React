@@ -57,7 +57,16 @@ function App() {
         } else {
             document.body.classList.remove("state-window-open");
         }
-        return () => document.body.classList.remove("state-window-open");
+        function handleKey(e: KeyboardEvent) {
+            if (e.key === "Escape" && selectedState) {
+                closeStateInfo();
+            }
+        }
+        window.addEventListener("keydown", handleKey);
+        return () => {
+            document.body.classList.remove("state-window-open");
+            window.removeEventListener("keydown", handleKey);
+        };
     }, [selectedState]);
 
     const {
@@ -125,17 +134,6 @@ function App() {
                     <header>
                         <div className="logo-banner">
                             <h1>Flock Watch</h1>
-                            <button
-                                className="theme-toggle"
-                                onClick={toggleTheme}
-                                aria-label={
-                                    theme === "light"
-                                        ? "Switch to dark mode"
-                                        : "Switch to light mode"
-                                }
-                            >
-                                {theme === "light" ? "\u263E" : "\u2600"}
-                            </button>
                             <img
                                 src="/game-icons_chicken.svg"
                                 alt="Flock Watch Logo"
@@ -307,125 +305,136 @@ function App() {
                 <p>Last updated on {lastUpdatedDateFormatted}</p>
             </header>
 
-            {!selectedState ? (
-                <>
-                    <section className="stats-section">
-                        <section className="info-tile-group">
-                            <h2 className="info-tile-title">Overview</h2>
-                            <section className="info-tiles">
-                                {usInfoTiles}
-                                <KpiTiles
-                                    id="birds-at-risk"
-                                    title="Birds at risk (active)"
-                                    amount={birdsAtRisk.toLocaleString()}
-                                    subtext={`${activeSitesCount.toLocaleString()} active sites`}
-                                    bgColor="rgba(220, 50, 50, 1)"
-                                />
-                                <KpiTiles
-                                    id="new-confirmations"
-                                    title="New Confirmations (30d)"
-                                    amount={newConfirmations30d.toLocaleString()}
-                                    subtext={confirmationsTrend ?? undefined}
-                                    bgColor="rgba(0, 119, 255, 1)"
-                                />
-                                <KpiTiles
-                                    id="sites-released"
-                                    title="Sites Released (30d)"
-                                    amount={sitesReleased30d.toLocaleString()}
-                                    subtext="depopulation complete"
-                                    bgColor="rgba(0, 150, 100, 1)"
-                                />
-                            </section>
-                        </section>
+            <section className="stats-section">
+                <section className="info-tile-group">
+                    <h2 className="info-tile-title">Overview</h2>
+                    <section className="info-tiles">
+                        {usInfoTiles}
+                        <KpiTiles
+                            id="birds-at-risk"
+                            title="Birds at risk (active)"
+                            amount={birdsAtRisk.toLocaleString()}
+                            subtext={`${activeSitesCount.toLocaleString()} active sites`}
+                            bgColor="rgba(220, 50, 50, 1)"
+                        />
+                        <KpiTiles
+                            id="new-confirmations"
+                            title="New Confirmations (30d)"
+                            amount={newConfirmations30d.toLocaleString()}
+                            subtext={confirmationsTrend ?? undefined}
+                            bgColor="rgba(0, 119, 255, 1)"
+                        />
+                        <KpiTiles
+                            id="sites-released"
+                            title="Sites Released (30d)"
+                            amount={sitesReleased30d.toLocaleString()}
+                            subtext="depopulation complete"
+                            bgColor="rgba(0, 150, 100, 1)"
+                        />
                     </section>
-                    <section className="choropleth-map">
-                        <div className="choropleth-container">
-                            <StateDropdown onSelect={findSetSelectedState} />
-                            <ChoroplethMap
-                                data={flockData}
-                                stateTrigger={findSetSelectedState}
-                            />
-                        </div>
-                    </section>
-                    <section className="chart-row">
-                        <div className="bar-chart-wrapper">
-                            <HorizontalBarChart
-                                data={flockData}
-                                activeStates={activeStates}
-                            />
-                        </div>
-                        <div className="pie-charts-column">
-                            <div className="pie-charts-group">
-                                <PieChart
-                                    backyardFlocks={
-                                        flocksTimeRange === "allTime"
-                                            ? usSummaryAllTimeTotals
-                                                  .total_backyard_flocks_affected
-                                            : usPeriodSummaries.last_30_days
-                                                  .total_backyard_flocks_affected
-                                    }
-                                    commercialFlocks={
-                                        flocksTimeRange === "allTime"
-                                            ? usSummaryAllTimeTotals
-                                                  .total_commercial_flocks_affected
-                                            : usPeriodSummaries.last_30_days
-                                                  .total_commercial_flocks_affected
-                                    }
-                                    timeRange={flocksTimeRange}
-                                    onToggle={setFlocksTimeRange}
-                                />
-                                <SiteStatusPieChart
-                                    activeSites={
-                                        historicalSummaryDataFromAPI.data
-                                            .total_active_sites
-                                    }
-                                    releasedSites={
-                                        historicalSummaryDataFromAPI.data
-                                            .total_released_sites
-                                    }
-                                    naSites={
-                                        historicalSummaryDataFromAPI.data
-                                            .total_na_sites
-                                    }
-                                />
-                            </div>
-                        </div>
-                    </section>
-                    <section className="chart-row">
-                        <div className="bar-chart-wrapper">
-                            <ProductionTypeBarChart
-                                data={productionTypeData}
-                            />
-                        </div>
-                        <div className="pie-charts-column">
-                            <RecentConfirmations
-                                sites={sitesDataFromAPI.data}
-                            />
-                        </div>
-                    </section>
-                    <section className="chart-row">
-                        <div className="timeline-wrapper">
-                            {timelineError ? (
-                                <p className="timeline-error">
-                                    Failed to load timeline data
-                                </p>
-                            ) : (
-                                <SitesTimelineChart
-                                    data={timelineDataFromAPI?.data?.periods ?? []}
-                                    granularity={timelineGranularity}
-                                    onGranularityChange={setTimelineGranularity}
-                                />
-                            )}
-                        </div>
-                    </section>
-                </>
-            ) : (
-                <div className="state-window">
+                </section>
+            </section>
+            <section className="choropleth-map">
+                <div className="choropleth-container">
+                    <StateDropdown onSelect={findSetSelectedState} />
+                    <ChoroplethMap
+                        data={flockData}
+                        stateTrigger={findSetSelectedState}
+                    />
+                </div>
+            </section>
+            <section className="chart-row">
+                <div className="bar-chart-wrapper">
+                    <HorizontalBarChart
+                        data={flockData}
+                        activeStates={activeStates}
+                    />
+                </div>
+                <div className="pie-charts-column">
+                    <div className="pie-charts-group">
+                        <PieChart
+                            backyardFlocks={
+                                flocksTimeRange === "allTime"
+                                    ? usSummaryAllTimeTotals
+                                          .total_backyard_flocks_affected
+                                    : usPeriodSummaries.last_30_days
+                                          .total_backyard_flocks_affected
+                            }
+                            commercialFlocks={
+                                flocksTimeRange === "allTime"
+                                    ? usSummaryAllTimeTotals
+                                          .total_commercial_flocks_affected
+                                    : usPeriodSummaries.last_30_days
+                                          .total_commercial_flocks_affected
+                            }
+                            timeRange={flocksTimeRange}
+                            onToggle={setFlocksTimeRange}
+                        />
+                        <SiteStatusPieChart
+                            activeSites={
+                                historicalSummaryDataFromAPI.data
+                                    .total_active_sites
+                            }
+                            releasedSites={
+                                historicalSummaryDataFromAPI.data
+                                    .total_released_sites
+                            }
+                            naSites={
+                                historicalSummaryDataFromAPI.data
+                                    .total_na_sites
+                            }
+                        />
+                    </div>
+                </div>
+            </section>
+            <section className="chart-row">
+                <div className="bar-chart-wrapper">
+                    <ProductionTypeBarChart
+                        data={productionTypeData}
+                    />
+                </div>
+                <div className="pie-charts-column">
+                    <RecentConfirmations
+                        sites={sitesDataFromAPI.data}
+                    />
+                </div>
+            </section>
+            <section className="chart-row">
+                <div className="timeline-wrapper">
+                    {timelineError ? (
+                        <p className="timeline-error">
+                            Failed to load timeline data
+                        </p>
+                    ) : (
+                        <SitesTimelineChart
+                            data={timelineDataFromAPI?.data?.periods ?? []}
+                            granularity={timelineGranularity}
+                            onGranularityChange={setTimelineGranularity}
+                        />
+                    )}
+                </div>
+            </section>
+        </main>
+        {selectedState && (
+            <div className="state-overlay">
+                <div
+                    className="state-overlay-backdrop"
+                    onClick={closeStateInfo}
+                    aria-hidden="true"
+                />
+                <div
+                    className="state-slide-panel"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={`${selectedState.state} outbreak information`}
+                >
                     <button
                         onClick={closeStateInfo}
-                        className="close-button"
+                        className="state-panel-close"
                         aria-label="Close state information"
-                    ></button>
+                    >
+                        &times;
+                    </button>
                     <StateInfo
                         stateInfo={selectedState}
                         stateActiveSitesCount={stateActiveSitesCount}
@@ -434,8 +443,8 @@ function App() {
                         stateCountyData={stateCountyData}
                     />
                 </div>
-            )}
-        </main>
+            </div>
+        )}
     </>
 );
 }

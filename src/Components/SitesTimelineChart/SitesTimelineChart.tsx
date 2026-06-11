@@ -165,7 +165,7 @@ const SitesTimelineChart: FC<Props> = ({
                 d3
                     .axisRight(yRightScale)
                     .ticks(6)
-                    .tickFormat((d) => `${(d / 1_000_000).toFixed(1)} M`)
+                    .tickFormat((d) => `${(Number(d) / 1_000_000).toFixed(1)} M`)
             )
             .selectAll("text")
             .attr("fill", chartColors.timelineAxisLabelColor)

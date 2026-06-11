@@ -372,9 +372,9 @@ describe("App", () => {
 
         const buttons = screen.getAllByRole("button");
         const closeButton = buttons.find((b) =>
-            b.classList.contains("close-button")
+            b.classList.contains("state-panel-close")
         );
         expect(closeButton).toBeInTheDocument();
-        expect(closeButton).toHaveClass("close-button");
+        expect(closeButton).toHaveClass("state-panel-close");
     });
 });

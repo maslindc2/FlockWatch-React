@@ -54,7 +54,7 @@ body {
 }
 
 body.state-window-open {
-  background-color: var(--bg-secondary);
+  overflow: hidden;
 }
 
 header {
@@ -202,9 +202,73 @@ header > p {
   }
 }
 
-.state-window {
-  background-color: var(--surface-primary);
-  border-radius: 5px;
+.state-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.state-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.state-slide-panel {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  height: 100%;
+  background: var(--surface-primary);
+  box-shadow: -4px 0 24px var(--shadow-sm);
+  overflow-y: auto;
+  animation: slideInRight 0.3s ease-out;
+  padding: 24px;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.state-panel-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  z-index: 10;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text-primary);
+  transition: background 0.15s ease;
+}
+
+.state-panel-close:hover {
+  background: var(--surface-hover);
+}
+
+.state-slide-panel .state-info-container {
+  padding: 0.5rem 0;
+}
+
+.state-slide-panel .state-info-tiles {
+  gap: 16px;
 }
 
 .close-button {

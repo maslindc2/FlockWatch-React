@@ -1,4 +1,3 @@
-import SelectedStateMap from "../SelectedState/SelectedState";
 import InfoTiles from "../KpiTiles/KpiTiles";
 import StateProductionPieChart from "../StateProductionPieChart/StateProductionPieChart";
 import formatDateForUser from "../../Utils/dateFormatter";
@@ -114,13 +113,6 @@ export default function StateInfo({
             </section>
 
             <section className="state-info-container">
-                <section className="state-outline">
-                    <SelectedStateMap
-                        stateAbbreviation={stateInfo.state_abbreviation}
-                        stateName={stateInfo.state}
-                        stateColor={stateInfo.color}
-                    />
-                </section>
                 <section className="state-info-tiles">
                     {stateInfoTiles}
                     <InfoTiles
