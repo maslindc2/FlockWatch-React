@@ -9,10 +9,10 @@ interface Props {
     naSites: number;
 }
 
-const CHART_WIDTH = 320;
-const CHART_HEIGHT = 220;
-const PIE_RADIUS = 75;
-const INNER_RADIUS = 32;
+const CHART_WIDTH = 400;
+const CHART_HEIGHT = 270;
+const PIE_RADIUS = 92;
+const INNER_RADIUS = 42;
 
 /**
  * Donut chart showing all-time site status breakdown
@@ -54,7 +54,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .innerRadius(INNER_RADIUS)
             .outerRadius(PIE_RADIUS);
 
-        const centerX = 90;
+        const centerX = 120;
         const centerY = CHART_HEIGHT / 2;
 
         const pieGroup = svg
@@ -85,14 +85,14 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .attr("y", centerY)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "central")
-            .attr("font-size", "18px")
+            .attr("font-size", "22px")
             .attr("font-weight", "700")
             .attr("fill", chartColors.pieTextColor)
             .text(total.toLocaleString());
 
-        const labelX = centerX + PIE_RADIUS + 20;
-        const labelStartY = centerY - 28;
-        const labelGap = 28;
+        const labelX = centerX + PIE_RADIUS + 24;
+        const labelStartY = centerY - 30;
+        const labelGap = 30;
 
         const legendItems = [
             {
@@ -121,20 +121,20 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             svg
                 .append("rect")
                 .attr("x", labelX)
-                .attr("y", y - 7)
-                .attr("width", 12)
-                .attr("height", 12)
+                .attr("y", y - 8)
+                .attr("width", 14)
+                .attr("height", 14)
                 .attr("fill", item.color)
-                .attr("rx", 2)
-                .attr("ry", 2);
+                .attr("rx", 3)
+                .attr("ry", 3);
 
             svg
                 .append("text")
-                .attr("x", labelX + 18)
+                .attr("x", labelX + 22)
                 .attr("y", y + 1)
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "12px")
+                .attr("font-size", "13px")
                 .attr("fill", chartColors.pieTextColor)
                 .text(
                     `${item.label} - ${item.count.toLocaleString()} (${item.percent}%)`
@@ -146,7 +146,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .attr("x", CHART_WIDTH / 2)
             .attr("y", 20)
             .attr("text-anchor", "middle")
-            .attr("font-size", "14px")
+            .attr("font-size", "16px")
             .attr("font-weight", "600")
             .attr("fill", chartColors.pieTextColor)
             .text("Site Status (All Time)");

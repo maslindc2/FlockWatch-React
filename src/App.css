@@ -115,14 +115,12 @@ header > p {
 }
 
 .info-tiles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: flex-start;
-  margin-bottom: 25px;
-  max-width: 1060px;
-  padding-bottom: 50px;
-  padding-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+  max-width: 1200px;
+  padding-top: 4px;
 }
 
 .info-tile-title {
@@ -140,9 +138,9 @@ header > p {
 
 .choropleth-container h3 {
   text-align: center;
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: var(--text-primary);
 }
 
@@ -150,11 +148,27 @@ header > p {
   display: block;
   margin: 0 auto 16px;
   width: auto;
-  font-size: 1.1rem;
-  border-radius: 5px;
+  min-width: 220px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  border-radius: 8px;
   background: var(--surface-primary);
   color: var(--text-primary);
   border: 1px solid var(--border-input);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: auto;
+}
+
+.choropleth-container select:focus {
+  outline: none;
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 2px var(--shadow-sm);
+}
+
+.choropleth-container select:hover {
+  border-color: var(--text-muted);
 }
 
 @media (max-width: 1099px) {
@@ -170,14 +184,12 @@ header > p {
   }
 
   .info-tiles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-bottom: 25px;
-    max-width: 1060px;
-    padding-bottom: 50px;
-    padding-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+    max-width: 1200px;
+    padding-top: 4px;
   }
   .state-dropdown {
     display: flex;
@@ -322,17 +334,17 @@ section.chart-row {
 .state-info-tiles {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 12px;
   max-width: 520px;
 }
 
 @media (max-width: 591px) {
   .state-info-tiles {
     display: flex;
-    gap: 20px;
+    gap: 12px;
     justify-content: center;
     max-width: 1060px;
-    padding-top: 30px;
+    padding-top: 16px;
   }
 }
 
@@ -423,51 +435,45 @@ section.chart-row {
   position: relative;
   background: var(--surface-primary);
   color: var(--tile-text-color);
-  width: 250px;
-  height: 100px;
   overflow: hidden;
-  padding: 10px;
-  border-radius: 8px;
-  z-index: 0;
+  padding: 20px 24px;
+  border-radius: 10px;
+  border-left: 4px solid var(--tile-accent, var(--border-color));
+  box-shadow: 0 1px 3px var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+.tile-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-sm);
 }
 
 .tile-inner {
-  z-index: 1;
   position: relative;
 }
 
 .tile-inner > p {
-  margin: 0 0 5px;
-  font-size: 18px;
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .tile-inner > h3 {
   margin: 0;
-  font-size: 28px;
-  font-weight: bold;
-  z-index: 1;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
 }
 
 .tile-subtext {
-  margin: 2px 0 0;
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.tile-icon {
-  position: absolute;
-  top: 30px;
-  right: 10px;
-  width: 60px;
-  height: 60px;
-  z-index: 0;
-  opacity: 0.3;
-}
-
-.tile-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 .error-page {
@@ -751,11 +757,11 @@ section.chart-row {
 }
 
 .pie-chart-wrapper svg {
-  aspect-ratio: 320 / 270;
+  aspect-ratio: 400 / 300;
 }
 
 .site-status-pie-wrapper svg {
-  aspect-ratio: 320 / 220;
+  aspect-ratio: 400 / 270;
 }
 
 .timeline-chart-container svg {
@@ -763,5 +769,5 @@ section.chart-row {
 }
 
 .state-production-pie-wrapper svg {
-  aspect-ratio: 280 / 220;
+  aspect-ratio: 360 / 260;
 }

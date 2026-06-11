@@ -4,7 +4,6 @@ export interface KpiTileProps {
     id: string;
     amount: string;
     bgColor: string;
-    icon: string;
     subtext?: string;
 }
 /** A single KPI tile displaying a label, amount, and optional subtext. */
@@ -13,7 +12,6 @@ export default function KpiTiles({
     id,
     amount,
     bgColor,
-    icon,
     subtext,
 }: KpiTileProps) {
     const labelId = `${id}-label`;
@@ -22,9 +20,8 @@ export default function KpiTiles({
 
     return (
         <div
-            style={{ border: `2px solid ${bgColor}` }}
             className="tile-container"
-            title={title}
+            style={{ "--tile-accent": bgColor } as React.CSSProperties}
         >
             <div className="tile-inner">
                 <p id={labelId}>{title}</p>
@@ -36,9 +33,6 @@ export default function KpiTiles({
                         {subtext}
                     </p>
                 )}
-            </div>
-            <div className="tile-icon">
-                <img src={icon} alt={`${title} Icon`} />
             </div>
         </div>
     );

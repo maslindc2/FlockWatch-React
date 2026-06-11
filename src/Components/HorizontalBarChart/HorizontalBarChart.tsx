@@ -70,11 +70,16 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .append("rect")
                 .attr("x", 0)
                 .attr("y", y)
-                .attr("width", barWidth)
+                .attr("width", 0)
                 .attr("height", BAR_HEIGHT)
                 .attr("fill", barColor)
                 .attr("rx", 3)
-                .attr("ry", 3);
+                .attr("ry", 3)
+                .transition()
+                .duration(600)
+                .delay(i * 80)
+                .ease(d3.easeCubicOut)
+                .attr("width", barWidth);
 
             chartGroup
                 .append("text")
@@ -82,7 +87,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("y", y + BAR_HEIGHT / 2)
                 .attr("text-anchor", "end")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "12px")
+                .attr("font-size", "14px")
                 .attr("font-weight", "600")
                 .attr("fill", chartColors.barTextColor)
                 .text(d.state);
@@ -93,7 +98,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("y", y + BAR_HEIGHT / 2)
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "13px")
+                .attr("font-size", "14px")
                 .attr("fill", chartColors.barTextColor)
                 .text(d.birds_affected.toLocaleString());
         });
@@ -103,7 +108,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
             .attr("x", CHART_WIDTH / 2)
             .attr("y", 30)
             .attr("text-anchor", "middle")
-            .attr("font-size", "20px")
+            .attr("font-size", "22px")
             .attr("font-weight", "600")
             .attr("fill", chartColors.barTitleColor)
             .text("Top 10 States by Birds Affected");

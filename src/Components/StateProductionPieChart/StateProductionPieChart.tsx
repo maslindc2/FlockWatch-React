@@ -12,10 +12,10 @@ interface Props {
     stateName: string;
 }
 
-const CHART_WIDTH = 280;
-const CHART_HEIGHT = 220;
-const PIE_RADIUS = 60;
-const INNER_RADIUS = 30;
+const CHART_WIDTH = 360;
+const CHART_HEIGHT = 260;
+const PIE_RADIUS = 75;
+const INNER_RADIUS = 35;
 
 const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
     const { theme, chartColors } = useTheme();
@@ -51,8 +51,8 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
             .innerRadius(INNER_RADIUS)
             .outerRadius(PIE_RADIUS);
 
-        const centerX = 90;
-        const centerY = CHART_HEIGHT / 2 - 8;
+        const centerX = 105;
+        const centerY = CHART_HEIGHT / 2;
 
         const pieGroup = svg
             .append("g")
@@ -73,14 +73,14 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
             .attr("y", centerY)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "central")
-            .attr("font-size", "14px")
+            .attr("font-size", "18px")
             .attr("font-weight", "700")
             .attr("fill", chartColors.pieTextColor)
             .text(total.toLocaleString());
 
-        const labelX = centerX + PIE_RADIUS + 16;
-        const labelStartY = centerY - (data.length - 1) * 11;
-        const labelGap = 22;
+        const labelX = centerX + PIE_RADIUS + 20;
+        const labelStartY = centerY - (data.length - 1) * 12;
+        const labelGap = 24;
 
         data.forEach((d, i) => {
             const y = labelStartY + i * labelGap;
@@ -89,20 +89,20 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
             svg
                 .append("rect")
                 .attr("x", labelX)
-                .attr("y", y - 6)
-                .attr("width", 10)
-                .attr("height", 10)
+                .attr("y", y - 7)
+                .attr("width", 12)
+                .attr("height", 12)
                 .attr("fill", colorScale(d.label))
-                .attr("rx", 2)
-                .attr("ry", 2);
+                .attr("rx", 3)
+                .attr("ry", 3);
 
             svg
                 .append("text")
-                .attr("x", labelX + 15)
+                .attr("x", labelX + 18)
                 .attr("y", y + 1)
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "11px")
+                .attr("font-size", "12px")
                 .attr("fill", chartColors.pieTextColor)
                 .text(`${d.label} - ${d.count} (${pct}%)`);
         });

@@ -41,29 +41,25 @@ function formatNumberToLocale(value: number) {
 }
 
 function createInfoTiles(stateInfo: StateTiles) {
-    const titleMap: Record<keyof StateTiles, string[]> = {
+    const titleMap: Record<keyof StateTiles, [string, string, string]> = {
         backyard_flocks: [
             "Backyard Flocks Affected",
             "backyard-flocks",
-            "/backyard-flocks2.png",
             "rgba(2, 163, 56, 1)",
         ],
         birds_affected: [
             "Birds Affected",
             "birds-affected",
-            "/birds-affected.png",
             "#ef8700ff",
         ],
         commercial_flocks: [
             "Commercial Flocks Affected",
             "commercial-flocks",
-            "/commercial-flocks.png",
             "rgba(131, 0, 239, 1)",
         ],
         total_flocks: [
             "Total Flocks Affected",
             "total-flocks",
-            "/flocks-affected.webp",
             "rgba(255, 97, 131, 1)",
         ],
     };
@@ -80,8 +76,7 @@ function createInfoTiles(stateInfo: StateTiles) {
                     id={title[1]}
                     title={title[0]}
                     amount={formatNumberToLocale(value)}
-                    icon={title[2]}
-                    bgColor={title[3]}
+                    bgColor={title[2]}
                 />
             );
         })
@@ -132,14 +127,12 @@ export default function StateInfo({
                         id="state-active-sites"
                         title="Active Sites (current)"
                         amount={stateActiveSitesCount.toLocaleString()}
-                        icon="/rooster.png"
                         bgColor="rgba(220, 50, 50, 1)"
                     />
                     <InfoTiles
                         id="state-birds-at-risk"
                         title="Birds at Risk (active)"
                         amount={stateBirdsAtRisk.toLocaleString()}
-                        icon="/rooster.png"
                         bgColor="rgba(255, 100, 50, 1)"
                     />
                 </section>

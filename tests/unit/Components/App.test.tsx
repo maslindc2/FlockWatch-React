@@ -214,7 +214,8 @@ describe("App", () => {
         (useSitesTimeline as any).mockReturnValue({ isPending: true });
 
         renderWithTheme(<App />);
-        expect(screen.getByText("...Loading")).toBeInTheDocument();
+        expect(screen.getByText("Flock Watch")).toBeInTheDocument();
+        expect(screen.getByText("Skip to main content")).toBeInTheDocument();
     });
 
     it("renders error state", () => {

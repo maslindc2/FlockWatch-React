@@ -139,6 +139,8 @@ function App() {
                             <img
                                 src="/game-icons_chicken.svg"
                                 alt="Flock Watch Logo"
+                                width="80"
+                                height="80"
                             />
                         </div>
                     </header>
@@ -298,7 +300,9 @@ function App() {
                     <img
                         src="/game-icons_chicken.svg"
                         alt="Flock Watch Logo"
-                    ></img>
+                        width="80"
+                        height="80"
+                    />
                 </div>
                 <p>Last updated on {lastUpdatedDateFormatted}</p>
             </header>
@@ -315,7 +319,6 @@ function App() {
                                     title="Birds at risk (active)"
                                     amount={birdsAtRisk.toLocaleString()}
                                     subtext={`${activeSitesCount.toLocaleString()} active sites`}
-                                    icon="/rooster.png"
                                     bgColor="rgba(220, 50, 50, 1)"
                                 />
                                 <KpiTiles
@@ -323,7 +326,6 @@ function App() {
                                     title="New Confirmations (30d)"
                                     amount={newConfirmations30d.toLocaleString()}
                                     subtext={confirmationsTrend ?? undefined}
-                                    icon="/rooster.png"
                                     bgColor="rgba(0, 119, 255, 1)"
                                 />
                                 <KpiTiles
@@ -331,7 +333,6 @@ function App() {
                                     title="Sites Released (30d)"
                                     amount={sitesReleased30d.toLocaleString()}
                                     subtext="depopulation complete"
-                                    icon="/rooster.png"
                                     bgColor="rgba(0, 150, 100, 1)"
                                 />
                             </section>
