@@ -332,6 +332,10 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger, selectedAbbreviation }) 
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "20px")
                 .attr("fill", chartColors.choroplethLabelColor)
+                .attr("stroke", chartColors.choroplethLabelOutline)
+                .attr("stroke-width", "2px")
+                .attr("stroke-linejoin", "round")
+                .attr("paint-order", "stroke")
                 .attr("pointer-events", "none");
 
             svg.append("g")

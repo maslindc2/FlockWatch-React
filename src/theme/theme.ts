@@ -10,6 +10,7 @@ export interface ChartColors {
   choroplethNoData: string;
   choroplethStroke: string;
   choroplethLabelColor: string;
+  choroplethLabelOutline: string;
   choroplethLegendStroke: string;
   choroplethPointerLine: string;
   choroplethHover: string;
@@ -57,6 +58,7 @@ export const lightChartColors: ChartColors = {
   choroplethNoData: "#eee",
   choroplethStroke: "hsla(0, 0%, 21%, 1.00)",
   choroplethLabelColor: "#000",
+  choroplethLabelOutline: "rgba(255,255,255,0.8)",
   choroplethLegendStroke: "#333",
   choroplethPointerLine: "#333",
   choroplethHover: "hsla(0, 0%, 17%, 0.55)",
@@ -103,7 +105,8 @@ export const darkChartColors: ChartColors = {
   choroplethLegendRange: ["#1a5a7a", "#2a7a9a", "#4a9aba", "#6abad4", "#a0ddc0", "#ffffcc"],
   choroplethNoData: "#2a2a2a",
   choroplethStroke: "hsla(0, 0%, 40%, 1.00)",
-  choroplethLabelColor: "#ccc",
+  choroplethLabelColor: "#fff",
+  choroplethLabelOutline: "rgba(0,0,0,0.8)",
   choroplethLegendStroke: "#888",
   choroplethPointerLine: "#888",
   choroplethHover: "hsla(0, 0%, 60%, 0.35)",
