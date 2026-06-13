@@ -858,3 +858,146 @@ section.chart-row {
 .state-production-pie-wrapper svg {
   aspect-ratio: 360 / 260;
 }
+
+/* ─── Mobile Layout ─────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .logo-banner h1 {
+    font-size: 1.5rem;
+  }
+
+  .logo-banner img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .info-tile-title {
+    font-size: 1.4rem;
+  }
+
+  .info-tiles {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .tile-container {
+    padding: 14px 16px;
+  }
+
+  .tile-inner > h3 {
+    font-size: 24px;
+  }
+
+  section.choropleth-map {
+    padding-bottom: 24px;
+  }
+
+  .choropleth-container {
+    padding: 10px;
+  }
+
+  .choropleth-container select {
+    width: 100%;
+    min-width: unset;
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+
+  section.chart-row {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+  }
+
+  .bar-chart-wrapper {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .pie-charts-column {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .state-slide-panel {
+    max-width: 100%;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 6px;
+  }
+
+  .logo-banner {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .logo-banner h1 {
+    font-size: 1.2rem;
+  }
+
+  .logo-banner img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .theme-toggle {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+
+  header > p {
+    font-size: 13px;
+  }
+
+  .info-tiles {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .info-tile-title {
+    font-size: 1.15rem;
+  }
+
+  .tile-container {
+    padding: 10px 12px;
+  }
+
+  .tile-inner > p {
+    font-size: 11px;
+  }
+
+  .tile-inner > h3 {
+    font-size: 20px;
+  }
+
+  .tile-subtext {
+    font-size: 10px;
+  }
+
+  .choropleth-container {
+    padding: 6px;
+  }
+
+  .choropleth-container select {
+    padding: 10px 12px;
+    font-size: 15px;
+  }
+
+  .pie-charts-group {
+    padding: 10px;
+  }
+
+  .bar-chart-container,
+  .timeline-chart-container {
+    padding: 10px;
+  }
+}
