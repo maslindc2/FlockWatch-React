@@ -8,21 +8,35 @@ interface Props {
     data: ProductionTypeSummary[];
 }
 
-const TOP_N = 10;
+const TOP_N = 5;
 const CHART_WIDTH = 800;
-const CHART_HEIGHT = 460;
-const MARGIN = { top: 60, right: 140, bottom: 50, left: 320 };
-const BAR_HEIGHT = 30;
-const BAR_GAP = 6;
+const CHART_HEIGHT = 350;
+const MARGIN = { top: 50, right: 120, bottom: 40, left: 200 };
+const BAR_HEIGHT = 38;
+const BAR_GAP = 10;
 
 /**
- * Horizontal bar chart showing the top 10 production types by birds affected.
+ * Horizontal bar chart showing the top 5 production types by birds affected.
  */
+const MOBILE_BREAKPOINT = 480;
+
 const ProductionTypeBarChart: FC<Props> = ({ data }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkWidth = () => {
+            if (containerRef.current) {
+                setIsMobile(containerRef.current.getBoundingClientRect().width < MOBILE_BREAKPOINT);
+            }
+        };
+        checkWidth();
+        window.addEventListener("resize", checkWidth);
+        return () => window.removeEventListener("resize", checkWidth);
+    }, []);
 
     useEffect(() => {
         const el = containerRef.current;
@@ -142,12 +156,38 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
             .attr("font-weight", "600")
             .attr("fill", chartColors.prodBarTitleColor)
             .text("Birds Affected by Production Type");
-    }, [data, theme, isVisible]);
+    }, [data, theme, isVisible, isMobile]);
 
     const sorted = [...data]
         .sort((a, b) => b.total_birds_affected - a.total_birds_affected)
         .slice(0, TOP_N);
-    const chartLabel = `Bar chart showing top 10 production types by birds affected. ${sorted.map((d) => `${d.production_type}: ${d.total_birds_affected.toLocaleString()} birds`).join(". ")}.`;
+    const chartLabel = `Bar chart showing top 5 production types by birds affected. ${sorted.map((d) => `${d.production_type}: ${d.total_birds_affected.toLocaleString()} birds`).join(". ")}.`;
+
+    if (isMobile) {
+        return (
+            <div className="bar-chart-container" ref={containerRef}>
+                <h3 className="prod-bar-mobile-title">
+                    Birds Affected by Production Type
+                </h3>
+                <ol
+                    className="prod-bar-mobile-list"
+                    role="list"
+                    aria-label={chartLabel}
+                >
+                    {sorted.map((d) => (
+                        <li key={d.production_type} className="prod-bar-mobile-item">
+                            <span className="prod-bar-mobile-label">
+                                {d.production_type}
+                            </span>
+                            <span className="prod-bar-mobile-value">
+                                {d.total_birds_affected.toLocaleString()}
+                            </span>
+                        </li>
+                    ))}
+                </ol>
+            </div>
+        );
+    }
 
     return (
         <div className="bar-chart-container" ref={containerRef}>
