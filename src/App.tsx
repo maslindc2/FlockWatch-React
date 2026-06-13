@@ -254,11 +254,13 @@ function App() {
     function findSelectedStateColor(birdsAffectedInState: number): string {
         const maxNumBirdsAffected =
             d3.max(flockData, (state) => state.birds_affected) ?? 1;
-        const color = d3
-            .scaleLinear<string>()
-            .domain([0, maxNumBirdsAffected / 8, maxNumBirdsAffected])
-            .range(chartColors.selectedStateColorRange);
-        return color(birdsAffectedInState);
+        const colors = chartColors.selectedStateColorRange;
+        const t = Math.log(Math.max(1, birdsAffectedInState)) / Math.log(maxNumBirdsAffected);
+        const pos = Math.min(t * (colors.length - 1), colors.length - 1);
+        const i = Math.floor(pos);
+        const frac = pos - i;
+        if (i >= colors.length - 1) return colors[colors.length - 1];
+        return d3.interpolateRgb(colors[i], colors[i + 1])(frac);
     }
 
     function findSetSelectedState(stateSelected: string): void {
@@ -340,6 +342,7 @@ function App() {
                     <ChoroplethMap
                         data={flockData}
                         stateTrigger={findSetSelectedState}
+                        selectedAbbreviation={selectedState?.state_abbreviation ?? null}
                     />
                 </div>
             </section>

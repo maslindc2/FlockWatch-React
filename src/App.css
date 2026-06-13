@@ -812,6 +812,29 @@ section.chart-row {
   width: 100%;
 }
 
+.choropleth-tooltip {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px var(--shadow-sm);
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.choropleth-tooltip strong {
+  font-weight: 600;
+}
+
+.choropleth-container svg path:focus-visible {
+  stroke: #0066cc !important;
+  stroke-width: 3px !important;
+  outline: none;
+}
+
 .choropleth-container svg {
   aspect-ratio: 980 / 780;
 }
