@@ -22,27 +22,27 @@ export default function createKpiTiles(
         total_backyard_flocks_affected: [
             "Backyard Flocks Affected",
             "backyard-flocks",
-            "rgba(2, 163, 56, 1)",
+            "rgba(40, 150, 60, 1)",
         ],
         total_birds_affected: [
             "Birds Affected",
             "birds-affected",
-            "#ef8700ff",
+            "rgba(230, 140, 30, 1)",
         ],
         total_commercial_flocks_affected: [
             "Commercial Flocks Affected",
             "commercial-flocks",
-            "rgba(131, 0, 239, 1)",
+            "rgba(130, 50, 200, 1)",
         ],
         total_flocks_affected: [
             "Total Flocks Affected",
             "total-flocks",
-            "rgba(255, 97, 131, 1)",
+            "hsla(210, 70%, 45%, 1.00)",
         ],
         total_states_affected: [
             "States Affected",
             "states-affected",
-            "hsla(192, 98%, 37%, 1.00)",
+            "hsla(210, 70%, 45%, 1.00)",
         ],
     };
 

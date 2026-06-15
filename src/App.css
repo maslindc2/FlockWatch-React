@@ -3,6 +3,7 @@
   --bg-secondary: #f1f1f1;
   --surface-primary: #ffffff;
   --surface-hover: #f0f0f0;
+  --hover-bg: rgba(0, 0, 0, 0.04);
   --text-primary: #333333;
   --text-secondary: #555555;
   --text-muted: #888888;
@@ -23,6 +24,7 @@
   --bg-secondary: #1a1a1a;
   --surface-primary: #1e1e2e;
   --surface-hover: #2a2a3e;
+  --hover-bg: rgba(255, 255, 255, 0.04);
   --text-primary: #e0e0e0;
   --text-secondary: #a0a0a0;
   --text-muted: #707070;
@@ -264,11 +266,17 @@ header > p {
 }
 
 .state-slide-panel .state-info-container {
+  justify-content: center;
   padding: 0.5rem 0;
 }
 
 .state-slide-panel .state-info-tiles {
+  flex-direction: column;
   gap: 16px;
+}
+
+.state-slide-panel .tile-inner > h3 {
+  font-size: 24px;
 }
 
 .close-button {

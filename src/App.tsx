@@ -307,7 +307,7 @@ function App() {
                 <p>Last updated on {lastUpdatedDateFormatted}</p>
             </header>
 
-            <section className="stats-section">
+            <section className="stats-sections">
                 <section className="info-tile-group">
                     <h2 className="info-tile-title">Overview</h2>
                     <section className="info-tiles">
@@ -317,21 +317,21 @@ function App() {
                             title="Birds at risk (active)"
                             amount={birdsAtRisk.toLocaleString()}
                             subtext={`${activeSitesCount.toLocaleString()} active sites`}
-                            bgColor="rgba(220, 50, 50, 1)"
+                            bgColor="rgba(200, 45, 45, 1)"
                         />
                         <KpiTiles
                             id="new-confirmations"
                             title="New Confirmations (30d)"
                             amount={newConfirmations30d.toLocaleString()}
                             subtext={confirmationsTrend ?? undefined}
-                            bgColor="rgba(0, 119, 255, 1)"
+                            bgColor="hsla(210, 70%, 45%, 1.00)"
                         />
                         <KpiTiles
                             id="sites-released"
                             title="Sites Released (30d)"
                             amount={sitesReleased30d.toLocaleString()}
                             subtext="depopulation complete"
-                            bgColor="rgba(0, 150, 100, 1)"
+                            bgColor="rgba(0, 140, 100, 1)"
                         />
                     </section>
                 </section>

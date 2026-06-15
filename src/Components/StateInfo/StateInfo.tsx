@@ -44,22 +44,22 @@ function createInfoTiles(stateInfo: StateTiles) {
         backyard_flocks: [
             "Backyard Flocks Affected",
             "backyard-flocks",
-            "rgba(2, 163, 56, 1)",
+            "rgba(40, 150, 60, 1)",
         ],
         birds_affected: [
             "Birds Affected",
             "birds-affected",
-            "#ef8700ff",
+            "rgba(230, 140, 30, 1)",
         ],
         commercial_flocks: [
             "Commercial Flocks Affected",
             "commercial-flocks",
-            "rgba(131, 0, 239, 1)",
+            "rgba(130, 50, 200, 1)",
         ],
         total_flocks: [
             "Total Flocks Affected",
             "total-flocks",
-            "rgba(255, 97, 131, 1)",
+            "hsla(210, 70%, 45%, 1.00)",
         ],
     };
 
@@ -114,19 +114,19 @@ export default function StateInfo({
 
             <section className="state-info-container">
                 <section className="state-info-tiles">
-                    {stateInfoTiles}
                     <InfoTiles
                         id="state-active-sites"
                         title="Active Sites (current)"
                         amount={stateActiveSitesCount.toLocaleString()}
-                        bgColor="rgba(220, 50, 50, 1)"
+                        bgColor="rgba(200, 45, 45, 1)"
                     />
                     <InfoTiles
                         id="state-birds-at-risk"
                         title="Birds at Risk (active)"
                         amount={stateBirdsAtRisk.toLocaleString()}
-                        bgColor="rgba(255, 100, 50, 1)"
+                        bgColor="rgba(200, 45, 45, 1)"
                     />
+                    {stateInfoTiles}
                 </section>
             </section>
 
