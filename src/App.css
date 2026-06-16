@@ -387,13 +387,6 @@ section.chart-row {
   gap: 16px;
 }
 
-.state-outline {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .state-info-container {
   display: flex;
   flex-direction: row;
@@ -429,10 +422,6 @@ section.chart-row {
   .state-info-container {
     flex-direction: column;
     align-items: center;
-  }
-  .state-outline {
-    order: 2;
-    width: 100%;
   }
   body {
     flex-direction: column;

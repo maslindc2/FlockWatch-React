@@ -208,9 +208,9 @@ function App() {
             const diff = current - previous;
             const pct = Math.round((diff / previous) * 100);
             const arrow = diff >= 0 ? "\u2191" : "\u2193";
-            confirmationsTrend = `${arrow} ${Math.abs(pct)}% vs previous month`;
+            confirmationsTrend = `${arrow} ${Math.abs(pct)}% vs previous ${timelineGranularity}`;
         } else if (current > 0) {
-            confirmationsTrend = `+${current.toLocaleString()} vs previous month`;
+            confirmationsTrend = `+${current.toLocaleString()} vs previous ${timelineGranularity}`;
         }
     }
 
