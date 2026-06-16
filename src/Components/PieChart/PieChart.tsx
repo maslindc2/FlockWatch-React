@@ -17,11 +17,7 @@ const INNER_RADIUS = 33;
 /**
  * Donut chart comparing backyard vs commercial flocks affected.
  */
-const PieChart: FC<Props> = ({
-    backyardFlocks,
-    commercialFlocks,
-    title,
-}) => {
+const PieChart: FC<Props> = ({ backyardFlocks, commercialFlocks, title }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -117,8 +113,7 @@ const PieChart: FC<Props> = ({
             pathSelection.attr("d", arc);
         }
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", centerX)
             .attr("y", centerY - 4)
             .attr("text-anchor", "middle")
@@ -128,8 +123,7 @@ const PieChart: FC<Props> = ({
             .attr("fill", chartColors.pieTextColor)
             .text(total.toLocaleString());
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", centerX)
             .attr("y", centerY + 16)
             .attr("text-anchor", "middle")
@@ -160,8 +154,7 @@ const PieChart: FC<Props> = ({
         legendItems.forEach((item, i) => {
             const y = labelStartY + i * labelGap;
 
-            svg
-                .append("rect")
+            svg.append("rect")
                 .attr("x", labelX)
                 .attr("y", y - 10)
                 .attr("width", 18)
@@ -170,8 +163,7 @@ const PieChart: FC<Props> = ({
                 .attr("rx", 4)
                 .attr("ry", 4);
 
-            svg
-                .append("text")
+            svg.append("text")
                 .attr("x", labelX + 26)
                 .attr("y", y + 1)
                 .attr("text-anchor", "start")
@@ -183,8 +175,7 @@ const PieChart: FC<Props> = ({
                 );
         });
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", CHART_WIDTH / 2)
             .attr("y", 18)
             .attr("text-anchor", "middle")
@@ -192,7 +183,6 @@ const PieChart: FC<Props> = ({
             .attr("font-weight", "600")
             .attr("fill", chartColors.pieTextColor)
             .text(title);
-
     }, [backyardFlocks, commercialFlocks, theme, isVisible]);
 
     const total = backyardFlocks + commercialFlocks;

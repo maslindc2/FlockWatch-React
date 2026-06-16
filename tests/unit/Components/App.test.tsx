@@ -63,9 +63,12 @@ vi.mock("../../../src/Components/ChoroplethMap/ChoroplethMap", () => ({
     ),
 }));
 
-vi.mock("../../../src/Components/SitesTimelineChart/SitesTimelineChart", () => ({
-    default: () => <div data-testid="timeline-chart">Timeline Chart</div>,
-}));
+vi.mock(
+    "../../../src/Components/SitesTimelineChart/SitesTimelineChart",
+    () => ({
+        default: () => <div data-testid="timeline-chart">Timeline Chart</div>,
+    })
+);
 
 vi.mock("../../../src/Utils/dateFormatter", () => ({
     default: (date: string) => `Formatted(${date})`,
@@ -313,9 +316,7 @@ describe("App", () => {
 
         expect(screen.getByText("Overview")).toBeInTheDocument();
         expect(screen.queryByText("All Time Totals")).not.toBeInTheDocument();
-        expect(
-            screen.getByText("New Confirmations (30d)")
-        ).toBeInTheDocument();
+        expect(screen.getByText("New Confirmations (30d)")).toBeInTheDocument();
         expect(screen.getByText("Sites Released (30d)")).toBeInTheDocument();
         expect(screen.getByText("depopulation complete")).toBeInTheDocument();
         expect(screen.getByText("2,027 total sites")).toBeInTheDocument();

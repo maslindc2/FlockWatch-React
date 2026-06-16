@@ -109,8 +109,7 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
             pathSelection.attr("d", arc);
         }
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", centerX)
             .attr("y", centerY)
             .attr("text-anchor", "middle")
@@ -128,8 +127,7 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
             const y = labelStartY + i * labelGap;
             const pct = ((d.count / total) * 100).toFixed(1);
 
-            svg
-                .append("rect")
+            svg.append("rect")
                 .attr("x", labelX)
                 .attr("y", y - 7)
                 .attr("width", 12)
@@ -138,8 +136,7 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
                 .attr("rx", 3)
                 .attr("ry", 3);
 
-            svg
-                .append("text")
+            svg.append("text")
                 .attr("x", labelX + 18)
                 .attr("y", y + 1)
                 .attr("text-anchor", "start")

@@ -54,7 +54,11 @@ let cachedTopo: Topology | null = null;
  * US choropleth map colored by birds affected per state.
  * Clicking a state triggers the `stateTrigger` callback.
  */
-const ChoroplethMap: FC<Props> = ({ data, stateTrigger, selectedAbbreviation }) => {
+const ChoroplethMap: FC<Props> = ({
+    data,
+    stateTrigger,
+    selectedAbbreviation,
+}) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -110,7 +114,10 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger, selectedAbbreviation }) 
                 if (value <= 0) return chartColors.choroplethColorRange[0];
                 const t = Math.log(value) / Math.log(maxAffected);
                 const colors = chartColors.choroplethColorRange;
-                const pos = Math.min(t * (colors.length - 1), colors.length - 1);
+                const pos = Math.min(
+                    t * (colors.length - 1),
+                    colors.length - 1
+                );
                 const i = Math.floor(pos);
                 const frac = pos - i;
                 if (i >= colors.length - 1) return colors[colors.length - 1];
@@ -290,21 +297,23 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger, selectedAbbreviation }) 
                     }
                 })
                 .on("focus", function () {
-                    d3.select(this).attr("stroke", "#0066cc").attr("stroke-width", 3);
+                    d3.select(this)
+                        .attr("stroke", "#0066cc")
+                        .attr("stroke-width", 3);
                 })
                 .on("blur", function () {
-                    const datum =
-                        d3.select(this).datum() as StateFeature;
+                    const datum = d3.select(this).datum() as StateFeature;
                     const fips = datum.id?.toString();
                     const abbreviation = fips
                         ? fipsToStateAbbreviation[fips]
                         : null;
-                    const isSelected =
-                        abbreviation === selectedAbbreviation;
+                    const isSelected = abbreviation === selectedAbbreviation;
                     d3.select(this)
                         .attr(
                             "stroke",
-                            isSelected ? "#ff6b35" : chartColors.choroplethStroke
+                            isSelected
+                                ? "#ff6b35"
+                                : chartColors.choroplethStroke
                         )
                         .attr("stroke-width", isSelected ? 3 : 1);
                 });
@@ -369,7 +378,16 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger, selectedAbbreviation }) 
 
     const chartLabel =
         data.length > 0
-            ? `Map of the United States showing total birds affected by avian influenza by state. Top affected states: ${[...data].sort((a, b) => b.birds_affected - a.birds_affected).slice(0, 3).map((d) => `${d.state}: ${d.birds_affected.toLocaleString()} birds`).join(", ")}.`
+            ? `Map of the United States showing total birds affected by avian influenza by state. Top affected states: ${[
+                  ...data,
+              ]
+                  .sort((a, b) => b.birds_affected - a.birds_affected)
+                  .slice(0, 3)
+                  .map(
+                      (d) =>
+                          `${d.state}: ${d.birds_affected.toLocaleString()} birds`
+                  )
+                  .join(", ")}.`
             : "Map of the United States showing avian influenza data.";
 
     return (

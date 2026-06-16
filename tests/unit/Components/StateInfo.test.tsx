@@ -19,14 +19,23 @@ vi.mock("../../../src/Components/KpiTiles/KpiTiles", () => ({
 vi.mock("../../../src/Utils/dateFormatter");
 
 // Mock the StateProductionPieChart as it uses d3 internally
-vi.mock("../../../src/Components/StateProductionPieChart/StateProductionPieChart", () => ({
-    __esModule: true,
-    default: ({ data, stateName }: { data: { label: string; count: number }[]; stateName: string }) => (
-        <div data-testid="state-production-pie-chart">
-            {stateName}-{data.length} types
-        </div>
-    ),
-}));
+vi.mock(
+    "../../../src/Components/StateProductionPieChart/StateProductionPieChart",
+    () => ({
+        __esModule: true,
+        default: ({
+            data,
+            stateName,
+        }: {
+            data: { label: string; count: number }[];
+            stateName: string;
+        }) => (
+            <div data-testid="state-production-pie-chart">
+                {stateName}-{data.length} types
+            </div>
+        ),
+    })
+);
 
 describe("StateInfo", () => {
     // Create our mock state info based on the Washington State flock info
@@ -56,8 +65,18 @@ describe("StateInfo", () => {
             { label: "Backyard Flock", count: 2 },
         ],
         stateCountyData: [
-            { county: "Elkhart", count: 3, birds: 18000, types: "Commercial Duck Meat Bird" },
-            { county: "Lagrange", count: 2, birds: 7000, types: "WOAH Poultry, Commercial Duck Breeder" },
+            {
+                county: "Elkhart",
+                count: 3,
+                birds: 18000,
+                types: "Commercial Duck Meat Bird",
+            },
+            {
+                county: "Lagrange",
+                count: 2,
+                birds: 7000,
+                types: "WOAH Poultry, Commercial Duck Breeder",
+            },
         ],
     };
 
@@ -129,9 +148,7 @@ describe("StateInfo", () => {
     it("should render the county table with affected counties when there are active sites", () => {
         render(<StateInfo stateInfo={mockStateInfo} {...defaultProps} />);
 
-        expect(
-            screen.getByText("Affected Counties")
-        ).toBeInTheDocument();
+        expect(screen.getByText("Affected Counties")).toBeInTheDocument();
 
         expect(screen.getByText("Elkhart")).toBeInTheDocument();
         expect(screen.getByText("Lagrange")).toBeInTheDocument();
@@ -157,8 +174,6 @@ describe("StateInfo", () => {
             screen.queryByText("Active Sites by Production Type")
         ).not.toBeInTheDocument();
 
-        expect(
-            screen.queryByText("Affected Counties")
-        ).not.toBeInTheDocument();
+        expect(screen.queryByText("Affected Counties")).not.toBeInTheDocument();
     });
 });

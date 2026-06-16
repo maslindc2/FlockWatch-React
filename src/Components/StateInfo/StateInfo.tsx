@@ -165,7 +165,9 @@ export default function StateInfo({
                                         <td>{row.county}</td>
                                         <td>{row.count.toLocaleString()}</td>
                                         <td>{row.birds.toLocaleString()}</td>
-                                        <td className="county-types">{row.types}</td>
+                                        <td className="county-types">
+                                            {row.types}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

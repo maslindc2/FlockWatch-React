@@ -76,7 +76,9 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
             const y = i * (BAR_HEIGHT + BAR_GAP);
             const barWidth = barWidthScale(d.birds_affected);
             const isActive = activeStates.has(d.state);
-            const barColor = isActive ? chartColors.barActiveColor : chartColors.barInactiveColor;
+            const barColor = isActive
+                ? chartColors.barActiveColor
+                : chartColors.barInactiveColor;
 
             chartGroup
                 .append("rect")
@@ -129,8 +131,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .text(d.birds_affected.toLocaleString());
         });
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", CHART_WIDTH / 2)
             .attr("y", 30)
             .attr("text-anchor", "middle")
@@ -141,7 +142,10 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
 
         const legendGroup = svg
             .append("g")
-            .attr("transform", `translate(${MARGIN.left}, ${CHART_HEIGHT - MARGIN.bottom + 20})`);
+            .attr(
+                "transform",
+                `translate(${MARGIN.left}, ${CHART_HEIGHT - MARGIN.bottom + 20})`
+            );
 
         const legendItems = [
             { label: "Has active sites", color: chartColors.barActiveColor },

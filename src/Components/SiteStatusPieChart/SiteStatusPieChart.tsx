@@ -18,7 +18,11 @@ const INNER_RADIUS = 35;
  * Donut chart showing all-time site status breakdown
  * (active vs released vs N/A).
  */
-const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) => {
+const SiteStatusPieChart: FC<Props> = ({
+    activeSites,
+    releasedSites,
+    naSites,
+}) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -121,8 +125,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             pathSelection.attr("d", arc);
         }
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", centerX)
             .attr("y", centerY)
             .attr("text-anchor", "middle")
@@ -160,8 +163,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
         legendItems.forEach((item, i) => {
             const y = labelStartY + i * labelGap;
 
-            svg
-                .append("rect")
+            svg.append("rect")
                 .attr("x", labelX)
                 .attr("y", y - 10)
                 .attr("width", 18)
@@ -170,8 +172,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
                 .attr("rx", 4)
                 .attr("ry", 4);
 
-            svg
-                .append("text")
+            svg.append("text")
                 .attr("x", labelX + 26)
                 .attr("y", y + 1)
                 .attr("text-anchor", "start")
@@ -183,8 +184,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
                 );
         });
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", CHART_WIDTH / 2)
             .attr("y", 20)
             .attr("text-anchor", "middle")
