@@ -588,6 +588,24 @@ section.chart-row {
   box-sizing: border-box;
 }
 
+.stale-data-banner {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #fff3cd;
+  color: #856404;
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-bottom: 1px solid #ffeeba;
+}
+
+[data-theme="dark"] .stale-data-banner {
+  background: #4a3f1a;
+  color: #ffd964;
+  border-bottom-color: #665d30;
+}
+
 .error-text {
   max-width: 500px;
 }

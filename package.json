@@ -5,6 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite --host",
+        "prebuild": "node scripts/copy-cache-seed.mjs",
         "build": "tsc -b && vite build",
         "test": "vitest",
         "test:unit": "vitest tests/unit",
@@ -15,7 +16,9 @@
         "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|tsx|json)\""
     },
     "dependencies": {
-        "@tanstack/react-query": "^5.84.1",
+        "@tanstack/query-sync-storage-persister": "^5.101.0",
+        "@tanstack/react-query": "^5.101.0",
+        "@tanstack/react-query-persist-client": "^5.101.0",
         "@types/nock": "^10.0.3",
         "@vitest/coverage-v8": "^4.1.8",
         "d3": "^7.9.0",

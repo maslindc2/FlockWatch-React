@@ -1,5 +1,6 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useIsFetching } from "@tanstack/react-query";
 import StateInfo from "./Components/StateInfo/StateInfo";
 import ChoroplethMap from "./Components/ChoroplethMap/ChoroplethMap";
 import createInfoTiles from "./Components/KpiTiles/CreateKpiTiles";
@@ -24,6 +25,7 @@ import ProductionTypeBarChart from "./Components/ProductionTypeBarChart/Producti
 import RecentConfirmations from "./Components/RecentConfirmations/RecentConfirmations";
 import SitesTimelineChart from "./Components/SitesTimelineChart/SitesTimelineChart";
 import { useTheme } from "./theme/theme";
+import StaleDataBanner from "./Components/StaleDataBanner/StaleDataBanner";
 
 /** Combined state data with map color. */
 interface StateInformation extends FlockRecord {
@@ -44,6 +46,20 @@ function App() {
     const [timelineGranularity, setTimelineGranularity] = useState<
         "week" | "month" | "year"
     >("month");
+
+    const isFetching = useIsFetching();
+    const didFetch = useRef(false);
+    const hasReloaded = useRef(false);
+
+    useEffect(() => {
+        if (isFetching > 0) {
+            didFetch.current = true;
+        } else if (didFetch.current && !hasReloaded.current) {
+            hasReloaded.current = true;
+            const timer = setTimeout(() => location.reload(), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [isFetching]);
 
     useBackToClose(Boolean(selectedState), closeStateInfo);
 
@@ -110,14 +126,25 @@ function App() {
     const { error: timelineError, data: timelineDataFromAPI } =
         useSitesTimeline(flockWatchServerURL, timelineGranularity);
 
+    const hasAnyData = !!(
+        usSummaryDataFromAPI &&
+        flockDataFromAPI &&
+        statusSummaryDataFromAPI &&
+        sitesDataFromAPI &&
+        activeSitesDataFromAPI &&
+        historicalSummaryDataFromAPI &&
+        productionTypeSummaryDataFromAPI
+    );
+
     if (
-        isUsSummaryPending ||
+        !hasAnyData &&
+        (isUsSummaryPending ||
         isFlockCasesPending ||
         isStatusSummaryPending ||
         isSitesPending ||
         isActiveSitesPending ||
         isHistoricalSummaryPending ||
-        isProductionTypeSummaryPending
+        isProductionTypeSummaryPending)
     )
         return (
             <>
@@ -155,7 +182,7 @@ function App() {
                 </div>
             </>
         );
-    if (
+    const hasErrors = !!(
         usSummaryError ||
         flockCasesError ||
         statusSummaryError ||
@@ -163,7 +190,9 @@ function App() {
         activeSitesError ||
         historicalSummaryError ||
         productionTypeSummaryError
-    ) {
+    );
+
+    if (!hasAnyData && hasErrors) {
         console.log(usSummaryError);
         console.log(flockCasesError);
         console.log(statusSummaryError);
@@ -196,6 +225,7 @@ function App() {
     const sitesReleased30d =
         statusSummaryDataFromAPI.data.sites_released_last_30_days;
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
+    const staleSince = hasErrors ? lastUpdated : null;
     const productionTypeData = productionTypeSummaryDataFromAPI.data;
 
     const timelinePeriods = timelineDataFromAPI?.data?.periods;
@@ -297,6 +327,7 @@ function App() {
             <a href="#main-content" className="skip-link">
                 Skip to main content
             </a>
+            <StaleDataBanner lastUpdated={staleSince} />
             <button
                 className="theme-toggle"
                 onClick={toggleTheme}
@@ -437,7 +468,7 @@ function App() {
                 </section>
                 <section className="chart-row">
                     <div className="timeline-wrapper">
-                        {timelineError ? (
+                        {timelineError && !timelineDataFromAPI ? (
                             <p className="timeline-error">
                                 Failed to load timeline data
                             </p>
@@ -464,7 +495,7 @@ function App() {
                         aria-modal="true"
                         aria-label={`${selectedState.state} outbreak information`}
                     >
-                        <button
+            <button
                             onClick={closeStateInfo}
                             className="state-panel-close"
                             aria-label="Close state information"
