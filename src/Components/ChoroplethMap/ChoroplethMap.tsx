@@ -59,7 +59,7 @@ const ChoroplethMap: FC<Props> = ({
     stateTrigger,
     selectedAbbreviation,
 }) => {
-    const { theme, chartColors } = useTheme();
+    const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const tooltipRef = useRef<HTMLDivElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -374,7 +374,7 @@ const ChoroplethMap: FC<Props> = ({
         loadMap().catch(() => {
             /* TopoJSON load error handled silently */
         });
-    }, [data, stateTrigger, theme, selectedAbbreviation]);
+    }, [data, stateTrigger, chartColors, selectedAbbreviation]);
 
     const chartLabel =
         data.length > 0

@@ -22,7 +22,7 @@ const BAR_GAP = 10;
 const MOBILE_BREAKPOINT = 480;
 
 const ProductionTypeBarChart: FC<Props> = ({ data, compact }) => {
-    const { theme, chartColors } = useTheme();
+    const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -156,7 +156,7 @@ const ProductionTypeBarChart: FC<Props> = ({ data, compact }) => {
             .attr("font-weight", "600")
             .attr("fill", chartColors.prodBarTitleColor)
             .text("Birds Affected by Production Type");
-    }, [data, theme, isVisible, isMobile]);
+    }, [data, chartColors, isVisible, isMobile]);
 
     const sorted = [...data]
         .sort((a, b) => b.total_birds_affected - a.total_birds_affected)
@@ -273,7 +273,6 @@ const ProductionTypeBarChart: FC<Props> = ({ data, compact }) => {
                 </h3>
                 <ol
                     className="prod-bar-mobile-list"
-                    role="list"
                     aria-label={chartLabel}
                 >
                     {sorted.map((d) => (

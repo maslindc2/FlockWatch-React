@@ -23,7 +23,7 @@ const SiteStatusPieChart: FC<Props> = ({
     releasedSites,
     naSites,
 }) => {
-    const { theme, chartColors } = useTheme();
+    const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -108,7 +108,7 @@ const SiteStatusPieChart: FC<Props> = ({
             pathSelection
                 .attr("d", (d) => {
                     const collapsed = { ...d, endAngle: d.startAngle };
-                    return arc(collapsed as any) || "";
+                    return arc(collapsed as d3.DefaultArcObject) || "";
                 })
                 .transition()
                 .duration(600)
@@ -116,8 +116,8 @@ const SiteStatusPieChart: FC<Props> = ({
                 .ease(d3.easeCubicOut)
                 .attrTween("d", (d) => {
                     const interpolate = d3.interpolate(
-                        { ...d, endAngle: d.startAngle } as any,
-                        d as any
+                        { ...d, endAngle: d.startAngle } as d3.DefaultArcObject,
+                        d as d3.DefaultArcObject
                     );
                     return (t: number) => arc(interpolate(t)) || "";
                 });
@@ -192,7 +192,7 @@ const SiteStatusPieChart: FC<Props> = ({
             .attr("font-weight", "600")
             .attr("fill", chartColors.pieTextColor)
             .text("Site Status (All Time)");
-    }, [activeSites, releasedSites, naSites, theme, isVisible]);
+    }, [activeSites, releasedSites, naSites, chartColors, isVisible]);
 
     const total = activeSites + releasedSites + naSites;
     const chartLabel =

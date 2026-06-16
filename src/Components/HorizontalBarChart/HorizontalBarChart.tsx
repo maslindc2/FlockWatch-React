@@ -21,7 +21,7 @@ const BAR_GAP = 10;
  * with color coding for states that still have active sites.
  */
 const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
-    const { theme, chartColors } = useTheme();
+    const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -173,7 +173,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("fill", chartColors.barLegendColor)
                 .text(item.label);
         });
-    }, [data, activeStates, theme, isVisible]);
+    }, [data, activeStates, chartColors, isVisible]);
 
     const sorted = [...data]
         .sort((a, b) => b.birds_affected - a.birds_affected)

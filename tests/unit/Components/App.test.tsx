@@ -378,4 +378,157 @@ describe("App", () => {
         expect(closeButton).toBeInTheDocument();
         expect(closeButton).toHaveClass("state-panel-close");
     });
+
+    it("renders theme toggle button that changes aria-label on click", () => {
+        (useUsSummaryData as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockUsSummary,
+        });
+        (useFlockCases as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockFlockCases,
+        });
+        (useStatusSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockStatusSummary,
+        });
+        (useSitesData as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockSitesData,
+        });
+        (useActiveSites as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockActiveSitesData,
+        });
+        (useHistoricalSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockHistoricalSummary,
+        });
+        (useProductionTypeSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockProductionTypeSummary,
+        });
+        (useSitesTimeline as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockTimelineData,
+        });
+
+        renderWithTheme(<App />);
+
+        const toggle = screen.getByRole("button", { name: "Switch to dark mode" });
+        expect(toggle).toHaveClass("theme-toggle");
+
+        fireEvent.click(toggle);
+
+        expect(
+            screen.getByRole("button", { name: "Switch to light mode" })
+        ).toBeInTheDocument();
+    });
+
+    it("closes state panel on Escape keydown", () => {
+        (useUsSummaryData as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockUsSummary,
+        });
+        (useFlockCases as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockFlockCases,
+        });
+        (useStatusSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockStatusSummary,
+        });
+        (useSitesData as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockSitesData,
+        });
+        (useActiveSites as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockActiveSitesData,
+        });
+        (useHistoricalSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockHistoricalSummary,
+        });
+        (useProductionTypeSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockProductionTypeSummary,
+        });
+        (useSitesTimeline as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockTimelineData,
+        });
+
+        renderWithTheme(<App />);
+
+        fireEvent.click(screen.getByText("Select California"));
+        expect(screen.getByTestId("state-info")).toBeInTheDocument();
+
+        fireEvent.keyDown(window, { key: "Escape" });
+        expect(screen.queryByTestId("state-info")).not.toBeInTheDocument();
+    });
+
+    it("renders timeline error message when only timeline fails", () => {
+        (useUsSummaryData as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockUsSummary,
+        });
+        (useFlockCases as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockFlockCases,
+        });
+        (useStatusSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockStatusSummary,
+        });
+        (useSitesData as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockSitesData,
+        });
+        (useActiveSites as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockActiveSitesData,
+        });
+        (useHistoricalSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockHistoricalSummary,
+        });
+        (useProductionTypeSummary as any).mockReturnValue({
+            isPending: false,
+            error: null,
+            data: mockProductionTypeSummary,
+        });
+        (useSitesTimeline as any).mockReturnValue({
+            isPending: false,
+            error: "Timeline error",
+            data: null,
+        });
+
+        renderWithTheme(<App />);
+        expect(
+            screen.getByText("Failed to load timeline data")
+        ).toBeInTheDocument();
+    });
 });

@@ -18,7 +18,7 @@ const PIE_RADIUS = 75;
 const INNER_RADIUS = 35;
 
 const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
-    const { theme, chartColors } = useTheme();
+    const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -92,7 +92,7 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
             pathSelection
                 .attr("d", (d) => {
                     const collapsed = { ...d, endAngle: d.startAngle };
-                    return arc(collapsed as any) || "";
+                    return arc(collapsed as d3.DefaultArcObject) || "";
                 })
                 .transition()
                 .duration(600)
@@ -100,8 +100,8 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
                 .ease(d3.easeCubicOut)
                 .attrTween("d", (d) => {
                     const interpolate = d3.interpolate(
-                        { ...d, endAngle: d.startAngle } as any,
-                        d as any
+                        { ...d, endAngle: d.startAngle } as d3.DefaultArcObject,
+                        d as d3.DefaultArcObject
                     );
                     return (t: number) => arc(interpolate(t)) || "";
                 });
@@ -145,7 +145,7 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
                 .attr("fill", chartColors.pieTextColor)
                 .text(`${d.label} - ${d.count} (${pct}%)`);
         });
-    }, [data, theme, isVisible]);
+    }, [data, chartColors, isVisible]);
 
     const total = data.reduce((sum, d) => sum + d.count, 0);
     const chartLabel =

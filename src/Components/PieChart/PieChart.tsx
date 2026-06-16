@@ -18,7 +18,7 @@ const INNER_RADIUS = 33;
  * Donut chart comparing backyard vs commercial flocks affected.
  */
 const PieChart: FC<Props> = ({ backyardFlocks, commercialFlocks, title }) => {
-    const { theme, chartColors } = useTheme();
+    const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -96,7 +96,7 @@ const PieChart: FC<Props> = ({ backyardFlocks, commercialFlocks, title }) => {
             pathSelection
                 .attr("d", (d) => {
                     const collapsed = { ...d, endAngle: d.startAngle };
-                    return arc(collapsed as any) || "";
+                    return arc(collapsed as d3.DefaultArcObject) || "";
                 })
                 .transition()
                 .duration(600)
@@ -104,8 +104,8 @@ const PieChart: FC<Props> = ({ backyardFlocks, commercialFlocks, title }) => {
                 .ease(d3.easeCubicOut)
                 .attrTween("d", (d) => {
                     const interpolate = d3.interpolate(
-                        { ...d, endAngle: d.startAngle } as any,
-                        d as any
+                        { ...d, endAngle: d.startAngle } as d3.DefaultArcObject,
+                        d as d3.DefaultArcObject
                     );
                     return (t: number) => arc(interpolate(t)) || "";
                 });
@@ -183,7 +183,7 @@ const PieChart: FC<Props> = ({ backyardFlocks, commercialFlocks, title }) => {
             .attr("font-weight", "600")
             .attr("fill", chartColors.pieTextColor)
             .text(title);
-    }, [backyardFlocks, commercialFlocks, theme, isVisible]);
+    }, [backyardFlocks, commercialFlocks, chartColors, title, isVisible]);
 
     const total = backyardFlocks + commercialFlocks;
     const chartLabel =
