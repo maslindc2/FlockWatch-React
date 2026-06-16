@@ -10,9 +10,9 @@ interface Props {
 }
 
 const CHART_WIDTH = 400;
-const CHART_HEIGHT = 270;
-const PIE_RADIUS = 92;
-const INNER_RADIUS = 42;
+const CHART_HEIGHT = 216;
+const PIE_RADIUS = 80;
+const INNER_RADIUS = 36;
 
 /**
  * Donut chart showing all-time site status breakdown
@@ -76,7 +76,7 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .innerRadius(INNER_RADIUS)
             .outerRadius(PIE_RADIUS);
 
-        const centerX = 120;
+        const centerX = 85;
         const centerY = CHART_HEIGHT / 2;
 
         const pieGroup = svg
@@ -132,9 +132,9 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .attr("fill", chartColors.pieTextColor)
             .text(total.toLocaleString());
 
-        const labelX = centerX + PIE_RADIUS + 24;
-        const labelStartY = centerY - 30;
-        const labelGap = 30;
+        const labelX = centerX + PIE_RADIUS + 18;
+        const labelStartY = centerY - 36;
+        const labelGap = 38;
 
         const legendItems = [
             {
@@ -163,20 +163,20 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             svg
                 .append("rect")
                 .attr("x", labelX)
-                .attr("y", y - 8)
-                .attr("width", 14)
-                .attr("height", 14)
+                .attr("y", y - 10)
+                .attr("width", 18)
+                .attr("height", 18)
                 .attr("fill", item.color)
-                .attr("rx", 3)
-                .attr("ry", 3);
+                .attr("rx", 4)
+                .attr("ry", 4);
 
             svg
                 .append("text")
-                .attr("x", labelX + 22)
+                .attr("x", labelX + 26)
                 .attr("y", y + 1)
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "13px")
+                .attr("font-size", "15px")
                 .attr("fill", chartColors.pieTextColor)
                 .text(
                     `${item.label} - ${item.count.toLocaleString()} (${item.percent}%)`

@@ -365,6 +365,39 @@ section.chart-row {
   padding-bottom: 50px;
 }
 
+.chart-row.two-col-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+}
+
+.left-col {
+  min-width: 0;
+}
+
+.right-col-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chart-card {
+  background: var(--surface-primary);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px var(--shadow-sm);
+}
+
+.full-width-wrapper {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .chart-row.two-col-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .bar-chart-wrapper {
   flex: 1 1 600px;
   min-width: 0;
@@ -853,7 +886,7 @@ section.chart-row {
 }
 
 .site-status-pie-wrapper svg {
-  aspect-ratio: 400 / 270;
+  aspect-ratio: 400 / 216;
 }
 
 .timeline-chart-container svg {

@@ -6,6 +6,7 @@ import { useTheme } from "../../theme/theme";
 /** Props for the ProductionTypeBarChart component. */
 interface Props {
     data: ProductionTypeSummary[];
+    compact?: boolean;
 }
 
 const TOP_N = 5;
@@ -20,7 +21,7 @@ const BAR_GAP = 10;
  */
 const MOBILE_BREAKPOINT = 480;
 
-const ProductionTypeBarChart: FC<Props> = ({ data }) => {
+const ProductionTypeBarChart: FC<Props> = ({ data, compact }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -162,6 +163,40 @@ const ProductionTypeBarChart: FC<Props> = ({ data }) => {
         .sort((a, b) => b.total_birds_affected - a.total_birds_affected)
         .slice(0, TOP_N);
     const chartLabel = `Bar chart showing top 5 production types by birds affected. ${sorted.map((d) => `${d.production_type}: ${d.total_birds_affected.toLocaleString()} birds`).join(". ")}.`;
+
+    if (compact) {
+        const maxAffected = sorted[0]?.total_birds_affected ?? 1;
+        const maxAffectedVal = Math.max(...data.map(d => d.total_birds_affected), 1);
+        const colorScale = d3
+            .scaleLinear<string>()
+            .domain([0, maxAffectedVal])
+            .range(chartColors.prodBarColorRange);
+        return (
+            <div className="bar-chart-container" ref={containerRef} style={{ padding: '12px 14px' }}>
+                <h3 style={{ fontSize: '13px', fontWeight: 600, margin: '0 0 10px', textAlign: 'center', color: chartColors.prodBarTitleColor }}>
+                    Birds by Production Type
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }} role="list" aria-label={chartLabel}>
+                    {sorted.map((d) => {
+                        const pct = (d.total_birds_affected / maxAffected) * 100;
+                        return (
+                            <div key={d.production_type} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span style={{ fontSize: '11px', color: chartColors.prodBarTextColor, width: '100px', flexShrink: 0, textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    {d.production_type}
+                                </span>
+                                <div style={{ flex: 1, height: '8px', background: chartColors.prodBarBg, borderRadius: '4px', overflow: 'hidden' }}>
+                                    <div style={{ width: `${pct}%`, height: '100%', background: colorScale(d.total_birds_affected), borderRadius: '4px', transition: 'width 0.6s ease' }} />
+                                </div>
+                                <span style={{ fontSize: '11px', color: chartColors.prodBarTextColor, width: '38px', textAlign: 'right', flexShrink: 0 }}>
+                                    {(d.total_birds_affected / 1_000_000).toFixed(1)}M
+                                </span>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    }
 
     if (isMobile) {
         return (

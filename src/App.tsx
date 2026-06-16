@@ -340,15 +340,19 @@ function App() {
                     />
                 </div>
             </section>
-            <section className="chart-row">
-                <div className="bar-chart-wrapper">
+            <section className="chart-row two-col-grid">
+                <div className="left-col">
                     <HorizontalBarChart
                         data={flockData}
                         activeStates={activeStates}
                     />
                 </div>
-                <div className="pie-charts-column">
-                    <div className="pie-charts-group">
+                <div className="right-col-stack">
+                    <ProductionTypeBarChart
+                        data={productionTypeData}
+                        compact
+                    />
+                    <div className="chart-card">
                         <PieChart
                             backyardFlocks={
                                 flocksTimeRange === "allTime"
@@ -367,6 +371,8 @@ function App() {
                             timeRange={flocksTimeRange}
                             onToggle={setFlocksTimeRange}
                         />
+                    </div>
+                    <div className="chart-card">
                         <SiteStatusPieChart
                             activeSites={
                                 historicalSummaryDataFromAPI.data
@@ -385,12 +391,7 @@ function App() {
                 </div>
             </section>
             <section className="chart-row">
-                <div className="bar-chart-wrapper">
-                    <ProductionTypeBarChart
-                        data={productionTypeData}
-                    />
-                </div>
-                <div className="pie-charts-column">
+                <div className="full-width-wrapper">
                     <RecentConfirmations
                         sites={sitesDataFromAPI.data}
                     />
