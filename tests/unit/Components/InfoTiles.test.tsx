@@ -10,7 +10,6 @@ describe("InfoTiles Component", () => {
     const TILE_ID = "test-info-tile";
     const TILE_AMOUNT = "1970";
     const TILE_BG_COLOR = "#50fff0ff";
-    const TILE_ICON = "/flocks-affected.webp";
     beforeEach(() => {
         // Render the InfoTile Component
         const { container } = render(
@@ -19,7 +18,6 @@ describe("InfoTiles Component", () => {
                 title={TILE_TITLE}
                 amount={TILE_AMOUNT.toLocaleString()}
                 bgColor={TILE_BG_COLOR}
-                icon={TILE_ICON}
             />
         );
         // Get the root element of the InfoTile Component
@@ -32,10 +30,8 @@ describe("InfoTiles Component", () => {
         expect(infoTileRoot).toBeInTheDocument();
         // Expect it to have the correct classname
         expect(infoTileRoot).toHaveClass("tile-container");
-        // Expect that it has the border color applied to it from above
-        expect(infoTileRoot).toHaveStyle(`border: 2px solid ${TILE_BG_COLOR}`);
-        // Expect the root to have 2 children a Div and an image which we will be testing next
-        expect(infoTileChildren).toHaveLength(2);
+        // Expect the root to have 1 child (tile-inner div only, no icon)
+        expect(infoTileChildren).toHaveLength(1);
     });
     it("information div should have the expected elements when rendered", () => {
         // Get the first div of the root children which is the Information portion of the tile
@@ -66,26 +62,5 @@ describe("InfoTiles Component", () => {
         expect(tileInfoH3.tagName).toBe("H3");
         // A screen reader if the element is targeted should simply read out the Tile's title and the amount
         expect(tileInfoH3).toHaveAccessibleName(`${TILE_TITLE} ${TILE_AMOUNT}`);
-    });
-    it("has the correct accessible name", () => {
-        // Access the div containing our info tile's icon
-        const tileIconDiv = infoTileChildren[1];
-        // Expect the info tile icon to be rendered
-        expect(tileIconDiv).toBeInTheDocument();
-        // Expect it to be a div that's holding the image tag
-        expect(tileIconDiv.tagName).toBe("DIV");
-        // Expect the div to have the class tile-icon
-        expect(tileIconDiv).toHaveClass("tile-icon");
-
-        // Expect the tile-icon div to only have 1 child which is the image tag
-        expect(tileIconDiv.children.length).toBe(1);
-        // Access the icon in the tile-icon div
-        const infoTileIcon = tileIconDiv.children[0];
-        // Expect the info tile icon to be rendered in the document
-        expect(infoTileIcon).toBeInTheDocument();
-        // Expect the info tile icon to have the expected source we defined above
-        expect(infoTileIcon).toHaveAttribute("src", TILE_ICON);
-        // Expect the info tile icon to have the expected alt text we defined above
-        expect(infoTileIcon).toHaveAttribute("alt", `${TILE_TITLE} Icon`);
     });
 });

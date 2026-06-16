@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { useEffect, useRef, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { useTheme } from "../../theme/theme";
 
 /** Props for the SiteStatusPieChart component. */
@@ -9,18 +9,44 @@ interface Props {
     naSites: number;
 }
 
-const CHART_WIDTH = 320;
-const CHART_HEIGHT = 220;
-const PIE_RADIUS = 75;
-const INNER_RADIUS = 32;
+const CHART_WIDTH = 392;
+const CHART_HEIGHT = 212;
+const PIE_RADIUS = 78;
+const INNER_RADIUS = 35;
 
 /**
  * Donut chart showing all-time site status breakdown
  * (active vs released vs N/A).
  */
-const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) => {
-    const { theme, chartColors } = useTheme();
+const SiteStatusPieChart: FC<Props> = ({
+    activeSites,
+    releasedSites,
+    naSites,
+}) => {
+    const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el || isVisible) return;
+        if (typeof IntersectionObserver === "undefined") {
+            setIsVisible(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [isVisible]);
 
     useEffect(() => {
         const total = activeSites + releasedSites + naSites;
@@ -54,18 +80,17 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .innerRadius(INNER_RADIUS)
             .outerRadius(PIE_RADIUS);
 
-        const centerX = 90;
+        const centerX = 85;
         const centerY = CHART_HEIGHT / 2;
 
         const pieGroup = svg
             .append("g")
             .attr("transform", `translate(${centerX}, ${centerY})`);
 
-        pieGroup
+        const pathSelection = pieGroup
             .selectAll("path")
             .data(data)
             .join("path")
-            .attr("d", arc)
             .attr("fill", (d) => {
                 switch (d.data.label) {
                     case "Active":
@@ -79,20 +104,40 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
             .attr("stroke", chartColors.pieStroke)
             .attr("stroke-width", 2);
 
-        svg
-            .append("text")
+        if (isVisible) {
+            pathSelection
+                .attr("d", (d) => {
+                    const collapsed = { ...d, endAngle: d.startAngle };
+                    return arc(collapsed as d3.DefaultArcObject) || "";
+                })
+                .transition()
+                .duration(600)
+                .delay((_, i) => i * 80)
+                .ease(d3.easeCubicOut)
+                .attrTween("d", (d) => {
+                    const interpolate = d3.interpolate(
+                        { ...d, endAngle: d.startAngle } as d3.DefaultArcObject,
+                        d as d3.DefaultArcObject
+                    );
+                    return (t: number) => arc(interpolate(t)) || "";
+                });
+        } else {
+            pathSelection.attr("d", arc);
+        }
+
+        svg.append("text")
             .attr("x", centerX)
             .attr("y", centerY)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "central")
-            .attr("font-size", "18px")
+            .attr("font-size", "22px")
             .attr("font-weight", "700")
             .attr("fill", chartColors.pieTextColor)
             .text(total.toLocaleString());
 
-        const labelX = centerX + PIE_RADIUS + 20;
-        const labelStartY = centerY - 28;
-        const labelGap = 28;
+        const labelX = centerX + PIE_RADIUS + 18;
+        const labelStartY = centerY - 36;
+        const labelGap = 38;
 
         const legendItems = [
             {
@@ -118,42 +163,48 @@ const SiteStatusPieChart: FC<Props> = ({ activeSites, releasedSites, naSites }) 
         legendItems.forEach((item, i) => {
             const y = labelStartY + i * labelGap;
 
-            svg
-                .append("rect")
+            svg.append("rect")
                 .attr("x", labelX)
-                .attr("y", y - 7)
-                .attr("width", 12)
-                .attr("height", 12)
+                .attr("y", y - 10)
+                .attr("width", 18)
+                .attr("height", 18)
                 .attr("fill", item.color)
-                .attr("rx", 2)
-                .attr("ry", 2);
+                .attr("rx", 4)
+                .attr("ry", 4);
 
-            svg
-                .append("text")
-                .attr("x", labelX + 18)
+            svg.append("text")
+                .attr("x", labelX + 26)
                 .attr("y", y + 1)
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "12px")
+                .attr("font-size", "15px")
                 .attr("fill", chartColors.pieTextColor)
                 .text(
                     `${item.label} - ${item.count.toLocaleString()} (${item.percent}%)`
                 );
         });
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", CHART_WIDTH / 2)
             .attr("y", 20)
             .attr("text-anchor", "middle")
-            .attr("font-size", "14px")
+            .attr("font-size", "16px")
             .attr("font-weight", "600")
             .attr("fill", chartColors.pieTextColor)
             .text("Site Status (All Time)");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeSites, releasedSites, naSites, theme]);
+    }, [activeSites, releasedSites, naSites, chartColors, isVisible]);
 
-    return <svg ref={svgRef}></svg>;
+    const total = activeSites + releasedSites + naSites;
+    const chartLabel =
+        total > 0
+            ? `Donut chart showing site status breakdown all time. Active: ${activeSites.toLocaleString()} (${((activeSites / total) * 100).toFixed(1)}%), Released: ${releasedSites.toLocaleString()} (${((releasedSites / total) * 100).toFixed(1)}%), N/A: ${naSites.toLocaleString()} (${((naSites / total) * 100).toFixed(1)}%). Total: ${total.toLocaleString()} sites.`
+            : "Donut chart showing site status breakdown. No data available.";
+
+    return (
+        <div className="site-status-pie-wrapper" ref={containerRef}>
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
+        </div>
+    );
 };
 
 export default SiteStatusPieChart;

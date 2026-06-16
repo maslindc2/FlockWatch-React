@@ -10,6 +10,7 @@ export interface ChartColors {
   choroplethNoData: string;
   choroplethStroke: string;
   choroplethLabelColor: string;
+  choroplethLabelOutline: string;
   choroplethLegendStroke: string;
   choroplethPointerLine: string;
   choroplethHover: string;
@@ -52,11 +53,12 @@ export interface ChartColors {
 
 /** Light-mode chart and UI color palette. */
 export const lightChartColors: ChartColors = {
-  choroplethColorRange: ["#defad7ff", "#94d190ff", "#006400"],
-  choroplethLegendRange: ["#ffffffff", "#94d190ff", "#006400"],
+  choroplethColorRange: ["#ffffcc", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8"],
+  choroplethLegendRange: ["#ffffcc", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8"],
   choroplethNoData: "#eee",
   choroplethStroke: "hsla(0, 0%, 21%, 1.00)",
   choroplethLabelColor: "#000",
+  choroplethLabelOutline: "rgba(255,255,255,0.8)",
   choroplethLegendStroke: "#333",
   choroplethPointerLine: "#333",
   choroplethHover: "hsla(0, 0%, 17%, 0.55)",
@@ -94,16 +96,17 @@ export const lightChartColors: ChartColors = {
   timelineTitleColor: "#333",
   timelineLegendColor: "#666",
   timelineTooltipTextColor: "#333",
-  selectedStateColorRange: ["#d0ffc6ff", "#94d190ff", "#006400"],
+  selectedStateColorRange: ["#ffffcc", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8"],
 };
 
 /** Dark-mode chart and UI color palette. */
 export const darkChartColors: ChartColors = {
-  choroplethColorRange: ["#1b3a1b", "#2d6a2d", "#00cc00"],
-  choroplethLegendRange: ["#ffffffff", "#94d190ff", "#00cc00"],
+  choroplethColorRange: ["#1a5a7a", "#2a7a9a", "#4a9aba", "#6abad4", "#a0ddc0", "#ffffcc"],
+  choroplethLegendRange: ["#1a5a7a", "#2a7a9a", "#4a9aba", "#6abad4", "#a0ddc0", "#ffffcc"],
   choroplethNoData: "#2a2a2a",
   choroplethStroke: "hsla(0, 0%, 40%, 1.00)",
-  choroplethLabelColor: "#ccc",
+  choroplethLabelColor: "#fff",
+  choroplethLabelOutline: "rgba(0,0,0,0.8)",
   choroplethLegendStroke: "#888",
   choroplethPointerLine: "#888",
   choroplethHover: "hsla(0, 0%, 60%, 0.35)",
@@ -141,7 +144,7 @@ export const darkChartColors: ChartColors = {
   timelineTitleColor: "#e0e0e0",
   timelineLegendColor: "#a0a0a0",
   timelineTooltipTextColor: "#e0e0e0",
-  selectedStateColorRange: ["#1b3a1b", "#2d6a2d", "#00cc00"],
+  selectedStateColorRange: ["#1a5a7a", "#2a7a9a", "#4a9aba", "#6abad4", "#a0ddc0", "#ffffcc"],
 };
 
 /** Shape of the theme context value. */

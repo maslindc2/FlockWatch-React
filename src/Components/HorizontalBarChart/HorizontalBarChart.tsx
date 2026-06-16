@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { useEffect, useRef, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { FlockRecord } from "../../Hooks/useFlockCases";
 import { useTheme } from "../../theme/theme";
 
@@ -11,18 +11,40 @@ interface Props {
 
 const TOP_N = 10;
 const CHART_WIDTH = 800;
-const CHART_HEIGHT = 460;
+const CHART_HEIGHT = 580;
 const MARGIN = { top: 60, right: 140, bottom: 50, left: 130 };
-const BAR_HEIGHT = 30;
-const BAR_GAP = 6;
+const BAR_HEIGHT = 36;
+const BAR_GAP = 10;
 
 /**
  * Horizontal bar chart showing the top 10 states by birds affected,
  * with color coding for states that still have active sites.
  */
 const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
-    const { theme, chartColors } = useTheme();
+    const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el || isVisible) return;
+        if (typeof IntersectionObserver === "undefined") {
+            setIsVisible(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [isVisible]);
 
     useEffect(() => {
         const sorted = [...data]
@@ -54,7 +76,9 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
             const y = i * (BAR_HEIGHT + BAR_GAP);
             const barWidth = barWidthScale(d.birds_affected);
             const isActive = activeStates.has(d.state);
-            const barColor = isActive ? chartColors.barActiveColor : chartColors.barInactiveColor;
+            const barColor = isActive
+                ? chartColors.barActiveColor
+                : chartColors.barInactiveColor;
 
             chartGroup
                 .append("rect")
@@ -66,15 +90,24 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("rx", 3)
                 .attr("ry", 3);
 
-            chartGroup
+            const barRect = chartGroup
                 .append("rect")
                 .attr("x", 0)
                 .attr("y", y)
-                .attr("width", barWidth)
+                .attr("width", isVisible ? 0 : barWidth)
                 .attr("height", BAR_HEIGHT)
                 .attr("fill", barColor)
                 .attr("rx", 3)
                 .attr("ry", 3);
+
+            if (isVisible) {
+                barRect
+                    .transition()
+                    .duration(600)
+                    .delay(i * 80)
+                    .ease(d3.easeCubicOut)
+                    .attr("width", barWidth);
+            }
 
             chartGroup
                 .append("text")
@@ -82,7 +115,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("y", y + BAR_HEIGHT / 2)
                 .attr("text-anchor", "end")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "12px")
+                .attr("font-size", "18px")
                 .attr("font-weight", "600")
                 .attr("fill", chartColors.barTextColor)
                 .text(d.state);
@@ -93,47 +126,63 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("y", y + BAR_HEIGHT / 2)
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "13px")
+                .attr("font-size", "18px")
                 .attr("fill", chartColors.barTextColor)
                 .text(d.birds_affected.toLocaleString());
         });
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", CHART_WIDTH / 2)
             .attr("y", 30)
             .attr("text-anchor", "middle")
-            .attr("font-size", "20px")
+            .attr("font-size", "24px")
             .attr("font-weight", "600")
             .attr("fill", chartColors.barTitleColor)
             .text("Top 10 States by Birds Affected");
 
         const legendGroup = svg
             .append("g")
-            .attr("transform", `translate(${MARGIN.left}, ${CHART_HEIGHT - MARGIN.bottom + 20})`);
+            .attr(
+                "transform",
+                `translate(${MARGIN.left}, ${CHART_HEIGHT - MARGIN.bottom + 20})`
+            );
 
-        legendGroup
-            .append("rect")
-            .attr("width", 12)
-            .attr("height", 12)
-            .attr("fill", chartColors.barActiveColor)
-            .attr("rx", 2)
-            .attr("ry", 2);
+        const legendItems = [
+            { label: "Has active sites", color: chartColors.barActiveColor },
+            { label: "No active sites", color: chartColors.barInactiveColor },
+        ];
 
-        legendGroup
-            .append("text")
-            .attr("x", 18)
-            .attr("y", 10)
-            .attr("text-anchor", "start")
-            .attr("font-size", "12px")
-            .attr("fill", chartColors.barLegendColor)
-            .text("Red = has active sites today");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, activeStates, theme]);
+        legendItems.forEach((item, i) => {
+            const x = i * 180;
+            legendGroup
+                .append("rect")
+                .attr("x", x)
+                .attr("y", -8)
+                .attr("width", 12)
+                .attr("height", 12)
+                .attr("fill", item.color)
+                .attr("rx", 2)
+                .attr("ry", 2);
+
+            legendGroup
+                .append("text")
+                .attr("x", x + 18)
+                .attr("y", 2)
+                .attr("text-anchor", "start")
+                .attr("font-size", "18px")
+                .attr("fill", chartColors.barLegendColor)
+                .text(item.label);
+        });
+    }, [data, activeStates, chartColors, isVisible]);
+
+    const sorted = [...data]
+        .sort((a, b) => b.birds_affected - a.birds_affected)
+        .slice(0, TOP_N);
+    const chartLabel = `Bar chart showing top 10 states by birds affected. ${sorted.map((d) => `${d.state}: ${d.birds_affected.toLocaleString()} birds${activeStates.has(d.state) ? ", currently active" : ""}`).join(". ")}.`;
 
     return (
-        <div className="bar-chart-container">
-            <svg ref={svgRef}></svg>
+        <div className="bar-chart-container" ref={containerRef}>
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );
 };

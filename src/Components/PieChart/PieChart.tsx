@@ -1,32 +1,47 @@
 import * as d3 from "d3";
-import { useEffect, useRef, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { useTheme } from "../../theme/theme";
 
 /** Props for the PieChart component. */
 interface Props {
     backyardFlocks: number;
     commercialFlocks: number;
-    timeRange: "allTime" | "last30Days";
-    onToggle: (range: "allTime" | "last30Days") => void;
+    title: string;
 }
 
-const CHART_WIDTH = 320;
-const CHART_HEIGHT = 270;
-const PIE_RADIUS = 68;
-const INNER_RADIUS = 30;
+const CHART_WIDTH = 392;
+const CHART_HEIGHT = 216;
+const PIE_RADIUS = 74;
+const INNER_RADIUS = 33;
 
 /**
- * Donut chart comparing backyard vs commercial flocks affected,
- * with a toggle between "All Time" and "Last 30 Days".
+ * Donut chart comparing backyard vs commercial flocks affected.
  */
-const PieChart: FC<Props> = ({
-    backyardFlocks,
-    commercialFlocks,
-    timeRange,
-    onToggle,
-}) => {
-    const { theme, chartColors } = useTheme();
+const PieChart: FC<Props> = ({ backyardFlocks, commercialFlocks, title }) => {
+    const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el || isVisible) return;
+        if (typeof IntersectionObserver === "undefined") {
+            setIsVisible(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [isVisible]);
 
     useEffect(() => {
         const total = backyardFlocks + commercialFlocks;
@@ -58,18 +73,17 @@ const PieChart: FC<Props> = ({
             .innerRadius(INNER_RADIUS)
             .outerRadius(PIE_RADIUS);
 
-        const centerX = 90;
-        const centerY = CHART_HEIGHT / 2 + 10;
+        const centerX = 85;
+        const centerY = CHART_HEIGHT / 2;
 
         const pieGroup = svg
             .append("g")
             .attr("transform", `translate(${centerX}, ${centerY})`);
 
-        pieGroup
+        const pathSelection = pieGroup
             .selectAll("path")
             .data(data)
             .join("path")
-            .attr("d", arc)
             .attr("fill", (d) =>
                 d.data.label === "Backyard"
                     ? chartColors.pieBackyard
@@ -78,30 +92,49 @@ const PieChart: FC<Props> = ({
             .attr("stroke", chartColors.pieStroke)
             .attr("stroke-width", 2);
 
-        svg
-            .append("text")
+        if (isVisible) {
+            pathSelection
+                .attr("d", (d) => {
+                    const collapsed = { ...d, endAngle: d.startAngle };
+                    return arc(collapsed as d3.DefaultArcObject) || "";
+                })
+                .transition()
+                .duration(600)
+                .delay((_, i) => i * 80)
+                .ease(d3.easeCubicOut)
+                .attrTween("d", (d) => {
+                    const interpolate = d3.interpolate(
+                        { ...d, endAngle: d.startAngle } as d3.DefaultArcObject,
+                        d as d3.DefaultArcObject
+                    );
+                    return (t: number) => arc(interpolate(t)) || "";
+                });
+        } else {
+            pathSelection.attr("d", arc);
+        }
+
+        svg.append("text")
             .attr("x", centerX)
-            .attr("y", centerY - 5)
+            .attr("y", centerY - 4)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "central")
-            .attr("font-size", "16px")
+            .attr("font-size", "20px")
             .attr("font-weight", "700")
             .attr("fill", chartColors.pieTextColor)
             .text(total.toLocaleString());
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", centerX)
-            .attr("y", centerY + 14)
+            .attr("y", centerY + 16)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "central")
-            .attr("font-size", "10px")
+            .attr("font-size", "11px")
             .attr("fill", chartColors.pieSubtextColor)
             .text("flocks");
 
-        const labelX = centerX + PIE_RADIUS + 20;
-        const labelStartY = centerY - 20;
-        const labelGap = 28;
+        const labelX = centerX + PIE_RADIUS + 18;
+        const labelStartY = centerY - 30;
+        const labelGap = 38;
 
         const legendItems = [
             {
@@ -121,85 +154,48 @@ const PieChart: FC<Props> = ({
         legendItems.forEach((item, i) => {
             const y = labelStartY + i * labelGap;
 
-            svg
-                .append("rect")
+            svg.append("rect")
                 .attr("x", labelX)
-                .attr("y", y - 7)
-                .attr("width", 12)
-                .attr("height", 12)
+                .attr("y", y - 10)
+                .attr("width", 18)
+                .attr("height", 18)
                 .attr("fill", item.color)
-                .attr("rx", 2)
-                .attr("ry", 2);
+                .attr("rx", 4)
+                .attr("ry", 4);
 
-            svg
-                .append("text")
-                .attr("x", labelX + 18)
+            svg.append("text")
+                .attr("x", labelX + 26)
                 .attr("y", y + 1)
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "12px")
+                .attr("font-size", "15px")
                 .attr("fill", chartColors.pieTextColor)
                 .text(
                     `${item.label} - ${item.count.toLocaleString()} (${item.percent}%)`
                 );
         });
 
-        svg
-            .append("text")
+        svg.append("text")
             .attr("x", CHART_WIDTH / 2)
             .attr("y", 18)
             .attr("text-anchor", "middle")
-            .attr("font-size", "14px")
+            .attr("font-size", "15px")
             .attr("font-weight", "600")
             .attr("fill", chartColors.pieTextColor)
-            .text("Flocks Affected");
+            .text(title);
+    }, [backyardFlocks, commercialFlocks, chartColors, title, isVisible]);
 
-        const toggleOptions: Array<{ label: string; value: "allTime" | "last30Days" }> = [
-            { label: "All Time", value: "allTime" },
-            { label: "Last 30 Days", value: "last30Days" },
-        ];
+    const total = backyardFlocks + commercialFlocks;
+    const chartLabel =
+        total > 0
+            ? `Donut chart showing ${title}. Backyard: ${backyardFlocks.toLocaleString()} (${((backyardFlocks / total) * 100).toFixed(1)}%), Commercial: ${commercialFlocks.toLocaleString()} (${((commercialFlocks / total) * 100).toFixed(1)}%). Total: ${total.toLocaleString()} flocks.`
+            : "Donut chart showing flocks affected. No data available.";
 
-        const btnWidth = 85;
-        const btnHeight = 24;
-        const btnGap = 6;
-        const totalWidth = toggleOptions.length * btnWidth + (toggleOptions.length - 1) * btnGap;
-        const startX = (CHART_WIDTH - totalWidth) / 2;
-        const btnY = 32;
-
-        toggleOptions.forEach((opt, i) => {
-            const x = startX + i * (btnWidth + btnGap);
-            const isSelected = timeRange === opt.value;
-
-            svg
-                .append("rect")
-                .attr("x", x)
-                .attr("y", btnY)
-                .attr("width", btnWidth)
-                .attr("height", btnHeight)
-                .attr("fill", isSelected ? chartColors.pieToggleSelectedBg : chartColors.pieToggleUnselectedBg)
-                .attr("stroke", chartColors.pieToggleStroke)
-                .attr("stroke-width", 1)
-                .attr("rx", 4)
-                .attr("ry", 4)
-                .style("cursor", "pointer")
-                .on("click", () => onToggle(opt.value));
-
-            svg
-                .append("text")
-                .attr("x", x + btnWidth / 2)
-                .attr("y", btnY + btnHeight / 2)
-                .attr("text-anchor", "middle")
-                .attr("alignment-baseline", "central")
-                .attr("font-size", "11px")
-                .attr("font-weight", isSelected ? "600" : "400")
-                .attr("fill", isSelected ? chartColors.pieToggleSelectedText : chartColors.pieToggleUnselectedText)
-                .attr("pointer-events", "none")
-                .text(opt.label);
-        });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [backyardFlocks, commercialFlocks, timeRange, onToggle, theme]);
-
-    return <svg ref={svgRef}></svg>;
+    return (
+        <div className="pie-chart-wrapper" ref={containerRef}>
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
+        </div>
+    );
 };
 
 export default PieChart;

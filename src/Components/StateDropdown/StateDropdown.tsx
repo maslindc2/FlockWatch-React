@@ -211,18 +211,26 @@ export default function StateDropdown({ onSelect }: StateDropdownProps) {
     return (
         <>
             <h3 id="select-state-heading">
-                Select a state on the map or from the dropdown to see its latest
-                stats.
+                Select a state to view outbreak details
             </h3>
             <label htmlFor="state-select" className="visually-hidden">
                 Select a State
             </label>
             <select
-                onChange={(e) => onSelect(e.target.value)}
                 id="state-select"
                 aria-labelledby="select-state-heading"
+                defaultValue=""
+                onChange={(e) => {
+                    const val = e.target.value;
+                    if (val) {
+                        onSelect(val);
+                        e.target.value = "";
+                    }
+                }}
             >
-                <option value="">Select a State</option>
+                <option value="" disabled>
+                    — Select a state —
+                </option>
                 {states.map((state) => (
                     <option
                         key={state.state_abbreviation}

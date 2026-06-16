@@ -1,11 +1,23 @@
-import SelectedStateMap from "../SelectedState/SelectedState";
 import InfoTiles from "../KpiTiles/KpiTiles";
+import StateProductionPieChart from "../StateProductionPieChart/StateProductionPieChart";
 import formatDateForUser from "../../Utils/dateFormatter";
 import { FlockRecord } from "../../Hooks/useFlockCases";
 
 /** Combined state info including a color for the map highlight. */
 interface StateInfo extends FlockRecord {
     color: string;
+}
+
+interface ProductionTypeEntry {
+    label: string;
+    count: number;
+}
+
+interface CountyEntry {
+    county: string;
+    count: number;
+    birds: number;
+    types: string;
 }
 
 type StateTiles = {
@@ -17,6 +29,10 @@ type StateTiles = {
 
 type Props = {
     stateInfo: StateInfo;
+    stateActiveSitesCount: number;
+    stateBirdsAtRisk: number;
+    stateProductionTypes: ProductionTypeEntry[];
+    stateCountyData: CountyEntry[];
 };
 
 function formatNumberToLocale(value: number) {
@@ -24,30 +40,26 @@ function formatNumberToLocale(value: number) {
 }
 
 function createInfoTiles(stateInfo: StateTiles) {
-    const titleMap: Record<keyof StateTiles, string[]> = {
+    const titleMap: Record<keyof StateTiles, [string, string, string]> = {
         backyard_flocks: [
             "Backyard Flocks Affected",
             "backyard-flocks",
-            "/backyard-flocks2.png",
-            "rgba(2, 163, 56, 1)",
+            "rgba(40, 150, 60, 1)",
         ],
         birds_affected: [
             "Birds Affected",
             "birds-affected",
-            "/birds-affected.png",
-            "#ef8700ff",
+            "rgba(230, 140, 30, 1)",
         ],
         commercial_flocks: [
             "Commercial Flocks Affected",
             "commercial-flocks",
-            "/commercial-flocks.png",
-            "rgba(131, 0, 239, 1)",
+            "rgba(130, 50, 200, 1)",
         ],
         total_flocks: [
             "Total Flocks Affected",
             "total-flocks",
-            "/flocks-affected.webp",
-            "rgba(255, 97, 131, 1)",
+            "hsla(210, 70%, 45%, 1.00)",
         ],
     };
 
@@ -63,8 +75,7 @@ function createInfoTiles(stateInfo: StateTiles) {
                     id={title[1]}
                     title={title[0]}
                     amount={formatNumberToLocale(value)}
-                    icon={title[2]}
-                    bgColor={title[3]}
+                    bgColor={title[2]}
                 />
             );
         })
@@ -73,7 +84,13 @@ function createInfoTiles(stateInfo: StateTiles) {
 }
 
 /** Detail panel showing state-level outbreak info, map, and KPI tiles. */
-export default function StateInfo({ stateInfo }: Props) {
+export default function StateInfo({
+    stateInfo,
+    stateActiveSitesCount,
+    stateBirdsAtRisk,
+    stateProductionTypes,
+    stateCountyData,
+}: Props) {
     const stateInfoTiles = createInfoTiles(stateInfo);
     const lastUpdatedDateFormatted = formatDateForUser(
         stateInfo.last_reported_detection
@@ -96,15 +113,68 @@ export default function StateInfo({ stateInfo }: Props) {
             </section>
 
             <section className="state-info-container">
-                <section className="state-outline">
-                    <SelectedStateMap
-                        stateAbbreviation={stateInfo.state_abbreviation}
-                        stateName={stateInfo.state}
-                        stateColor={stateInfo.color}
+                <section className="state-info-tiles">
+                    <InfoTiles
+                        id="state-active-sites"
+                        title="Active Sites (current)"
+                        amount={stateActiveSitesCount.toLocaleString()}
+                        bgColor="rgba(200, 45, 45, 1)"
                     />
+                    <InfoTiles
+                        id="state-birds-at-risk"
+                        title="Birds at Risk (active)"
+                        amount={stateBirdsAtRisk.toLocaleString()}
+                        bgColor="rgba(200, 45, 45, 1)"
+                    />
+                    {stateInfoTiles}
                 </section>
-                <section className="state-info-tiles">{stateInfoTiles}</section>
             </section>
+
+            {stateProductionTypes.length > 0 && (
+                <section className="state-production-section">
+                    <h3 className="state-production-title">
+                        Active Sites by Production Type
+                    </h3>
+                    <div className="state-production-chart">
+                        <StateProductionPieChart
+                            data={stateProductionTypes}
+                            stateName={stateInfo.state}
+                        />
+                    </div>
+                </section>
+            )}
+
+            {stateCountyData.length > 0 && (
+                <section className="state-production-section">
+                    <h3 className="state-production-title">
+                        Affected Counties
+                    </h3>
+                    <div className="state-county-table-wrapper">
+                        <table className="state-county-table">
+                            <thead>
+                                <tr>
+                                    <th>County</th>
+                                    <th>Active Sites</th>
+                                    <th>Birds at Risk</th>
+                                    <th>Production Types</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {stateCountyData.map((row) => (
+                                    <tr key={row.county}>
+                                        <td>{row.county}</td>
+                                        <td>{row.count.toLocaleString()}</td>
+                                        <td>{row.birds.toLocaleString()}</td>
+                                        <td className="county-types">
+                                            {row.types}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            )}
         </>
     );
 }

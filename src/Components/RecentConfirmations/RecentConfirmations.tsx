@@ -34,11 +34,8 @@ function groupByCounty(sites: SiteRecord[]): CountyGroup[] {
         const existing = groups.get(key);
 
         if (existing) {
-            existing.hasActive =
-                existing.hasActive || site.status === "active";
-            if (
-                !existing.productionTypes.includes(site.production_type)
-            ) {
+            existing.hasActive = existing.hasActive || site.status === "active";
+            if (!existing.productionTypes.includes(site.production_type)) {
                 existing.productionTypes.push(site.production_type);
             }
             existing.totalBirds += site.birds_affected;
@@ -47,8 +44,7 @@ function groupByCounty(sites: SiteRecord[]): CountyGroup[] {
                 new Date(site.confirmed_diagnosis_date) >
                 new Date(existing.mostRecentDate)
             ) {
-                existing.mostRecentDate =
-                    site.confirmed_diagnosis_date;
+                existing.mostRecentDate = site.confirmed_diagnosis_date;
             }
         } else {
             groups.set(key, {
@@ -78,9 +74,7 @@ const RecentConfirmations: FC<Props> = ({ sites }) => {
 
     return (
         <div className="recent-confirmations">
-            <h3 className="recent-confirmations-title">
-                Recent Confirmations
-            </h3>
+            <h3 className="recent-confirmations-title">Recent Confirmations</h3>
             {grouped.map((g) => (
                 <div
                     className="recent-confirmation-entry"
@@ -98,8 +92,7 @@ const RecentConfirmations: FC<Props> = ({ sites }) => {
                         <div className="entry-sub">
                             {g.productionTypes.join(", ")} &middot;{" "}
                             {g.totalBirds.toLocaleString()} birds
-                            {g.siteCount > 1 &&
-                                ` (${g.siteCount} sites)`}
+                            {g.siteCount > 1 && ` (${g.siteCount} sites)`}
                         </div>
                         <div className="entry-date">
                             {formatDate(g.mostRecentDate)}
