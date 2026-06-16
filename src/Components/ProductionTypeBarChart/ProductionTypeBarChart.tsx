@@ -172,22 +172,22 @@ const ProductionTypeBarChart: FC<Props> = ({ data, compact }) => {
             .domain([0, maxAffectedVal])
             .range(chartColors.prodBarColorRange);
         return (
-            <div className="bar-chart-container" ref={containerRef} style={{ padding: '12px 14px' }}>
-                <h3 style={{ fontSize: '13px', fontWeight: 600, margin: '0 0 10px', textAlign: 'center', color: chartColors.prodBarTitleColor }}>
+            <div className="bar-chart-container" ref={containerRef} style={{ padding: '14px 16px' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 600, margin: '0 0 12px', textAlign: 'center', color: chartColors.prodBarTitleColor }}>
                     Birds by Production Type
                 </h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }} role="list" aria-label={chartLabel}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }} role="list" aria-label={chartLabel}>
                     {sorted.map((d) => {
                         const pct = (d.total_birds_affected / maxAffected) * 100;
                         return (
-                            <div key={d.production_type} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span style={{ fontSize: '11px', color: chartColors.prodBarTextColor, width: '100px', flexShrink: 0, textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            <div key={d.production_type} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '14px', color: chartColors.prodBarTextColor, width: '200px', flexShrink: 0, textAlign: 'right' }}>
                                     {d.production_type}
                                 </span>
-                                <div style={{ flex: 1, height: '8px', background: chartColors.prodBarBg, borderRadius: '4px', overflow: 'hidden' }}>
+                                <div style={{ flex: 1, height: '12px', background: chartColors.prodBarBg, borderRadius: '4px', overflow: 'hidden' }}>
                                     <div style={{ width: `${pct}%`, height: '100%', background: colorScale(d.total_birds_affected), borderRadius: '4px', transition: 'width 0.6s ease' }} />
                                 </div>
-                                <span style={{ fontSize: '11px', color: chartColors.prodBarTextColor, width: '38px', textAlign: 'right', flexShrink: 0 }}>
+                                <span style={{ fontSize: '14px', color: chartColors.prodBarTextColor, width: '44px', textAlign: 'right', flexShrink: 0 }}>
                                     {(d.total_birds_affected / 1_000_000).toFixed(1)}M
                                 </span>
                             </div>
