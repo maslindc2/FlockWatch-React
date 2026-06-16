@@ -304,13 +304,13 @@
             },
             {
                 "period": "2026-06",
-                "new_confirmations": 1,
-                "birds_affected": 3100,
-                "cumulative_birds_affected": 194034236
+                "new_confirmations": 5,
+                "birds_affected": 23440,
+                "cumulative_birds_affected": 194054576
             }
         ]
     },
     "metadata": {
-        "last_scraped_date": "2026-06-04T23:19:44.252Z"
+        "last_scraped_date": "2026-06-16T23:12:01.292Z"
     }
 }
