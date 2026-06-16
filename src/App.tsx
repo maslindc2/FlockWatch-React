@@ -338,29 +338,18 @@ function App() {
                 </div>
             </section>
             <section className="chart-row two-col-grid">
-                <div className="left-col">
+                <div className="left-col" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     <HorizontalBarChart
                         data={flockData}
                         activeStates={activeStates}
                     />
-                </div>
-                <div className="right-col-stack">
                     <ProductionTypeBarChart
                         data={productionTypeData}
                         compact
                     />
-                    <div className="chart-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        <PieChart
-                            title="Flocks Affected (All Time)"
-                            backyardFlocks={
-                                usSummaryAllTimeTotals
-                                    .total_backyard_flocks_affected
-                            }
-                            commercialFlocks={
-                                usSummaryAllTimeTotals
-                                    .total_commercial_flocks_affected
-                            }
-                        />
+                </div>
+                <div className="right-col-stack">
+                    <div className="chart-card">
                         <PieChart
                             title="Flocks Affected (Last 30 Days)"
                             backyardFlocks={
@@ -369,6 +358,19 @@ function App() {
                             }
                             commercialFlocks={
                                 usPeriodSummaries.last_30_days
+                                    .total_commercial_flocks_affected
+                            }
+                        />
+                    </div>
+                    <div className="chart-card">
+                        <PieChart
+                            title="Flocks Affected (All Time)"
+                            backyardFlocks={
+                                usSummaryAllTimeTotals
+                                    .total_backyard_flocks_affected
+                            }
+                            commercialFlocks={
+                                usSummaryAllTimeTotals
                                     .total_commercial_flocks_affected
                             }
                         />

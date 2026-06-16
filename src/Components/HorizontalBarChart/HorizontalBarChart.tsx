@@ -11,10 +11,10 @@ interface Props {
 
 const TOP_N = 10;
 const CHART_WIDTH = 800;
-const CHART_HEIGHT = 460;
+const CHART_HEIGHT = 580;
 const MARGIN = { top: 60, right: 140, bottom: 50, left: 130 };
-const BAR_HEIGHT = 30;
-const BAR_GAP = 6;
+const BAR_HEIGHT = 36;
+const BAR_GAP = 10;
 
 /**
  * Horizontal bar chart showing the top 10 states by birds affected,
@@ -113,7 +113,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("y", y + BAR_HEIGHT / 2)
                 .attr("text-anchor", "end")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "16px")
+                .attr("font-size", "18px")
                 .attr("font-weight", "600")
                 .attr("fill", chartColors.barTextColor)
                 .text(d.state);
@@ -124,7 +124,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("y", y + BAR_HEIGHT / 2)
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "16px")
+                .attr("font-size", "18px")
                 .attr("fill", chartColors.barTextColor)
                 .text(d.birds_affected.toLocaleString());
         });
@@ -165,7 +165,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
                 .attr("x", x + 18)
                 .attr("y", 2)
                 .attr("text-anchor", "start")
-                .attr("font-size", "14px")
+                .attr("font-size", "18px")
                 .attr("fill", chartColors.barLegendColor)
                 .text(item.label);
         });

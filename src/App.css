@@ -878,7 +878,7 @@ section.chart-row {
 }
 
 .bar-chart-container svg {
-  aspect-ratio: 800 / 350;
+  aspect-ratio: 800 / 580;
 }
 
 .pie-chart-wrapper svg {
