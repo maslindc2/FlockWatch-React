@@ -9,10 +9,10 @@ interface Props {
     title: string;
 }
 
-const CHART_WIDTH = 400;
-const CHART_HEIGHT = 220;
-const PIE_RADIUS = 76;
-const INNER_RADIUS = 34;
+const CHART_WIDTH = 392;
+const CHART_HEIGHT = 216;
+const PIE_RADIUS = 74;
+const INNER_RADIUS = 33;
 
 /**
  * Donut chart comparing backyard vs commercial flocks affected.

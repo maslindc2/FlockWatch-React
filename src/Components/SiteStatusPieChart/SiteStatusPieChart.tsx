@@ -9,10 +9,10 @@ interface Props {
     naSites: number;
 }
 
-const CHART_WIDTH = 400;
-const CHART_HEIGHT = 216;
-const PIE_RADIUS = 80;
-const INNER_RADIUS = 36;
+const CHART_WIDTH = 392;
+const CHART_HEIGHT = 212;
+const PIE_RADIUS = 78;
+const INNER_RADIUS = 35;
 
 /**
  * Donut chart showing all-time site status breakdown

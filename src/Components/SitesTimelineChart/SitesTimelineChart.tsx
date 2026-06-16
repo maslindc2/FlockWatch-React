@@ -10,9 +10,9 @@ interface Props {
     onGranularityChange: (g: "week" | "month" | "year") => void;
 }
 
-const CHART_WIDTH = 900;
-const CHART_HEIGHT = 420;
-const MARGIN = { top: 40, right: 110, bottom: 80, left: 70 };
+const CHART_WIDTH = 1100;
+const CHART_HEIGHT = 500;
+const MARGIN = { top: 45, right: 130, bottom: 80, left: 80 };
 const INNER_WIDTH = CHART_WIDTH - MARGIN.left - MARGIN.right;
 const INNER_HEIGHT = CHART_HEIGHT - MARGIN.top - MARGIN.bottom;
 
@@ -92,7 +92,7 @@ const SitesTimelineChart: FC<Props> = ({
             .attr("x", CHART_WIDTH / 2)
             .attr("y", 25)
             .attr("text-anchor", "middle")
-            .attr("font-size", "20px")
+            .attr("font-size", "22px")
             .attr("font-weight", "600")
             .attr("fill", chartColors.timelineTitleColor)
             .text("Avian Influenza Outbreak Timeline");
@@ -144,7 +144,7 @@ const SitesTimelineChart: FC<Props> = ({
             .attr("transform", "rotate(-45)")
             .attr("text-anchor", "end")
             .attr("fill", chartColors.timelineAxisLabelColor)
-            .style("font-size", "11px");
+            .style("font-size", "13px");
 
         chartGroup
             .append("g")
@@ -156,7 +156,7 @@ const SitesTimelineChart: FC<Props> = ({
             )
             .selectAll("text")
             .attr("fill", chartColors.timelineAxisLabelColor)
-            .style("font-size", "11px");
+            .style("font-size", "13px");
 
         chartGroup
             .append("g")
@@ -169,23 +169,23 @@ const SitesTimelineChart: FC<Props> = ({
             )
             .selectAll("text")
             .attr("fill", chartColors.timelineAxisLabelColor)
-            .style("font-size", "11px");
+            .style("font-size", "13px");
 
         svg.append("text")
             .attr("x", -(MARGIN.top + INNER_HEIGHT / 2))
             .attr("y", 16)
             .attr("transform", "rotate(-90)")
             .attr("text-anchor", "middle")
-            .attr("font-size", "12px")
+            .attr("font-size", "14px")
             .attr("fill", chartColors.timelineAxisLabelColor)
             .text("New Confirmations");
 
         svg.append("text")
             .attr("x", -(MARGIN.top + INNER_HEIGHT / 2))
-            .attr("y", CHART_WIDTH - MARGIN.right + 60)
+            .attr("y", CHART_WIDTH - MARGIN.right + 69)
             .attr("transform", "rotate(-90)")
             .attr("text-anchor", "middle")
-            .attr("font-size", "12px")
+            .attr("font-size", "14px")
             .attr("fill", chartColors.timelineAxisLabelColor)
             .text("Birds Affected");
 
@@ -249,7 +249,7 @@ const SitesTimelineChart: FC<Props> = ({
             .append("g")
             .attr(
                 "transform",
-                `translate(0, ${INNER_HEIGHT + 50})`
+                `translate(0, ${INNER_HEIGHT + 60})`
             );
 
         [
@@ -268,7 +268,7 @@ const SitesTimelineChart: FC<Props> = ({
                 .append("text")
                 .attr("x", entry.x + 18)
                 .attr("y", 2)
-                .attr("font-size", "12px")
+                .attr("font-size", "14px")
                 .attr("fill", chartColors.timelineLegendColor)
                 .text(entry.label);
         });
