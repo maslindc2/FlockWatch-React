@@ -282,21 +282,21 @@ function App() {
             <a href="#main-content" className="skip-link">
                 Skip to main content
             </a>
+            <button
+                className="theme-toggle"
+                onClick={toggleTheme}
+                aria-label={
+                    theme === "light"
+                        ? "Switch to dark mode"
+                        : "Switch to light mode"
+                }
+            >
+                {theme === "light" ? "\u263E" : "\u2600"}
+            </button>
             <main id="main-content" tabIndex={-1}>
             <header>
                 <div className="logo-banner">
                     <h1>Flock Watch</h1>
-                    <button
-                        className="theme-toggle"
-                        onClick={toggleTheme}
-                        aria-label={
-                            theme === "light"
-                                ? "Switch to dark mode"
-                                : "Switch to light mode"
-                        }
-                    >
-                        {theme === "light" ? "\u263E" : "\u2600"}
-                    </button>
                     <img
                         src="/game-icons_chicken.svg"
                         alt="Flock Watch Logo"
@@ -311,7 +311,6 @@ function App() {
                 <section className="info-tile-group">
                     <h2 className="info-tile-title">Overview</h2>
                     <section className="info-tiles">
-                        {usInfoTiles}
                         <KpiTiles
                             id="birds-at-risk"
                             title="Birds at risk (active)"
@@ -333,6 +332,7 @@ function App() {
                             subtext="depopulation complete"
                             bgColor="rgba(0, 140, 100, 1)"
                         />
+                        {usInfoTiles}
                     </section>
                 </section>
             </section>

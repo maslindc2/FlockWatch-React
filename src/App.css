@@ -59,6 +59,10 @@ body.state-window-open {
   overflow: hidden;
 }
 
+body.state-window-open .theme-toggle {
+  display: none;
+}
+
 header {
   text-align: center;
 }
@@ -93,8 +97,11 @@ header > p {
   color: var(--text-primary);
   background: var(--surface-primary);
   transition: all 0.2s ease;
-  margin-left: 8px;
   line-height: 1;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10001;
 }
 
 .theme-toggle:hover {
@@ -1004,6 +1011,8 @@ section.chart-row {
   .theme-toggle {
     padding: 4px 8px;
     font-size: 14px;
+    top: 10px;
+    right: 10px;
   }
 
   header > p {
