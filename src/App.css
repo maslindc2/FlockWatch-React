@@ -72,6 +72,7 @@ header {
   justify-content: center;
   align-items: center;
   gap: 8px;
+  color: var(--text-primary);
 }
 
 header > h1 {
