@@ -41,9 +41,6 @@ function App() {
         null
     );
 
-    const [flocksTimeRange, setFlocksTimeRange] = useState<
-        "allTime" | "last30Days"
-    >("allTime");
 
     const [timelineGranularity, setTimelineGranularity] = useState<
         "week" | "month" | "year"
@@ -352,24 +349,28 @@ function App() {
                         data={productionTypeData}
                         compact
                     />
-                    <div className="chart-card">
+                    <div className="chart-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         <PieChart
+                            title="Flocks Affected (All Time)"
                             backyardFlocks={
-                                flocksTimeRange === "allTime"
-                                    ? usSummaryAllTimeTotals
-                                          .total_backyard_flocks_affected
-                                    : usPeriodSummaries.last_30_days
-                                          .total_backyard_flocks_affected
+                                usSummaryAllTimeTotals
+                                    .total_backyard_flocks_affected
                             }
                             commercialFlocks={
-                                flocksTimeRange === "allTime"
-                                    ? usSummaryAllTimeTotals
-                                          .total_commercial_flocks_affected
-                                    : usPeriodSummaries.last_30_days
-                                          .total_commercial_flocks_affected
+                                usSummaryAllTimeTotals
+                                    .total_commercial_flocks_affected
                             }
-                            timeRange={flocksTimeRange}
-                            onToggle={setFlocksTimeRange}
+                        />
+                        <PieChart
+                            title="Flocks Affected (Last 30 Days)"
+                            backyardFlocks={
+                                usPeriodSummaries.last_30_days
+                                    .total_backyard_flocks_affected
+                            }
+                            commercialFlocks={
+                                usPeriodSummaries.last_30_days
+                                    .total_commercial_flocks_affected
+                            }
                         />
                     </div>
                     <div className="chart-card">

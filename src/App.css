@@ -882,7 +882,7 @@ section.chart-row {
 }
 
 .pie-chart-wrapper svg {
-  aspect-ratio: 400 / 300;
+  aspect-ratio: 400 / 220;
 }
 
 .site-status-pie-wrapper svg {

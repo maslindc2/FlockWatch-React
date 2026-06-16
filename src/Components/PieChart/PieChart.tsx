@@ -6,24 +6,21 @@ import { useTheme } from "../../theme/theme";
 interface Props {
     backyardFlocks: number;
     commercialFlocks: number;
-    timeRange: "allTime" | "last30Days";
-    onToggle: (range: "allTime" | "last30Days") => void;
+    title: string;
 }
 
 const CHART_WIDTH = 400;
-const CHART_HEIGHT = 300;
-const PIE_RADIUS = 85;
-const INNER_RADIUS = 38;
+const CHART_HEIGHT = 220;
+const PIE_RADIUS = 76;
+const INNER_RADIUS = 34;
 
 /**
- * Donut chart comparing backyard vs commercial flocks affected,
- * with a toggle between "All Time" and "Last 30 Days".
+ * Donut chart comparing backyard vs commercial flocks affected.
  */
 const PieChart: FC<Props> = ({
     backyardFlocks,
     commercialFlocks,
-    timeRange,
-    onToggle,
+    title,
 }) => {
     const { theme, chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
@@ -80,8 +77,8 @@ const PieChart: FC<Props> = ({
             .innerRadius(INNER_RADIUS)
             .outerRadius(PIE_RADIUS);
 
-        const centerX = 110;
-        const centerY = CHART_HEIGHT / 2 + 6;
+        const centerX = 85;
+        const centerY = CHART_HEIGHT / 2;
 
         const pieGroup = svg
             .append("g")
@@ -123,7 +120,7 @@ const PieChart: FC<Props> = ({
         svg
             .append("text")
             .attr("x", centerX)
-            .attr("y", centerY - 5)
+            .attr("y", centerY - 4)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "central")
             .attr("font-size", "20px")
@@ -134,16 +131,16 @@ const PieChart: FC<Props> = ({
         svg
             .append("text")
             .attr("x", centerX)
-            .attr("y", centerY + 18)
+            .attr("y", centerY + 16)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "central")
             .attr("font-size", "11px")
             .attr("fill", chartColors.pieSubtextColor)
             .text("flocks");
 
-        const labelX = centerX + PIE_RADIUS + 28;
-        const labelStartY = centerY - 22;
-        const labelGap = 32;
+        const labelX = centerX + PIE_RADIUS + 18;
+        const labelStartY = centerY - 30;
+        const labelGap = 38;
 
         const legendItems = [
             {
@@ -166,20 +163,20 @@ const PieChart: FC<Props> = ({
             svg
                 .append("rect")
                 .attr("x", labelX)
-                .attr("y", y - 8)
-                .attr("width", 14)
-                .attr("height", 14)
+                .attr("y", y - 10)
+                .attr("width", 18)
+                .attr("height", 18)
                 .attr("fill", item.color)
-                .attr("rx", 3)
-                .attr("ry", 3);
+                .attr("rx", 4)
+                .attr("ry", 4);
 
             svg
                 .append("text")
-                .attr("x", labelX + 22)
+                .attr("x", labelX + 26)
                 .attr("y", y + 1)
                 .attr("text-anchor", "start")
                 .attr("alignment-baseline", "central")
-                .attr("font-size", "13px")
+                .attr("font-size", "15px")
                 .attr("fill", chartColors.pieTextColor)
                 .text(
                     `${item.label} - ${item.count.toLocaleString()} (${item.percent}%)`
@@ -191,51 +188,21 @@ const PieChart: FC<Props> = ({
             .attr("x", CHART_WIDTH / 2)
             .attr("y", 18)
             .attr("text-anchor", "middle")
-            .attr("font-size", "16px")
+            .attr("font-size", "15px")
             .attr("font-weight", "600")
             .attr("fill", chartColors.pieTextColor)
-            .text("Flocks Affected");
+            .text(title);
 
     }, [backyardFlocks, commercialFlocks, theme, isVisible]);
 
     const total = backyardFlocks + commercialFlocks;
     const chartLabel =
         total > 0
-            ? `Donut chart showing flocks affected, ${timeRange === "allTime" ? "all time" : "last 30 days"}. Backyard: ${backyardFlocks.toLocaleString()} (${((backyardFlocks / total) * 100).toFixed(1)}%), Commercial: ${commercialFlocks.toLocaleString()} (${((commercialFlocks / total) * 100).toFixed(1)}%). Total: ${total.toLocaleString()} flocks.`
+            ? `Donut chart showing ${title}. Backyard: ${backyardFlocks.toLocaleString()} (${((backyardFlocks / total) * 100).toFixed(1)}%), Commercial: ${commercialFlocks.toLocaleString()} (${((commercialFlocks / total) * 100).toFixed(1)}%). Total: ${total.toLocaleString()} flocks.`
             : "Donut chart showing flocks affected. No data available.";
 
-    const toggleBtnStyle = (selected: boolean): React.CSSProperties => ({
-        padding: "6px 14px",
-        border: `1px solid ${chartColors.pieToggleStroke}`,
-        borderRadius: "4px",
-        background: selected ? chartColors.pieToggleSelectedBg : chartColors.pieToggleUnselectedBg,
-        color: selected ? chartColors.pieToggleSelectedText : chartColors.pieToggleUnselectedText,
-        fontWeight: selected ? 600 : 400,
-        fontSize: "11px",
-        cursor: "pointer",
-        fontFamily: "inherit",
-        lineHeight: 1,
-        transition: "all 0.15s ease",
-    });
-
     return (
-        <div className="pie-chart-wrapper" ref={containerRef} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div style={{ display: "flex", gap: "6px", marginBottom: "8px" }}>
-                <button
-                    style={toggleBtnStyle(timeRange === "allTime")}
-                    onClick={() => onToggle("allTime")}
-                    aria-pressed={timeRange === "allTime"}
-                >
-                    All Time
-                </button>
-                <button
-                    style={toggleBtnStyle(timeRange === "last30Days")}
-                    onClick={() => onToggle("last30Days")}
-                    aria-pressed={timeRange === "last30Days"}
-                >
-                    Last 30 Days
-                </button>
-            </div>
+        <div className="pie-chart-wrapper" ref={containerRef}>
             <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );
