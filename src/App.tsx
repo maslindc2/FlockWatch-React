@@ -69,46 +69,56 @@ function App() {
         isPending: isUsSummaryPending,
         error: usSummaryError,
         data: usSummaryDataFromAPI,
+        dataUpdatedAt: usSummaryUpdatedAt,
     } = useUsSummaryData(flockWatchServerURL);
 
     const {
         isPending: isFlockCasesPending,
         error: flockCasesError,
         data: flockDataFromAPI,
+        dataUpdatedAt: flockCasesUpdatedAt,
     } = useFlockCases(flockWatchServerURL);
 
     const {
         isPending: isStatusSummaryPending,
         error: statusSummaryError,
         data: statusSummaryDataFromAPI,
+        dataUpdatedAt: statusSummaryUpdatedAt,
     } = useStatusSummary(flockWatchServerURL);
 
     const {
         isPending: isSitesPending,
         error: sitesError,
         data: sitesDataFromAPI,
+        dataUpdatedAt: sitesUpdatedAt,
     } = useSitesData(flockWatchServerURL);
 
     const {
         isPending: isActiveSitesPending,
         error: activeSitesError,
         data: activeSitesDataFromAPI,
+        dataUpdatedAt: activeSitesUpdatedAt,
     } = useActiveSites(flockWatchServerURL);
 
     const {
         isPending: isHistoricalSummaryPending,
         error: historicalSummaryError,
         data: historicalSummaryDataFromAPI,
+        dataUpdatedAt: historicalSummaryUpdatedAt,
     } = useHistoricalSummary(flockWatchServerURL);
 
     const {
         isPending: isProductionTypeSummaryPending,
         error: productionTypeSummaryError,
         data: productionTypeSummaryDataFromAPI,
+        dataUpdatedAt: productionTypeSummaryUpdatedAt,
     } = useProductionTypeSummary(flockWatchServerURL);
 
-    const { error: timelineError, data: timelineDataFromAPI } =
-        useSitesTimeline(flockWatchServerURL, timelineGranularity);
+    const {
+        error: timelineError,
+        data: timelineDataFromAPI,
+        dataUpdatedAt: timelineUpdatedAt,
+    } = useSitesTimeline(flockWatchServerURL, timelineGranularity);
 
     if (
         isUsSummaryPending ||
@@ -196,6 +206,21 @@ function App() {
     const sitesReleased30d =
         statusSummaryDataFromAPI.data.sites_released_last_30_days;
     const lastUpdatedDateFormatted = formatDateForUser(lastUpdated);
+
+    const clientDataUpdatedAt = Math.max(
+        usSummaryUpdatedAt,
+        flockCasesUpdatedAt,
+        statusSummaryUpdatedAt,
+        sitesUpdatedAt,
+        activeSitesUpdatedAt,
+        historicalSummaryUpdatedAt,
+        productionTypeSummaryUpdatedAt,
+        timelineUpdatedAt
+    );
+    const cacheUpdatedDateFormatted =
+        clientDataUpdatedAt > 0
+            ? formatDateForUser(new Date(clientDataUpdatedAt).toISOString())
+            : null;
     const productionTypeData = productionTypeSummaryDataFromAPI.data;
 
     const timelinePeriods = timelineDataFromAPI?.data?.periods;
@@ -297,6 +322,7 @@ function App() {
             <a href="#main-content" className="skip-link">
                 Skip to main content
             </a>
+            {/* eslint-disable-next-line a11y/button-label -- both branches are non-empty literal strings */}
             <button
                 className="theme-toggle"
                 onClick={toggleTheme}
@@ -325,7 +351,14 @@ function App() {
                             />
                         </svg>
                     </div>
-                    <p>Last updated on {lastUpdatedDateFormatted}</p>
+                    <p>
+                        Last updated on {lastUpdatedDateFormatted}
+                        {cacheUpdatedDateFormatted && (
+                            <>
+                                {" \u00B7 "}Cache: {cacheUpdatedDateFormatted}
+                            </>
+                        )}
+                    </p>
                 </header>
 
                 <section className="stats-sections">
@@ -456,6 +489,7 @@ function App() {
                     <div
                         className="state-overlay-backdrop"
                         onClick={closeStateInfo}
+                        onKeyDown={closeStateInfo}
                         aria-hidden="true"
                     />
                     <div

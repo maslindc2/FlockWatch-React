@@ -25,7 +25,9 @@ const ProductionTypeBarChart: FC<Props> = ({ data, compact }) => {
     const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(
+        typeof IntersectionObserver === "undefined"
+    );
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -45,10 +47,6 @@ const ProductionTypeBarChart: FC<Props> = ({ data, compact }) => {
     useEffect(() => {
         const el = containerRef.current;
         if (!el || isVisible) return;
-        if (typeof IntersectionObserver === "undefined") {
-            setIsVisible(true);
-            return;
-        }
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
