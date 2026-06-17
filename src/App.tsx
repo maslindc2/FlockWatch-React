@@ -322,6 +322,7 @@ function App() {
             <a href="#main-content" className="skip-link">
                 Skip to main content
             </a>
+            {/* eslint-disable-next-line a11y/button-label -- both branches are non-empty literal strings */}
             <button
                 className="theme-toggle"
                 onClick={toggleTheme}
@@ -488,6 +489,7 @@ function App() {
                     <div
                         className="state-overlay-backdrop"
                         onClick={closeStateInfo}
+                        onKeyDown={closeStateInfo}
                         aria-hidden="true"
                     />
                     <div

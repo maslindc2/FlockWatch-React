@@ -3,7 +3,7 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
-import jsxA11y from "eslint-plugin-jsx-a11y";
+import a11y from "eslint-plugin-a11y";
 import { globalIgnores } from "eslint/config";
 
 export default tseslint.config([
@@ -13,10 +13,15 @@ export default tseslint.config([
         extends: [
             js.configs.recommended,
             tseslint.configs.recommended,
-            reactHooks.configs["recommended-latest"],
+            reactHooks.configs.flat["recommended-latest"],
             reactRefresh.configs.vite,
-            jsxA11y.flatConfigs.recommended,
         ],
+        plugins: {
+            a11y,
+        },
+        rules: {
+            ...a11y.configs["flat/recommended"].rules,
+        },
         languageOptions: {
             ecmaVersion: 2020,
             globals: globals.browser,

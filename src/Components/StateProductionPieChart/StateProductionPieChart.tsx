@@ -21,15 +21,13 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
     const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(
+        typeof IntersectionObserver === "undefined"
+    );
 
     useEffect(() => {
         const el = containerRef.current;
         if (!el || isVisible) return;
-        if (typeof IntersectionObserver === "undefined") {
-            setIsVisible(true);
-            return;
-        }
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {

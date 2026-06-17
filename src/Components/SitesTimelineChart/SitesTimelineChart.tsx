@@ -390,6 +390,7 @@ const SitesTimelineChart: FC<Props> = ({
                 ))}
             </div>
             <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
+            {/* eslint-disable-next-line a11y/details-summary */}
             <details style={{ marginTop: "12px", cursor: "pointer" }}>
                 <summary
                     style={{ fontSize: "13px", color: "var(--text-secondary)" }}
@@ -398,6 +399,7 @@ const SitesTimelineChart: FC<Props> = ({
                 </summary>
                 <div style={{ overflowX: "auto" }}>
                     <table
+                        aria-label="Timeline data table"
                         style={{
                             width: "100%",
                             borderCollapse: "collapse",
@@ -408,6 +410,7 @@ const SitesTimelineChart: FC<Props> = ({
                         <thead>
                             <tr>
                                 <th
+                                    scope="col"
                                     style={{
                                         textAlign: "left",
                                         padding: "4px 8px",
@@ -418,6 +421,7 @@ const SitesTimelineChart: FC<Props> = ({
                                     Period
                                 </th>
                                 <th
+                                    scope="col"
                                     style={{
                                         textAlign: "right",
                                         padding: "4px 8px",
@@ -428,6 +432,7 @@ const SitesTimelineChart: FC<Props> = ({
                                     New Confirmations
                                 </th>
                                 <th
+                                    scope="col"
                                     style={{
                                         textAlign: "right",
                                         padding: "4px 8px",
@@ -438,6 +443,7 @@ const SitesTimelineChart: FC<Props> = ({
                                     Birds Affected
                                 </th>
                                 <th
+                                    scope="col"
                                     style={{
                                         textAlign: "right",
                                         padding: "4px 8px",
