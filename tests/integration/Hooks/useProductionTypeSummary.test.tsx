@@ -91,12 +91,10 @@ describe("useProductionTypeSummary Hook integration test", () => {
             </QueryClientProvider>
         );
 
-        nock("http://flockwatch.io")
-            .get("/data/sites/summary")
-            .reply(500, {
-                code: 500,
-                message: "Server ERROR 500",
-            });
+        nock("http://flockwatch.io").get("/data/sites/summary").reply(500, {
+            code: 500,
+            message: "Server ERROR 500",
+        });
 
         const { result } = renderHook(
             () => useProductionTypeSummary("http://flockwatch.io"),

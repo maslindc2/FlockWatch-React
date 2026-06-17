@@ -423,7 +423,9 @@ describe("App", () => {
 
         renderWithTheme(<App />);
 
-        const toggle = screen.getByRole("button", { name: "Switch to dark mode" });
+        const toggle = screen.getByRole("button", {
+            name: "Switch to dark mode",
+        });
         expect(toggle).toHaveClass("theme-toggle");
 
         fireEvent.click(toggle);

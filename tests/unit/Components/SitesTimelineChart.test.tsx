@@ -8,11 +8,23 @@ function renderWithTheme(ui: React.ReactElement) {
     return render(<ThemeProvider>{ui}</ThemeProvider>);
 }
 
-function renderChart(props?: Partial<React.ComponentProps<typeof SitesTimelineChart>>) {
+function renderChart(
+    props?: Partial<React.ComponentProps<typeof SitesTimelineChart>>
+) {
     const defaultProps: React.ComponentProps<typeof SitesTimelineChart> = {
         data: [
-            { period: "2022-02", new_confirmations: 10, birds_affected: 1154298, cumulative_birds_affected: 1154298 },
-            { period: "2022-03", new_confirmations: 15, birds_affected: 2000000, cumulative_birds_affected: 3154298 },
+            {
+                period: "2022-02",
+                new_confirmations: 10,
+                birds_affected: 1154298,
+                cumulative_birds_affected: 1154298,
+            },
+            {
+                period: "2022-03",
+                new_confirmations: 15,
+                birds_affected: 2000000,
+                cumulative_birds_affected: 3154298,
+            },
         ],
         granularity: "month",
         onGranularityChange: vi.fn(),
@@ -45,7 +57,9 @@ describe("SitesTimelineChart", () => {
 
     it("renders data table inside details element", () => {
         renderChart();
-        expect(screen.getByText("View timeline data as a table")).toBeInTheDocument();
+        expect(
+            screen.getByText("View timeline data as a table")
+        ).toBeInTheDocument();
         expect(screen.getByText("2022-02")).toBeInTheDocument();
         expect(screen.getByText("2022-03")).toBeInTheDocument();
     });
@@ -54,13 +68,21 @@ describe("SitesTimelineChart", () => {
         renderChart();
         const svg = screen.getByRole("img");
         expect(svg).toBeInTheDocument();
-        expect(svg).toHaveAttribute("aria-label", expect.stringContaining("Timeline chart"));
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            expect.stringContaining("Timeline chart")
+        );
     });
 
     it("renders empty state with no data", () => {
         renderChart({ data: [] });
-        expect(screen.getByText("View timeline data as a table")).toBeInTheDocument();
+        expect(
+            screen.getByText("View timeline data as a table")
+        ).toBeInTheDocument();
         const svg = screen.getByRole("img");
-        expect(svg).toHaveAttribute("aria-label", "Timeline chart showing avian influenza outbreak over time.");
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            "Timeline chart showing avian influenza outbreak over time."
+        );
     });
 });

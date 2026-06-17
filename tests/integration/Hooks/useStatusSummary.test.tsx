@@ -45,15 +45,15 @@ describe("useStatusSummary Hook integration test", () => {
 
         await vi.waitFor(() => {
             expect(result.current.isSuccess).toBe(true);
-            expect(
-                result.current.data?.data.birds_affected_last_30_days
-            ).toBe(276675);
-            expect(
-                result.current.data?.data.sites_confirmed_last_30_days
-            ).toBe(23);
-            expect(
-                result.current.data?.data.sites_released_last_30_days
-            ).toBe(11);
+            expect(result.current.data?.data.birds_affected_last_30_days).toBe(
+                276675
+            );
+            expect(result.current.data?.data.sites_confirmed_last_30_days).toBe(
+                23
+            );
+            expect(result.current.data?.data.sites_released_last_30_days).toBe(
+                11
+            );
         });
     });
 
@@ -73,12 +73,10 @@ describe("useStatusSummary Hook integration test", () => {
             </QueryClientProvider>
         );
 
-        nock("http://flockwatch.io")
-            .get("/data/status-summary")
-            .reply(500, {
-                code: 500,
-                message: "Server ERROR 500",
-            });
+        nock("http://flockwatch.io").get("/data/status-summary").reply(500, {
+            code: 500,
+            message: "Server ERROR 500",
+        });
 
         const { result } = renderHook(
             () => useStatusSummary("http://flockwatch.io"),

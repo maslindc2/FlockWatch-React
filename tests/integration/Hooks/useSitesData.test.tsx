@@ -93,9 +93,7 @@ describe("useSitesData Hook integration test", () => {
 
         await vi.waitFor(() => {
             expect(result.current.isError).toEqual(true);
-            expect(result.current.error?.message).toBe(
-                "Failed to fetch sites"
-            );
+            expect(result.current.error?.message).toBe("Failed to fetch sites");
         });
     });
 });

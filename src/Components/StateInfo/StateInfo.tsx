@@ -150,7 +150,10 @@ export default function StateInfo({
                         Affected Counties
                     </h3>
                     <div className="state-county-table-wrapper">
-                        <table className="state-county-table" aria-label="Affected counties table">
+                        <table
+                            className="state-county-table"
+                            aria-label="Affected counties table"
+                        >
                             <thead>
                                 <tr>
                                     <th scope="col">County</th>

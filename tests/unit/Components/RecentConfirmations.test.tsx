@@ -7,13 +7,9 @@ import { SiteRecord } from "../../../src/Hooks/useSitesData";
 describe("RecentConfirmations", () => {
     it("renders heading and legend with empty sites", () => {
         render(<RecentConfirmations sites={[]} />);
-        expect(
-            screen.getByText("Recent Confirmations")
-        ).toBeInTheDocument();
+        expect(screen.getByText("Recent Confirmations")).toBeInTheDocument();
         expect(screen.getByText("Red = active")).toBeInTheDocument();
-        expect(
-            screen.getByText("Amber = older active")
-        ).toBeInTheDocument();
+        expect(screen.getByText("Amber = older active")).toBeInTheDocument();
     });
 
     it("renders a single site entry", () => {

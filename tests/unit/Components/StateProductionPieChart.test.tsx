@@ -14,7 +14,8 @@ beforeAll(() => {
         thresholds = [];
         takeRecords = () => [];
     }
-    window.IntersectionObserver = IntersectionObserverMock as unknown as typeof IntersectionObserver;
+    window.IntersectionObserver =
+        IntersectionObserverMock as unknown as typeof IntersectionObserver;
 });
 
 function renderWithTheme(ui: React.ReactElement) {

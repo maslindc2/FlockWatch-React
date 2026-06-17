@@ -14,7 +14,8 @@ beforeAll(() => {
         thresholds = [];
         takeRecords = () => [];
     }
-    window.IntersectionObserver = IntersectionObserverMock as unknown as typeof IntersectionObserver;
+    window.IntersectionObserver =
+        IntersectionObserverMock as unknown as typeof IntersectionObserver;
 });
 
 function renderWithTheme(ui: React.ReactElement) {
@@ -24,13 +25,26 @@ function renderWithTheme(ui: React.ReactElement) {
 describe("SiteStatusPieChart", () => {
     it("renders SVG with aria-label containing all status labels", () => {
         renderWithTheme(
-            <SiteStatusPieChart activeSites={10} releasedSites={50} naSites={5} />
+            <SiteStatusPieChart
+                activeSites={10}
+                releasedSites={50}
+                naSites={5}
+            />
         );
         const svg = screen.getByRole("img");
         expect(svg).toBeInTheDocument();
-        expect(svg).toHaveAttribute("aria-label", expect.stringContaining("Active"));
-        expect(svg).toHaveAttribute("aria-label", expect.stringContaining("Released"));
-        expect(svg).toHaveAttribute("aria-label", expect.stringContaining("N/A"));
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            expect.stringContaining("Active")
+        );
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            expect.stringContaining("Released")
+        );
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            expect.stringContaining("N/A")
+        );
     });
 
     it("shows no-data label when all values are zero", () => {
@@ -38,16 +52,32 @@ describe("SiteStatusPieChart", () => {
             <SiteStatusPieChart activeSites={0} releasedSites={0} naSites={0} />
         );
         const svg = screen.getByRole("img");
-        expect(svg).toHaveAttribute("aria-label", expect.stringContaining("No data available"));
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            expect.stringContaining("No data available")
+        );
     });
 
     it("handles only one non-zero category", () => {
         renderWithTheme(
-            <SiteStatusPieChart activeSites={0} releasedSites={100} naSites={0} />
+            <SiteStatusPieChart
+                activeSites={0}
+                releasedSites={100}
+                naSites={0}
+            />
         );
         const svg = screen.getByRole("img");
-        expect(svg).toHaveAttribute("aria-label", expect.stringContaining("Released"));
-        expect(svg).toHaveAttribute("aria-label", expect.stringContaining("Active"));
-        expect(svg).toHaveAttribute("aria-label", expect.stringContaining("0.0%"));
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            expect.stringContaining("Released")
+        );
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            expect.stringContaining("Active")
+        );
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            expect.stringContaining("0.0%")
+        );
     });
 });

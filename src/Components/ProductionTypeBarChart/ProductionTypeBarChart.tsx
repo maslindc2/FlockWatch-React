@@ -269,10 +269,7 @@ const ProductionTypeBarChart: FC<Props> = ({ data, compact }) => {
                 <h3 className="prod-bar-mobile-title">
                     Birds Affected by Production Type
                 </h3>
-                <ol
-                    className="prod-bar-mobile-list"
-                    aria-label={chartLabel}
-                >
+                <ol className="prod-bar-mobile-list" aria-label={chartLabel}>
                     {sorted.map((d) => (
                         <li
                             key={d.production_type}

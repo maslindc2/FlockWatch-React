@@ -14,7 +14,8 @@ beforeAll(() => {
         thresholds = [];
         takeRecords = () => [];
     }
-    window.IntersectionObserver = IntersectionObserverMock as unknown as typeof IntersectionObserver;
+    window.IntersectionObserver =
+        IntersectionObserverMock as unknown as typeof IntersectionObserver;
 });
 
 vi.mock("d3", async (importOriginal) => {
@@ -27,12 +28,23 @@ vi.mock("d3", async (importOriginal) => {
                 states: {
                     type: "GeometryCollection",
                     geometries: [
-                        { type: "Polygon", id: "06", arcs: [[0]], properties: {} },
+                        {
+                            type: "Polygon",
+                            id: "06",
+                            arcs: [[0]],
+                            properties: {},
+                        },
                     ],
                 },
             },
             arcs: [
-                [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]],
+                [
+                    [0, 0],
+                    [1, 0],
+                    [1, 1],
+                    [0, 1],
+                    [0, 0],
+                ],
             ],
         }),
     };
@@ -43,7 +55,17 @@ function renderWithTheme(ui: React.ReactElement) {
 }
 
 const mockData = [
-    { state_abbreviation: "CA", state: "California", birds_affected: 100000, backyard_flocks: 0, commercial_flocks: 0, total_flocks: 0, latitude: 0, longitude: 0, last_reported_detection: "2024-01-01T00:00:00.000Z" },
+    {
+        state_abbreviation: "CA",
+        state: "California",
+        birds_affected: 100000,
+        backyard_flocks: 0,
+        commercial_flocks: 0,
+        total_flocks: 0,
+        latitude: 0,
+        longitude: 0,
+        last_reported_detection: "2024-01-01T00:00:00.000Z",
+    },
 ];
 
 const mockTrigger = vi.fn();
@@ -57,7 +79,9 @@ describe("ChoroplethMap", () => {
         const { container } = renderWithTheme(
             <ChoroplethMap data={mockData} stateTrigger={mockTrigger} />
         );
-        const choroplethContainer = container.querySelector(".choropleth-container");
+        const choroplethContainer = container.querySelector(
+            ".choropleth-container"
+        );
         expect(choroplethContainer).toBeInTheDocument();
         const svg = screen.getByRole("group");
         expect(svg).toBeInTheDocument();
@@ -76,14 +100,18 @@ describe("ChoroplethMap", () => {
             <ChoroplethMap data={mockData} stateTrigger={mockTrigger} />
         );
         const svg = screen.getByRole("group");
-        expect(svg).toHaveAttribute("aria-label", expect.stringContaining("California"));
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            expect.stringContaining("California")
+        );
     });
 
     it("renders no-data aria-label when data is empty", async () => {
-        renderWithTheme(
-            <ChoroplethMap data={[]} stateTrigger={mockTrigger} />
-        );
+        renderWithTheme(<ChoroplethMap data={[]} stateTrigger={mockTrigger} />);
         const svg = screen.getByRole("group");
-        expect(svg).toHaveAttribute("aria-label", "Map of the United States showing avian influenza data.");
+        expect(svg).toHaveAttribute(
+            "aria-label",
+            "Map of the United States showing avian influenza data."
+        );
     });
 });

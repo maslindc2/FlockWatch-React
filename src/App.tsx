@@ -498,7 +498,7 @@ function App() {
                         aria-modal="true"
                         aria-label={`${selectedState.state} outbreak information`}
                     >
-            <button
+                        <button
                             onClick={closeStateInfo}
                             className="state-panel-close"
                             aria-label="Close state information"

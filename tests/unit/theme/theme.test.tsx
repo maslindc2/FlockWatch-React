@@ -27,7 +27,9 @@ describe("useTheme", () => {
     });
 
     it("throws when used outside ThemeProvider", () => {
-        const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+        const consoleSpy = vi
+            .spyOn(console, "error")
+            .mockImplementation(() => {});
         expect(() => render(<TestConsumer />)).toThrow(
             "useTheme must be used within ThemeProvider"
         );

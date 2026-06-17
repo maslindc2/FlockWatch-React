@@ -54,12 +54,12 @@ describe("useSitesTimeline Hook integration test", () => {
             expect(result.current.data?.data.granularity).toBe("month");
             expect(result.current.data?.data.periods).toHaveLength(1);
             expect(result.current.data?.data.periods[0].period).toBe("2022-02");
-            expect(
-                result.current.data?.data.periods[0].new_confirmations
-            ).toBe(10);
-            expect(
-                result.current.data?.data.periods[0].birds_affected
-            ).toBe(1154298);
+            expect(result.current.data?.data.periods[0].new_confirmations).toBe(
+                10
+            );
+            expect(result.current.data?.data.periods[0].birds_affected).toBe(
+                1154298
+            );
         });
     });
 
