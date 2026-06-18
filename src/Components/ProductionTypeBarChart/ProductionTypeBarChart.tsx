@@ -203,6 +203,7 @@ const ProductionTypeBarChart: FC<Props> = ({ data, compact }) => {
                         return (
                             <div
                                 key={d.production_type}
+                                role="listitem"
                                 style={{
                                     display: "flex",
                                     alignItems: "center",

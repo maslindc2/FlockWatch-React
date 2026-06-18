@@ -17,6 +17,7 @@ const CHART_HEIGHT = 260;
 const PIE_RADIUS = 75;
 const INNER_RADIUS = 35;
 
+/** Donut chart showing active sites by production type for a selected state. */
 const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
     const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);

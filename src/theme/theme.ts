@@ -154,6 +154,7 @@ export interface ThemeContextType {
   toggleTheme: () => void;
 }
 
+/** React context carrying the current theme, chart colors, and toggle function. */
 export const ThemeContext = createContext<ThemeContextType | undefined>(
   undefined
 );
