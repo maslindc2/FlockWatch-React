@@ -3,11 +3,12 @@
         "target": "ESNext",
         "module": "ESNext",
         "jsx": "react-jsx",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
         "types": ["node"],
         "resolveJsonModule": true
     },

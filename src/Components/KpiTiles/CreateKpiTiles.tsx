@@ -1,5 +1,6 @@
-import InfoTiles from "./InfoTiles";
+import KpiTiles from "./KpiTiles";
 
+/** Data shape used to render the US overview KPI tiles. */
 export interface USTileData {
     total_backyard_flocks_affected: number;
     total_birds_affected: number;
@@ -8,37 +9,40 @@ export interface USTileData {
     total_states_affected?: number;
 }
 
-export default function createInfoTiles(tileData: USTileData) {
-    const titleMap: Record<keyof USTileData, string[]> = {
+/**
+ * Build an array of KpiTile elements from US-level aggregate data.
+ * @param tileData - US summary numbers to display.
+ * @param subtextMap - Optional map of keys to subtext strings.
+ */
+export default function createKpiTiles(
+    tileData: USTileData,
+    subtextMap?: Partial<Record<keyof USTileData, string>>
+) {
+    const titleMap: Record<keyof USTileData, [string, string, string]> = {
         total_backyard_flocks_affected: [
             "Backyard Flocks Affected",
             "backyard-flocks",
-            "/backyard-flocks2.png",
-            "rgba(2, 163, 56, 1)",
+            "rgba(40, 150, 60, 1)",
         ],
         total_birds_affected: [
             "Birds Affected",
             "birds-affected",
-            "/birds-affected.png",
-            "#ef8700ff",
+            "rgba(230, 140, 30, 1)",
         ],
         total_commercial_flocks_affected: [
             "Commercial Flocks Affected",
             "commercial-flocks",
-            "/commercial-flocks.png",
-            "rgba(131, 0, 239, 1)",
+            "rgba(130, 50, 200, 1)",
         ],
         total_flocks_affected: [
             "Total Flocks Affected",
             "total-flocks",
-            "/flocks-affected.webp",
-            "rgba(255, 97, 131, 1)",
+            "hsla(210, 70%, 45%, 1.00)",
         ],
         total_states_affected: [
             "States Affected",
             "states-affected",
-            "/us-states.png",
-            "hsla(192, 98%, 37%, 1.00)",
+            "hsla(210, 70%, 45%, 1.00)",
         ],
     };
 
@@ -49,13 +53,13 @@ export default function createInfoTiles(tileData: USTileData) {
                 return null;
             }
             return (
-                <InfoTiles
+                <KpiTiles
                     key={index}
                     id={title[1]}
                     title={title[0]}
                     amount={value.toLocaleString()}
-                    icon={title[2]}
-                    bgColor={title[3]}
+                    bgColor={title[2]}
+                    subtext={subtextMap?.[key as keyof USTileData]}
                 />
             );
         })

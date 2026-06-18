@@ -1,3 +1,4 @@
+/** Full-page error boundary fallback displayed when data fetching fails. */
 export default function ErrorComponent() {
     return (
         <div className="error-page">

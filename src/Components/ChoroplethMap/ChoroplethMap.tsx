@@ -8,69 +8,84 @@ import type {
     Geometry,
     GeoJsonProperties,
 } from "geojson";
+import type { Topology } from "topojson-specification";
 import { FlockRecord } from "../../Hooks/useFlockCases";
+import { useTheme } from "../../theme/theme";
 
 import {
     stateAbbreviationToFips,
     fipsToStateAbbreviation,
 } from "../../Utils/state-abbreviation-fips-processing";
 
-// Specifying we are expecting a prop containing a structure IAllFlockCases
+/** Props for the ChoroplethMap component. */
 interface Props {
     data: FlockRecord[];
     stateTrigger: (abbreviation: string) => void;
+    selectedAbbreviation?: string | null;
+    activeAbbreviations: Set<string>;
 }
 
-// Defining the data type state feature which should use the d3 feature and a key that's of type string
-type StateFeature = Feature<Geometry, { [key: string]: any }> & {
+/** A US state feature with an optional string id. */
+type StateFeature = Feature<Geometry, { [key: string]: unknown }> & {
     id?: string | number;
 };
 
 const labelOffsets: Record<string, [number, number]> = {
-    "21": [0, 4], // KY ***
-    "15": [-20, 5], // HI ***
-    "34": [35, 15], // NJ
-    "22": [-9, 3], // LA ***
-    "26": [13, 23], // MI ***
-    "06": [-9, 0], // CA
-    "09": [25, 25], // CT
-    "10": [80, 20], // DE
-    "12": [14, 3], // FL ***
-    "24": [60, 35], // MD
-    "25": [60, -5], // MA
-    "33": [-15, -60], // NH
-    "44": [40, 25], // RI
-    "50": [-30, -40], // VT
+    "21": [0, 4],
+    "15": [-20, 5],
+    "34": [35, 15],
+    "22": [-9, 3],
+    "26": [13, 23],
+    "06": [-9, 0],
+    "09": [25, 25],
+    "10": [80, 20],
+    "12": [14, 3],
+    "24": [60, 35],
+    "25": [60, -5],
+    "33": [-15, -60],
+    "44": [40, 25],
+    "50": [-30, -40],
 };
 
-// This is prevents d3 from generating lines for these states as they do not need a pointer line.
-// An example of this is Florida which does not line up in the middle of state.
 const excludedStates = new Set(["21", "15", "22", "26", "12", "06"]);
 
-const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
-    // Create a ref that will allow us to insert d3 states into to create our US Map
+let cachedTopo: Topology | null = null;
+
+/**
+ * US choropleth map colored by birds affected per state.
+ * Clicking a state triggers the `stateTrigger` callback.
+ */
+const ChoroplethMap: FC<Props> = ({
+    data,
+    stateTrigger,
+    selectedAbbreviation,
+    activeAbbreviations,
+}) => {
+    const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const tooltipRef = useRef<HTMLDivElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     // Runs on every render to display the Choropleth Map
     useEffect(() => {
-        // Specify the width and height of our view window
         const width = 980;
         const height = 780;
-        // Create an SVG that will display our Choropleth Map
         const svg = d3
             .select(svgRef.current)
             .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("preserveAspectRatio", "xMidYMid meet")
             .style("width", "100%");
 
-        // Clear previous content so it redraws cleanly if the data changes
         svg.selectAll("*").remove();
 
-        // Load the TopoJSON map and convert it to GeoJSON with topojson.feature(...)
-        d3.json("/states-10m.json").then((usData) => {
-            if (!usData) return;
+        const loadMap = async () => {
+            if (!cachedTopo) {
+                cachedTopo = (await d3.json(
+                    "/states-10m.json"
+                )) as unknown as Topology;
+            }
+            const us = cachedTopo;
 
-            const us = usData as any;
             const statesCollection = topojson.feature(
                 us,
                 us.objects.states
@@ -78,37 +93,43 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
             const states: Feature<Geometry, GeoJsonProperties>[] =
                 statesCollection.features;
 
-            // Map the birdsAffected to the associated FIPS id's for each state
             const birdsAffectedMap = new Map<string, number>();
+            const stateDataMap = new Map<string, FlockRecord>();
             data.forEach((d) => {
                 const fips = stateAbbreviationToFips[d.state_abbreviation];
-                if (fips) birdsAffectedMap.set(fips, d.birds_affected);
+                if (fips) {
+                    birdsAffectedMap.set(fips, d.birds_affected);
+                    stateDataMap.set(d.state_abbreviation, d);
+                }
             });
 
-            // Set up projection and path using geoAlbersUsa
             const projection = d3
                 .geoAlbersUsa()
                 .scale(1300)
                 .translate([width / 2, height / 2]);
 
-            // Converts GeoJSON shapes into SVG d strings
             const path = d3.geoPath().projection(projection);
 
-            // Set up color scale
             const maxAffected = d3.max(data, (d) => d.birds_affected) ?? 1;
 
-            // Here we can specify the color to use for the data 0=white, max is the darkest color we are interpolating
-            // Adjusting how much to modify the scale as some states were hit harder than others and it's impossible to see that in the map
-            const color = d3
-                .scaleLinear<string>()
-                .domain([0, maxAffected / 8, maxAffected])
-                .range(["#defad7ff", "#94d190ff", "#006400"]);
+            const color = (value: number) => {
+                if (value <= 0) return chartColors.choroplethColorRange[0];
+                const t = Math.log(value) / Math.log(maxAffected);
+                const colors = chartColors.choroplethColorRange;
+                const pos = Math.min(
+                    t * (colors.length - 1),
+                    colors.length - 1
+                );
+                const i = Math.floor(pos);
+                const frac = pos - i;
+                if (i >= colors.length - 1) return colors[colors.length - 1];
+                return d3.interpolateRgb(colors[i], colors[i + 1])(frac);
+            };
 
             const legendWidth = 250;
             const legendHeight = 10;
             const legendMargin = { top: 40, right: 40, bottom: 0, left: 40 };
 
-            // Create defs for gradient
             const defs = svg.append("defs");
             const linearGradient = defs
                 .append("linearGradient")
@@ -116,16 +137,16 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
 
             linearGradient
                 .selectAll("stop")
-                .data([
-                    { offset: "0%", color: "#ffffffff" },
-                    { offset: "50%", color: "#94d190ff" },
-                    { offset: "100%", color: "#006400" },
-                ])
+                .data(
+                    chartColors.choroplethLegendRange.map((c, i, arr) => ({
+                        offset: `${(i / (arr.length - 1)) * 100}%`,
+                        color: c,
+                    }))
+                )
                 .join("stop")
                 .attr("offset", (d) => d.offset)
                 .attr("stop-color", (d) => d.color);
 
-            // Create a group for the legend and position it in bottom-right
             const legendSvg = svg
                 .append("g")
                 .attr(
@@ -133,19 +154,17 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                     `translate(${legendMargin.left}, ${height - legendMargin.top})`
                 );
 
-            // Draw the legend color bar
             legendSvg
                 .append("rect")
                 .attr("width", legendWidth)
                 .attr("height", legendHeight)
                 .style("fill", "url(#legend-gradient)")
-                .attr("stroke", "#333")
+                .attr("stroke", chartColors.choroplethLegendStroke)
                 .attr("stroke-width", 0.5);
 
-            // Define scale and axis for the legend
             const legendScale = d3
-                .scaleLinear()
-                .domain([0, maxAffected])
+                .scaleLog()
+                .domain([1, maxAffected])
                 .range([0, legendWidth]);
 
             const legendAxis = d3
@@ -153,73 +172,165 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .ticks(5)
                 .tickFormat(d3.format(".2s"));
 
-            // Add axis below the color bar
             legendSvg
                 .append("g")
                 .attr("transform", `translate(0, ${legendHeight})`)
                 .call(legendAxis)
                 .selectAll("text")
                 .style("font-size", "15px")
-                .style("fill", "#000")
+                .style("fill", chartColors.choroplethLabelColor)
                 .select(".domain")
                 .remove();
 
-            // Add label centered above the legend
             legendSvg
                 .append("text")
                 .attr("x", legendWidth / 2)
                 .attr("y", -8)
                 .attr("text-anchor", "middle")
                 .attr("font-size", "15px")
-                .attr("fill", "#000")
+                .attr("fill", chartColors.choroplethLabelColor)
                 .text("Birds Affected");
 
-            // Draw the state shapes and color them
+            const tooltip = d3.select(tooltipRef.current);
+
+            function positionTooltip(event: MouseEvent) {
+                const container = containerRef.current;
+                if (!container) return;
+                const rect = container.getBoundingClientRect();
+                tooltip
+                    .style("left", `${event.clientX - rect.left + 12}px`)
+                    .style("top", `${event.clientY - rect.top - 10}px`);
+            }
+
             svg.append("g")
                 .selectAll("path")
                 .data(states as unknown as StateFeature[])
                 .join("path")
-                .on("mouseover", (event) => {
-                    // Here we are handling if the mouse hovers over a state
-                    // Get what state we are hovering over
-                    const element = d3.select(event.currentTarget);
-                    // Get the original color
-                    const originalFill = element.attr("fill");
-                    // Set the original fill color
-                    element.attr("data-original-fill", originalFill);
-                    // Shade the current state to our hover color
-                    element.attr("fill", "hsla(0, 0%, 17%, 0.55)");
+                .style("cursor", "pointer")
+                .attr("tabindex", "0")
+                .attr("role", "button")
+                .attr("aria-label", (d: StateFeature) => {
+                    const fips = d.id?.toString();
+                    const abbreviation = fips
+                        ? fipsToStateAbbreviation[fips]
+                        : null;
+                    const stateData = abbreviation
+                        ? stateDataMap.get(abbreviation)
+                        : null;
+                    const active = abbreviation
+                        ? activeAbbreviations.has(abbreviation)
+                        : false;
+                    return stateData
+                        ? `${stateData.state}: ${stateData.birds_affected.toLocaleString()} birds affected.${active ? " Active outbreak ongoing." : ""} Click to view details.`
+                        : `${abbreviation || "Unknown state"}: No data available.`;
                 })
-                .on("mouseout", (event) => {
-                    // When we move our mouse off the state this will reset the current state back to it's original color
-                    const element = d3.select(event.currentTarget);
-                    // Get the original fill color
-                    const originalFill = element.attr("data-original-fill");
-                    // Reset it back to it's original color
-                    element.attr("fill", originalFill);
+                .on("mouseover", function (event, d) {
+                    d3.select(this).attr(
+                        "data-original-fill",
+                        d3.select(this).attr("fill")
+                    );
+                    d3.select(this).attr("fill", chartColors.choroplethHover);
+
+                    const fips = d.id?.toString();
+                    const abbreviation = fips
+                        ? fipsToStateAbbreviation[fips]
+                        : null;
+                    const stateData = abbreviation
+                        ? stateDataMap.get(abbreviation)
+                        : null;
+
+                    tooltip
+                        .style("display", "block")
+                        .html(
+                            stateData
+                                ? `<strong>${stateData.state}</strong><br/>${stateData.birds_affected.toLocaleString()} birds affected`
+                                : `<strong>${abbreviation || "Unknown"}</strong><br/>No data`
+                        );
+                    positionTooltip(event);
+                })
+                .on("mousemove", (event) => {
+                    positionTooltip(event);
+                })
+                .on("mouseout", function () {
+                    const originalFill = d3
+                        .select(this)
+                        .attr("data-original-fill");
+                    d3.select(this).attr("fill", originalFill);
+                    tooltip.style("display", "none");
                 })
                 .attr("d", (d) => path(d)!)
                 .attr("fill", (d: StateFeature) => {
-                    // Here we are filling the color of the current state based off the interpolated color from above
-                    // This will be white for nothing to the darkest color
                     const fips = d.id?.toString();
                     const value = fips ? birdsAffectedMap.get(fips) : undefined;
-                    // If the value is undefined then set it to white
-                    return value !== undefined ? color(value) : "#eee";
+                    return value !== undefined
+                        ? color(value)
+                        : chartColors.choroplethNoData;
                 })
                 .on("click", (event, d: StateFeature) => {
-                    // When a state is clicked we find what state was clicked and then use this to display that state's particular stats
                     const fips = d.id;
                     const abbreviation = fipsToStateAbbreviation[fips!];
-                    // If there was an abbreviation found then we trigger our state to display the state info component
                     if (abbreviation) {
                         stateTrigger(abbreviation);
                     }
                 })
-                .attr("stroke", "hsla(0, 0%, 21%, 1.00)") // This is the border line between states
-                .attr("stroke-width", 1); // This is how wide the border line should be between states
+                .attr("stroke", (d: StateFeature) => {
+                    const fips = d.id?.toString();
+                    const abbreviation = fips
+                        ? fipsToStateAbbreviation[fips]
+                        : null;
+                    if (abbreviation && activeAbbreviations.has(abbreviation))
+                        return "#dc322f";
+                    return abbreviation && abbreviation === selectedAbbreviation
+                        ? "#ff6b35"
+                        : chartColors.choroplethStroke;
+                })
+                .attr("stroke-width", (d: StateFeature) => {
+                    const fips = d.id?.toString();
+                    const abbreviation = fips
+                        ? fipsToStateAbbreviation[fips]
+                        : null;
+                    if (abbreviation && activeAbbreviations.has(abbreviation))
+                        return 3;
+                    return abbreviation && abbreviation === selectedAbbreviation
+                        ? 3
+                        : 1;
+                })
+                .on("keydown", (event, d: StateFeature) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        const fips = d.id;
+                        const abbreviation = fipsToStateAbbreviation[fips!];
+                        if (abbreviation) {
+                            stateTrigger(abbreviation);
+                        }
+                    }
+                })
+                .on("focus", function () {
+                    d3.select(this)
+                        .attr("stroke", "#0066cc")
+                        .attr("stroke-width", 3);
+                })
+                .on("blur", function () {
+                    const datum = d3.select(this).datum() as StateFeature;
+                    const fips = datum.id?.toString();
+                    const abbreviation = fips
+                        ? fipsToStateAbbreviation[fips]
+                        : null;
+                    const isActive =
+                        abbreviation && activeAbbreviations.has(abbreviation);
+                    const isSelected = abbreviation === selectedAbbreviation;
+                    d3.select(this)
+                        .attr(
+                            "stroke",
+                            isActive
+                                ? "#dc322f"
+                                : isSelected
+                                  ? "#ff6b35"
+                                  : chartColors.choroplethStroke
+                        )
+                        .attr("stroke-width", isActive || isSelected ? 3 : 1);
+                });
 
-            // We can't have a blank map so let's put some labels (Also who even remembers all 50 states)
             svg.append("g")
                 .selectAll("text")
                 .data(
@@ -228,7 +339,6 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                         return !isNaN(centroid[0]) && !isNaN(centroid[1]);
                     })
                 )
-                .data(states as unknown as StateFeature[])
                 .join("text")
                 .attr("transform", (d) => {
                     const centroid = path.centroid(d);
@@ -243,11 +353,13 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
                 .attr("font-size", "20px")
-                .attr("fill", "#000")
+                .attr("fill", chartColors.choroplethLabelColor)
+                .attr("stroke", chartColors.choroplethLabelOutline)
+                .attr("stroke-width", "2px")
+                .attr("stroke-linejoin", "round")
+                .attr("paint-order", "stroke")
                 .attr("pointer-events", "none");
 
-            // This section allows us to offset the state labels and add pointers
-            // Primarily useful for Vermont, New Hampshire, etc.
             svg.append("g")
                 .selectAll("line")
                 .data(
@@ -269,10 +381,100 @@ const ChoroplethMap: FC<Props> = ({ data, stateTrigger }) => {
                     const id = d.id!.toString();
                     return path.centroid(d)[1] + labelOffsets[id]![1];
                 })
-                .attr("stroke", "#333");
+                .attr("stroke", chartColors.choroplethPointerLine);
+
+            const activeStatesGeo = states.filter((d) => {
+                const abbr = d.id
+                    ? fipsToStateAbbreviation[d.id.toString()]
+                    : null;
+                return abbr && activeAbbreviations.has(abbr);
+            });
+
+            const maxDotRadius = 7;
+            svg.append("g")
+                .selectAll("circle")
+                .data(activeStatesGeo)
+                .join("circle")
+                .attr("cx", (d) => {
+                    const centroid = path.centroid(d);
+                    const abbr = d.id
+                        ? fipsToStateAbbreviation[d.id.toString()]
+                        : "";
+                    const offset = abbr ? labelOffsets[abbr] : undefined;
+                    return offset ? centroid[0] + offset[0] : centroid[0];
+                })
+                .attr("cy", (d) => {
+                    const centroid = path.centroid(d);
+                    const abbr = d.id
+                        ? fipsToStateAbbreviation[d.id.toString()]
+                        : "";
+                    const offset = abbr ? labelOffsets[abbr] : undefined;
+                    return offset
+                        ? centroid[1] + offset[1] - 22
+                        : centroid[1] - 22;
+                })
+                .attr("r", maxDotRadius)
+                .attr("fill", "#dc322f")
+                .attr("stroke", "#ffffff")
+                .attr("stroke-width", 2)
+                .attr("opacity", 0.9)
+                .append("title")
+                .text((d) => {
+                    const abbr = d.id
+                        ? fipsToStateAbbreviation[d.id.toString()]
+                        : "";
+                    const stateData = abbr ? stateDataMap.get(abbr) : null;
+                    return stateData
+                        ? `${stateData.state} — active outbreak ongoing`
+                        : "Active outbreak ongoing";
+                });
+        };
+
+        loadMap().catch(() => {
+            /* TopoJSON load error handled silently */
         });
-    });
-    return <svg ref={svgRef}></svg>;
+    }, [
+        data,
+        stateTrigger,
+        chartColors,
+        selectedAbbreviation,
+        activeAbbreviations,
+    ]);
+
+    const chartLabel =
+        data.length > 0
+            ? `Map of the United States showing total birds affected by avian influenza by state. Top affected states: ${[
+                  ...data,
+              ]
+                  .sort((a, b) => b.birds_affected - a.birds_affected)
+                  .slice(0, 3)
+                  .map(
+                      (d) =>
+                          `${d.state}: ${d.birds_affected.toLocaleString()} birds`
+                  )
+                  .join(", ")}.`
+            : "Map of the United States showing avian influenza data.";
+
+    return (
+        <div
+            className="choropleth-container"
+            ref={containerRef}
+            style={{ position: "relative" }}
+        >
+            <div
+                ref={tooltipRef}
+                className="choropleth-tooltip"
+                style={{
+                    display: "none",
+                    position: "absolute",
+                    pointerEvents: "none",
+                    zIndex: 10,
+                }}
+                role="tooltip"
+            />
+            <svg ref={svgRef} role="group" aria-label={chartLabel} />
+        </div>
+    );
 };
 
 export default ChoroplethMap;

@@ -1,0 +1,316 @@
+{
+    "data": {
+        "granularity": "month",
+        "periods": [
+            {
+                "period": "2022-02",
+                "new_confirmations": 10,
+                "birds_affected": 1154298,
+                "cumulative_birds_affected": 1154298
+            },
+            {
+                "period": "2022-03",
+                "new_confirmations": 70,
+                "birds_affected": 19030079,
+                "cumulative_birds_affected": 20184377
+            },
+            {
+                "period": "2022-04",
+                "new_confirmations": 154,
+                "birds_affected": 14492079,
+                "cumulative_birds_affected": 34676456
+            },
+            {
+                "period": "2022-05",
+                "new_confirmations": 83,
+                "birds_affected": 782958,
+                "cumulative_birds_affected": 35459414
+            },
+            {
+                "period": "2022-06",
+                "new_confirmations": 20,
+                "birds_affected": 2173217,
+                "cumulative_birds_affected": 37632631
+            },
+            {
+                "period": "2022-07",
+                "new_confirmations": 18,
+                "birds_affected": 52883,
+                "cumulative_birds_affected": 37685514
+            },
+            {
+                "period": "2022-08",
+                "new_confirmations": 19,
+                "birds_affected": 605742,
+                "cumulative_birds_affected": 38291256
+            },
+            {
+                "period": "2022-09",
+                "new_confirmations": 67,
+                "birds_affected": 6119082,
+                "cumulative_birds_affected": 44410338
+            },
+            {
+                "period": "2022-10",
+                "new_confirmations": 79,
+                "birds_affected": 809648,
+                "cumulative_birds_affected": 45219986
+            },
+            {
+                "period": "2022-11",
+                "new_confirmations": 66,
+                "birds_affected": 3693846,
+                "cumulative_birds_affected": 48913832
+            },
+            {
+                "period": "2022-12",
+                "new_confirmations": 56,
+                "birds_affected": 5047292,
+                "cumulative_birds_affected": 53961124
+            },
+            {
+                "period": "2023-01",
+                "new_confirmations": 27,
+                "birds_affected": 372106,
+                "cumulative_birds_affected": 54333230
+            },
+            {
+                "period": "2023-02",
+                "new_confirmations": 28,
+                "birds_affected": 309257,
+                "cumulative_birds_affected": 54642487
+            },
+            {
+                "period": "2023-03",
+                "new_confirmations": 37,
+                "birds_affected": 128460,
+                "cumulative_birds_affected": 54770947
+            },
+            {
+                "period": "2023-04",
+                "new_confirmations": 14,
+                "birds_affected": 137670,
+                "cumulative_birds_affected": 54908617
+            },
+            {
+                "period": "2023-05",
+                "new_confirmations": 4,
+                "birds_affected": 230,
+                "cumulative_birds_affected": 54908847
+            },
+            {
+                "period": "2023-07",
+                "new_confirmations": 2,
+                "birds_affected": 1060,
+                "cumulative_birds_affected": 54909907
+            },
+            {
+                "period": "2023-08",
+                "new_confirmations": 1,
+                "birds_affected": 800,
+                "cumulative_birds_affected": 54910707
+            },
+            {
+                "period": "2023-10",
+                "new_confirmations": 39,
+                "birds_affected": 1288118,
+                "cumulative_birds_affected": 56198825
+            },
+            {
+                "period": "2023-11",
+                "new_confirmations": 84,
+                "birds_affected": 4746649,
+                "cumulative_birds_affected": 60945474
+            },
+            {
+                "period": "2023-12",
+                "new_confirmations": 73,
+                "birds_affected": 10582876,
+                "cumulative_birds_affected": 71528350
+            },
+            {
+                "period": "2024-01",
+                "new_confirmations": 26,
+                "birds_affected": 2025220,
+                "cumulative_birds_affected": 73553570
+            },
+            {
+                "period": "2024-02",
+                "new_confirmations": 17,
+                "birds_affected": 287799,
+                "cumulative_birds_affected": 73841369
+            },
+            {
+                "period": "2024-03",
+                "new_confirmations": 7,
+                "birds_affected": 31740,
+                "cumulative_birds_affected": 73873109
+            },
+            {
+                "period": "2024-04",
+                "new_confirmations": 13,
+                "birds_affected": 8789530,
+                "cumulative_birds_affected": 82662639
+            },
+            {
+                "period": "2024-05",
+                "new_confirmations": 17,
+                "birds_affected": 5857520,
+                "cumulative_birds_affected": 88520159
+            },
+            {
+                "period": "2024-06",
+                "new_confirmations": 12,
+                "birds_affected": 545990,
+                "cumulative_birds_affected": 89066149
+            },
+            {
+                "period": "2024-07",
+                "new_confirmations": 11,
+                "birds_affected": 3447725,
+                "cumulative_birds_affected": 92513874
+            },
+            {
+                "period": "2024-08",
+                "new_confirmations": 2,
+                "birds_affected": 6280,
+                "cumulative_birds_affected": 92520154
+            },
+            {
+                "period": "2024-09",
+                "new_confirmations": 1,
+                "birds_affected": 64800,
+                "cumulative_birds_affected": 92584954
+            },
+            {
+                "period": "2024-10",
+                "new_confirmations": 14,
+                "birds_affected": 3944800,
+                "cumulative_birds_affected": 96529754
+            },
+            {
+                "period": "2024-11",
+                "new_confirmations": 58,
+                "birds_affected": 6599897,
+                "cumulative_birds_affected": 103129651
+            },
+            {
+                "period": "2024-12",
+                "new_confirmations": 107,
+                "birds_affected": 17704286,
+                "cumulative_birds_affected": 120833937
+            },
+            {
+                "period": "2025-01",
+                "new_confirmations": 126,
+                "birds_affected": 20428284,
+                "cumulative_birds_affected": 141262221
+            },
+            {
+                "period": "2025-02",
+                "new_confirmations": 105,
+                "birds_affected": 12605688,
+                "cumulative_birds_affected": 153867909
+            },
+            {
+                "period": "2025-03",
+                "new_confirmations": 43,
+                "birds_affected": 2042204,
+                "cumulative_birds_affected": 155910113
+            },
+            {
+                "period": "2025-04",
+                "new_confirmations": 17,
+                "birds_affected": 1001743,
+                "cumulative_birds_affected": 156911856
+            },
+            {
+                "period": "2025-05",
+                "new_confirmations": 11,
+                "birds_affected": 5197747,
+                "cumulative_birds_affected": 162109603
+            },
+            {
+                "period": "2025-06",
+                "new_confirmations": 2,
+                "birds_affected": 342140,
+                "cumulative_birds_affected": 162451743
+            },
+            {
+                "period": "2025-07",
+                "new_confirmations": 1,
+                "birds_affected": 29300,
+                "cumulative_birds_affected": 162481043
+            },
+            {
+                "period": "2025-08",
+                "new_confirmations": 3,
+                "birds_affected": 56830,
+                "cumulative_birds_affected": 162537873
+            },
+            {
+                "period": "2025-09",
+                "new_confirmations": 29,
+                "birds_affected": 3860474,
+                "cumulative_birds_affected": 166398347
+            },
+            {
+                "period": "2025-10",
+                "new_confirmations": 63,
+                "birds_affected": 3947345,
+                "cumulative_birds_affected": 170345692
+            },
+            {
+                "period": "2025-11",
+                "new_confirmations": 91,
+                "birds_affected": 1330229,
+                "cumulative_birds_affected": 171675921
+            },
+            {
+                "period": "2025-12",
+                "new_confirmations": 75,
+                "birds_affected": 1040652,
+                "cumulative_birds_affected": 172716573
+            },
+            {
+                "period": "2026-01",
+                "new_confirmations": 55,
+                "birds_affected": 4045650,
+                "cumulative_birds_affected": 176762223
+            },
+            {
+                "period": "2026-02",
+                "new_confirmations": 61,
+                "birds_affected": 11359360,
+                "cumulative_birds_affected": 188121583
+            },
+            {
+                "period": "2026-03",
+                "new_confirmations": 72,
+                "birds_affected": 5208803,
+                "cumulative_birds_affected": 193330386
+            },
+            {
+                "period": "2026-04",
+                "new_confirmations": 15,
+                "birds_affected": 423980,
+                "cumulative_birds_affected": 193754366
+            },
+            {
+                "period": "2026-05",
+                "new_confirmations": 22,
+                "birds_affected": 276770,
+                "cumulative_birds_affected": 194031136
+            },
+            {
+                "period": "2026-06",
+                "new_confirmations": 5,
+                "birds_affected": 23440,
+                "cumulative_birds_affected": 194054576
+            }
+        ]
+    },
+    "metadata": {
+        "last_scraped_date": "2026-06-16T23:12:01.292Z"
+    }
+}
