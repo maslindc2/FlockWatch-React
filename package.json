@@ -9,7 +9,7 @@
         "test": "vitest",
         "test:unit": "vitest tests/unit",
         "test:coverage": "vitest run --coverage",
-        "lint": "eslint . --fix",
+        "lint": "tsc -b && eslint . --fix",
         "preview": "vite preview",
         "docs": "typedoc",
         "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|tsx|json)\""

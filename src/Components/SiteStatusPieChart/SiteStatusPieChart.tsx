@@ -106,7 +106,7 @@ const SiteStatusPieChart: FC<Props> = ({
             pathSelection
                 .attr("d", (d) => {
                     const collapsed = { ...d, endAngle: d.startAngle };
-                    return arc(collapsed as d3.DefaultArcObject) || "";
+                    return arc(collapsed) || "";
                 })
                 .transition()
                 .duration(600)
@@ -114,8 +114,8 @@ const SiteStatusPieChart: FC<Props> = ({
                 .ease(d3.easeCubicOut)
                 .attrTween("d", (d) => {
                     const interpolate = d3.interpolate(
-                        { ...d, endAngle: d.startAngle } as d3.DefaultArcObject,
-                        d as d3.DefaultArcObject
+                        { ...d, endAngle: d.startAngle },
+                        d
                     );
                     return (t: number) => arc(interpolate(t)) || "";
                 });
