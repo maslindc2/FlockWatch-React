@@ -198,6 +198,16 @@ function App() {
     const activeStates = new Set(
         activeSitesDataFromAPI.data.map((site: { state: string }) => site.state)
     );
+    const stateNameToAbbrev: Record<string, string> = {};
+    flockData.forEach(
+        (d: FlockRecord) =>
+            (stateNameToAbbrev[d.state] = d.state_abbreviation)
+    );
+    const activeAbbreviations = new Set(
+        [...activeStates]
+            .map((name) => stateNameToAbbrev[name])
+            .filter((a): a is string => Boolean(a))
+    );
     const usInfoTiles = createInfoTiles(usSummaryAllTimeTotals, {
         total_flocks_affected: `${sitesTotal.toLocaleString()} total sites`,
     });
@@ -399,6 +409,7 @@ function App() {
                             selectedAbbreviation={
                                 selectedState?.state_abbreviation ?? null
                             }
+                            activeAbbreviations={activeAbbreviations}
                         />
                     </div>
                 </section>

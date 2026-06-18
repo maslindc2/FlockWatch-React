@@ -22,6 +22,7 @@ interface Props {
     data: FlockRecord[];
     stateTrigger: (abbreviation: string) => void;
     selectedAbbreviation?: string | null;
+    activeAbbreviations: Set<string>;
 }
 
 /** A US state feature with an optional string id. */
@@ -58,6 +59,7 @@ const ChoroplethMap: FC<Props> = ({
     data,
     stateTrigger,
     selectedAbbreviation,
+    activeAbbreviations,
 }) => {
     const { chartColors } = useTheme();
     const svgRef = useRef<SVGSVGElement | null>(null);
@@ -215,8 +217,11 @@ const ChoroplethMap: FC<Props> = ({
                     const stateData = abbreviation
                         ? stateDataMap.get(abbreviation)
                         : null;
+                    const active = abbreviation
+                        ? activeAbbreviations.has(abbreviation)
+                        : false;
                     return stateData
-                        ? `${stateData.state}: ${stateData.birds_affected.toLocaleString()} birds affected. Click to view details.`
+                        ? `${stateData.state}: ${stateData.birds_affected.toLocaleString()} birds affected.${active ? " Active outbreak ongoing." : ""} Click to view details.`
                         : `${abbreviation || "Unknown state"}: No data available.`;
                 })
                 .on("mouseover", function (event, d) {
@@ -273,7 +278,13 @@ const ChoroplethMap: FC<Props> = ({
                     const abbreviation = fips
                         ? fipsToStateAbbreviation[fips]
                         : null;
-                    return abbreviation && abbreviation === selectedAbbreviation
+                    if (
+                        abbreviation &&
+                        activeAbbreviations.has(abbreviation)
+                    )
+                        return "#dc322f";
+                    return abbreviation &&
+                        abbreviation === selectedAbbreviation
                         ? "#ff6b35"
                         : chartColors.choroplethStroke;
                 })
@@ -282,7 +293,13 @@ const ChoroplethMap: FC<Props> = ({
                     const abbreviation = fips
                         ? fipsToStateAbbreviation[fips]
                         : null;
-                    return abbreviation && abbreviation === selectedAbbreviation
+                    if (
+                        abbreviation &&
+                        activeAbbreviations.has(abbreviation)
+                    )
+                        return 3;
+                    return abbreviation &&
+                        abbreviation === selectedAbbreviation
                         ? 3
                         : 1;
                 })
@@ -307,15 +324,23 @@ const ChoroplethMap: FC<Props> = ({
                     const abbreviation = fips
                         ? fipsToStateAbbreviation[fips]
                         : null;
+                    const isActive =
+                        abbreviation &&
+                        activeAbbreviations.has(abbreviation);
                     const isSelected = abbreviation === selectedAbbreviation;
                     d3.select(this)
                         .attr(
                             "stroke",
-                            isSelected
-                                ? "#ff6b35"
-                                : chartColors.choroplethStroke
+                            isActive
+                                ? "#dc322f"
+                                : isSelected
+                                  ? "#ff6b35"
+                                  : chartColors.choroplethStroke
                         )
-                        .attr("stroke-width", isSelected ? 3 : 1);
+                        .attr(
+                            "stroke-width",
+                            isActive || isSelected ? 3 : 1
+                        );
                 });
 
             svg.append("g")
@@ -369,12 +394,62 @@ const ChoroplethMap: FC<Props> = ({
                     return path.centroid(d)[1] + labelOffsets[id]![1];
                 })
                 .attr("stroke", chartColors.choroplethPointerLine);
+
+            const activeStatesGeo = states.filter((d) => {
+                const abbr = d.id
+                    ? fipsToStateAbbreviation[d.id.toString()]
+                    : null;
+                return abbr && activeAbbreviations.has(abbr);
+            });
+
+            const maxDotRadius = 7;
+            svg.append("g")
+                .selectAll("circle")
+                .data(activeStatesGeo)
+                .join("circle")
+                .attr("cx", (d) => {
+                    const centroid = path.centroid(d);
+                    const abbr = d.id
+                        ? fipsToStateAbbreviation[d.id.toString()]
+                        : "";
+                    const offset = abbr ? labelOffsets[abbr] : undefined;
+                    return offset
+                        ? centroid[0] + offset[0]
+                        : centroid[0];
+                })
+                .attr("cy", (d) => {
+                    const centroid = path.centroid(d);
+                    const abbr = d.id
+                        ? fipsToStateAbbreviation[d.id.toString()]
+                        : "";
+                    const offset = abbr ? labelOffsets[abbr] : undefined;
+                    return offset
+                        ? centroid[1] + offset[1] - 22
+                        : centroid[1] - 22;
+                })
+                .attr("r", maxDotRadius)
+                .attr("fill", "#dc322f")
+                .attr("stroke", "#ffffff")
+                .attr("stroke-width", 2)
+                .attr("opacity", 0.9)
+                .append("title")
+                .text((d) => {
+                    const abbr = d.id
+                        ? fipsToStateAbbreviation[d.id.toString()]
+                        : "";
+                    const stateData = abbr
+                        ? stateDataMap.get(abbr)
+                        : null;
+                    return stateData
+                        ? `${stateData.state} — active outbreak ongoing`
+                        : "Active outbreak ongoing";
+                });
         };
 
         loadMap().catch(() => {
             /* TopoJSON load error handled silently */
         });
-    }, [data, stateTrigger, chartColors, selectedAbbreviation]);
+    }, [data, stateTrigger, chartColors, selectedAbbreviation, activeAbbreviations]);
 
     const chartLabel =
         data.length > 0
