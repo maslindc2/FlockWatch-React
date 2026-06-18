@@ -278,13 +278,9 @@ const ChoroplethMap: FC<Props> = ({
                     const abbreviation = fips
                         ? fipsToStateAbbreviation[fips]
                         : null;
-                    if (
-                        abbreviation &&
-                        activeAbbreviations.has(abbreviation)
-                    )
+                    if (abbreviation && activeAbbreviations.has(abbreviation))
                         return "#dc322f";
-                    return abbreviation &&
-                        abbreviation === selectedAbbreviation
+                    return abbreviation && abbreviation === selectedAbbreviation
                         ? "#ff6b35"
                         : chartColors.choroplethStroke;
                 })
@@ -293,13 +289,9 @@ const ChoroplethMap: FC<Props> = ({
                     const abbreviation = fips
                         ? fipsToStateAbbreviation[fips]
                         : null;
-                    if (
-                        abbreviation &&
-                        activeAbbreviations.has(abbreviation)
-                    )
+                    if (abbreviation && activeAbbreviations.has(abbreviation))
                         return 3;
-                    return abbreviation &&
-                        abbreviation === selectedAbbreviation
+                    return abbreviation && abbreviation === selectedAbbreviation
                         ? 3
                         : 1;
                 })
@@ -325,8 +317,7 @@ const ChoroplethMap: FC<Props> = ({
                         ? fipsToStateAbbreviation[fips]
                         : null;
                     const isActive =
-                        abbreviation &&
-                        activeAbbreviations.has(abbreviation);
+                        abbreviation && activeAbbreviations.has(abbreviation);
                     const isSelected = abbreviation === selectedAbbreviation;
                     d3.select(this)
                         .attr(
@@ -337,10 +328,7 @@ const ChoroplethMap: FC<Props> = ({
                                   ? "#ff6b35"
                                   : chartColors.choroplethStroke
                         )
-                        .attr(
-                            "stroke-width",
-                            isActive || isSelected ? 3 : 1
-                        );
+                        .attr("stroke-width", isActive || isSelected ? 3 : 1);
                 });
 
             svg.append("g")
@@ -413,9 +401,7 @@ const ChoroplethMap: FC<Props> = ({
                         ? fipsToStateAbbreviation[d.id.toString()]
                         : "";
                     const offset = abbr ? labelOffsets[abbr] : undefined;
-                    return offset
-                        ? centroid[0] + offset[0]
-                        : centroid[0];
+                    return offset ? centroid[0] + offset[0] : centroid[0];
                 })
                 .attr("cy", (d) => {
                     const centroid = path.centroid(d);
@@ -437,9 +423,7 @@ const ChoroplethMap: FC<Props> = ({
                     const abbr = d.id
                         ? fipsToStateAbbreviation[d.id.toString()]
                         : "";
-                    const stateData = abbr
-                        ? stateDataMap.get(abbr)
-                        : null;
+                    const stateData = abbr ? stateDataMap.get(abbr) : null;
                     return stateData
                         ? `${stateData.state} — active outbreak ongoing`
                         : "Active outbreak ongoing";
@@ -449,7 +433,13 @@ const ChoroplethMap: FC<Props> = ({
         loadMap().catch(() => {
             /* TopoJSON load error handled silently */
         });
-    }, [data, stateTrigger, chartColors, selectedAbbreviation, activeAbbreviations]);
+    }, [
+        data,
+        stateTrigger,
+        chartColors,
+        selectedAbbreviation,
+        activeAbbreviations,
+    ]);
 
     const chartLabel =
         data.length > 0

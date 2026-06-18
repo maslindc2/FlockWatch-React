@@ -25,9 +25,7 @@ export type SitesTimelineResponse = {
  * Fetch the outbreak timeline from the server.
  * @param url - Full API URL for sites timeline data.
  */
-async function fetchSitesTimeline(
-    url: string
-): Promise<SitesTimelineResponse> {
+async function fetchSitesTimeline(url: string): Promise<SitesTimelineResponse> {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch sites timeline");
     return res.json();
@@ -59,8 +57,6 @@ export function useSitesTimeline(
         staleTime: 15 * 60 * 1000,
         placeholderData: keepPreviousData,
         queryFn: () =>
-            useLocal
-                ? fetchSitesTimelineLocal()
-                : fetchSitesTimeline(url),
+            useLocal ? fetchSitesTimelineLocal() : fetchSitesTimeline(url),
     });
 }

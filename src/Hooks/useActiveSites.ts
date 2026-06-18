@@ -25,9 +25,7 @@ type ActiveSitesResponse = {
     };
 };
 
-async function fetchActiveSites(
-    url: string
-): Promise<ActiveSitesResponse> {
+async function fetchActiveSites(url: string): Promise<ActiveSitesResponse> {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch active sites");
     return res.json();

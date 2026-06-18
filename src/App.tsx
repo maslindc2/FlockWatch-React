@@ -200,8 +200,7 @@ function App() {
     );
     const stateNameToAbbrev: Record<string, string> = {};
     flockData.forEach(
-        (d: FlockRecord) =>
-            (stateNameToAbbrev[d.state] = d.state_abbreviation)
+        (d: FlockRecord) => (stateNameToAbbrev[d.state] = d.state_abbreviation)
     );
     const activeAbbreviations = new Set(
         [...activeStates]
