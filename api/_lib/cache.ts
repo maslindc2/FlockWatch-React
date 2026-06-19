@@ -5,7 +5,7 @@ const redis = new Redis({
     token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
 
-const RENDER_BASE = "https://flockwatch-server.onrender.com/data";
+const RENDER_BASE = "https://flockwatch-server.onrender.com";
 const CACHE_TTL = 60 * 60 * 24;
 
 export async function fetchWithCache<T>(
