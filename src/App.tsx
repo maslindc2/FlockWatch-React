@@ -31,7 +31,7 @@ interface StateInformation extends FlockRecord {
 }
 
 const flockWatchServerURL =
-    import.meta.env.VITE_FLOCKWATCH_SERVER || "http://localhost:8080/data";
+    import.meta.env.VITE_FLOCKWATCH_SERVER || "/api";
 
 /** Root application component. Fetches all data and renders the dashboard. */
 function App() {
@@ -165,14 +165,31 @@ function App() {
                 </div>
             </>
         );
+    const staleDataWarning =
+        (usSummaryError ||
+            flockCasesError ||
+            statusSummaryError ||
+            sitesError ||
+            activeSitesError ||
+            historicalSummaryError ||
+            productionTypeSummaryError) &&
+        usSummaryDataFromAPI &&
+        flockDataFromAPI &&
+        statusSummaryDataFromAPI &&
+        sitesDataFromAPI &&
+        activeSitesDataFromAPI &&
+        historicalSummaryDataFromAPI &&
+        productionTypeSummaryDataFromAPI;
+
     if (
-        usSummaryError ||
-        flockCasesError ||
-        statusSummaryError ||
-        sitesError ||
-        activeSitesError ||
-        historicalSummaryError ||
-        productionTypeSummaryError
+        !staleDataWarning &&
+        (usSummaryError ||
+            flockCasesError ||
+            statusSummaryError ||
+            sitesError ||
+            activeSitesError ||
+            historicalSummaryError ||
+            productionTypeSummaryError)
     ) {
         console.log(usSummaryError);
         console.log(flockCasesError);
@@ -369,6 +386,13 @@ function App() {
                         )}
                     </p>
                 </header>
+
+                {staleDataWarning && (
+                    <div className="stale-data-banner" role="alert">
+                        Showing cached data &mdash; unable to reach the server.
+                        Retrying automatically&hellip;
+                    </div>
+                )}
 
                 <section className="stats-sections">
                     <section className="info-tile-group">
