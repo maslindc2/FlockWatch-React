@@ -1,4 +1,4 @@
-import { fetchWithCache } from "../_lib/cache.js";
+import { fetchWithCache } from "../../../_lib/cache.js";
 
 export async function GET(request: Request): Promise<Response> {
     try {
