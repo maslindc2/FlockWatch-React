@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.4](https://github.com/maslindc2/FlockWatch-React/compare/v0.1.2...v0.1.4) (2026-06-19)
+
+
+### Features
+
+* add API endpoints for flock cases, historical summary, production type summary, active sites, sites timeline, and sites data; enhance stale data handling in App component ([1c6175b](https://github.com/maslindc2/FlockWatch-React/commit/1c6175ba5631cd09eff090f939830618575c9109))
+
+
+### Bug Fixes
+
+* update RENDER_BASE URL to remove unnecessary path ([ddaede7](https://github.com/maslindc2/FlockWatch-React/commit/ddaede78954666fb89a7af9c31f643d653f81ce0))
+
 ## [0.1.3](https://github.com/maslindc2/FlockWatch-React/compare/v0.1.1...v0.1.3) (2026-06-19)
 
 
