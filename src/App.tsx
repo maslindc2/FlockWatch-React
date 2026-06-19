@@ -30,8 +30,7 @@ interface StateInformation extends FlockRecord {
     color: string;
 }
 
-const flockWatchServerURL =
-    import.meta.env.VITE_FLOCKWATCH_SERVER || "/api";
+const flockWatchServerURL = import.meta.env.VITE_FLOCKWATCH_SERVER || "/api";
 
 /** Root application component. Fetches all data and renders the dashboard. */
 function App() {

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.3](https://github.com/maslindc2/FlockWatch-React/compare/v0.1.1...v0.1.3) (2026-06-19)
+
+
+### Features
+
+* implement caching with Redis for API data fetching ([da29521](https://github.com/maslindc2/FlockWatch-React/commit/da2952170b6c52c6138df82778c6c94e4afd6c29))
+
+
+### Bug Fixes
+
+* update RENDER_BASE URL to remove unnecessary path ([ddaede7](https://github.com/maslindc2/FlockWatch-React/commit/ddaede78954666fb89a7af9c31f643d653f81ce0))
+
 ## 0.1.2 (2026-06-19)
 
 
