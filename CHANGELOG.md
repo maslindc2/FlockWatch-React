@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.9](https://github.com/maslindc2/FlockWatch-React/compare/v0.1.7...v0.1.9) (2026-07-14)
+
 ## [0.1.8](https://github.com/maslindc2/FlockWatch-React/compare/v0.1.6...v0.1.8) (2026-07-14)
 
 ## [0.1.7](https://github.com/maslindc2/FlockWatch-React/compare/v0.1.5...v0.1.7) (2026-07-13)
