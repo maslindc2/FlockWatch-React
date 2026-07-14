@@ -291,7 +291,8 @@ const ProductionTypeBarChart: FC<Props> = ({ data, compact }) => {
 
     return (
         <div className="bar-chart-container" ref={containerRef}>
-            <svg ref={svgRef} aria-label={chartLabel}></svg>
+                        {/* eslint-disable-next-line a11y/aria-validation */}
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );
 };

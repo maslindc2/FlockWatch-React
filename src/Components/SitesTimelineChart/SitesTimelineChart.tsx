@@ -389,7 +389,8 @@ const SitesTimelineChart: FC<Props> = ({
                     </button>
                 ))}
             </div>
-            <svg ref={svgRef} aria-label={chartLabel}></svg>
+                        {/* eslint-disable-next-line a11y/aria-validation */}
+            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
             {/* eslint-disable-next-line a11y/details-summary */}
             <details style={{ marginTop: "12px", cursor: "pointer" }}>
                 <summary
