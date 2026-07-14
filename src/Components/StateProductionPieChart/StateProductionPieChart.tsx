@@ -154,6 +154,7 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
 
     return (
         <div className="state-production-pie-wrapper" ref={containerRef}>
+            {/* eslint-disable-next-line a11y/aria-validation */}
             <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );

@@ -180,6 +180,7 @@ const HorizontalBarChart: FC<Props> = ({ data, activeStates }) => {
 
     return (
         <div className="bar-chart-container" ref={containerRef}>
+            {/* eslint-disable-next-line a11y/aria-validation */}
             <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );

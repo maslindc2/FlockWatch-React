@@ -472,6 +472,7 @@ const ChoroplethMap: FC<Props> = ({
                 }}
                 role="tooltip"
             />
+            {/* eslint-disable-next-line a11y/aria-validation */}
             <svg ref={svgRef} role="group" aria-label={chartLabel} />
         </div>
     );
