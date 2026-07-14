@@ -154,7 +154,7 @@ const StateProductionPieChart: FC<Props> = ({ data, stateName }) => {
 
     return (
         <div className="state-production-pie-wrapper" ref={containerRef}>
-            <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
+            <svg ref={svgRef} aria-label={chartLabel}></svg>
         </div>
     );
 };

@@ -472,7 +472,7 @@ const ChoroplethMap: FC<Props> = ({
                 }}
                 role="tooltip"
             />
-            <svg ref={svgRef} role="group" aria-label={chartLabel} />
+            <svg ref={svgRef} aria-label={chartLabel} />
         </div>
     );
 };
