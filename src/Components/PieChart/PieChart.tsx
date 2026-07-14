@@ -191,7 +191,7 @@ const PieChart: FC<Props> = ({ backyardFlocks, commercialFlocks, title }) => {
 
     return (
         <div className="pie-chart-wrapper" ref={containerRef}>
-                        {/* eslint-disable-next-line a11y/aria-validation */}
+            {/* eslint-disable-next-line a11y/aria-validation */}
             <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );

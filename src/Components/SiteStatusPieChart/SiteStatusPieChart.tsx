@@ -200,7 +200,7 @@ const SiteStatusPieChart: FC<Props> = ({
 
     return (
         <div className="site-status-pie-wrapper" ref={containerRef}>
-                        {/* eslint-disable-next-line a11y/aria-validation */}
+            {/* eslint-disable-next-line a11y/aria-validation */}
             <svg ref={svgRef} role="img" aria-label={chartLabel}></svg>
         </div>
     );
