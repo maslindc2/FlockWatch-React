@@ -36,7 +36,7 @@
         "@types/react-dom": "^19.2.3",
         "@types/topojson-client": "^3.1.5",
         "@types/topojson-specification": "^1.0.5",
-        "@vitejs/plugin-react-swc": "^4.3.1",
+        "@vitejs/plugin-react-swc": "^4.3.3",
         "@vitest/coverage-v8": "^4.1.9",
         "eslint": "^10.5.0",
         "eslint-plugin-a11y": "^1.0.1",
