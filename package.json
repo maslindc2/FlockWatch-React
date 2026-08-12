@@ -21,8 +21,8 @@
         "@upstash/redis": "^1.38.0",
         "d3": "^7.9.0",
         "d3-geo": "^3.1.1",
-        "react": "^19.2.7",
-        "react-dom": "^19.1.0",
+        "react": "^19.2.8",
+        "react-dom": "^19.2.8",
         "topojson-client": "^3.1.0"
     },
     "devDependencies": {
@@ -32,7 +32,7 @@
         "@testing-library/react": "^16.3.2",
         "@testing-library/user-event": "^14.6.1",
         "@types/d3": "^7.4.3",
-        "@types/react": "^19.2.17",
+        "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.3",
         "@types/topojson-client": "^3.1.5",
         "@types/topojson-specification": "^1.0.5",
