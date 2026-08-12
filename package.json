@@ -1,7 +1,7 @@
 {
     "name": "flockwatch-react",
     "private": true,
-    "version": "0.1.15",
+    "version": "0.1.16",
     "type": "module",
     "scripts": {
         "dev": "vite --host",
@@ -42,8 +42,8 @@
         "eslint-plugin-a11y": "^1.0.1",
         "eslint-plugin-react-hooks": "^7.1.1",
         "eslint-plugin-react-refresh": "^0.5.3",
-        "globals": "^17.6.0",
-        "jsdom": "^29.1.1",
+        "globals": "^17.9.0",
+        "jsdom": "^30.0.1",
         "nock": "^14.0.17",
         "node-fetch": "^3.3.2",
         "prettier": "3.9.6",
