@@ -37,7 +37,7 @@
         "@types/topojson-client": "^3.1.5",
         "@types/topojson-specification": "^1.0.5",
         "@vitejs/plugin-react-swc": "^4.3.3",
-        "@vitest/coverage-v8": "^4.1.9",
+        "@vitest/coverage-v8": "^4.1.11",
         "eslint": "^10.8.1",
         "eslint-plugin-a11y": "^1.0.1",
         "eslint-plugin-react-hooks": "^7.1.1",
